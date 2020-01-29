@@ -58,7 +58,7 @@
                         </Label>
                      </top>
                      <center>
-                        <ListChooser rivit="Diaspora" BorderPane.alignment="CENTER" />
+                        <ListChooser rivit="Ready Player One&#10;Metro 2033&#10;What if?&#10;Metro 2035&#10;Diaspora&#10;Permutation City" BorderPane.alignment="CENTER" />
                      </center>
                   </BorderPane>
                </bottom>
@@ -75,7 +75,7 @@
                         </Label>
                      </top>
                      <center>
-                        <TextField text="Di" BorderPane.alignment="CENTER" />
+                        <TextField BorderPane.alignment="CENTER" />
                      </center>
                   </BorderPane>
                </top>
