@@ -33,6 +33,7 @@
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleLisää" text="Lisää uusi kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa kirjaa" />
                   <MenuItem mnemonicParsing="false" onAction="#handlePoista" text="Poista kirja..." />
             </items>
           </Menu>
@@ -216,6 +217,11 @@
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleLisää" text="Lisää kirja" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa kirjaa" textAlignment="CENTER">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
