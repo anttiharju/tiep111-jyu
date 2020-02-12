@@ -24,22 +24,22 @@
         <menus>
           <Menu mnemonicParsing="false" text="Tiedosto">
             <items>
-              <MenuItem mnemonicParsing="false" text="Tallenna" />
-                  <MenuItem mnemonicParsing="false" text="Avaa..." />
-                  <MenuItem mnemonicParsing="false" text="Tulosta..." />
-                  <MenuItem mnemonicParsing="false" text="Lopeta" />
+              <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleAvaa" text="Avaa..." />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta..." />
+                  <MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" text="Lisää uusi kirja" />
-                  <MenuItem mnemonicParsing="false" text="Poista kirja..." />
+              <MenuItem mnemonicParsing="false" onAction="#handleLisää" text="Lisää uusi kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoista" text="Poista kirja..." />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Apua">
             <items>
-              <MenuItem mnemonicParsing="false" text="Apua" />
-                  <MenuItem mnemonicParsing="false" text="Tietoja..." />
+              <MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTietoja" text="Tietoja..." />
             </items>
           </Menu>
         </menus>
@@ -215,17 +215,17 @@
    <bottom>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Lisää kirja" textAlignment="CENTER">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleLisää" text="Lisää kirja" textAlignment="CENTER">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button contentDisplay="CENTER" mnemonicParsing="false" text="Poista kirja" textAlignment="CENTER">
+            <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#handlePoista" text="Poista kirja" textAlignment="CENTER">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button contentDisplay="CENTER" mnemonicParsing="false" text="Tallenna" textAlignment="CENTER">
+            <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" textAlignment="CENTER">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
