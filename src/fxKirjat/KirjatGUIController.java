@@ -4,6 +4,8 @@ import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * @author anvemaha
@@ -13,6 +15,21 @@ import javafx.fxml.FXML;
 public class KirjatGUIController {
 
     @FXML
+    void handleMuokkaa() {
+        ModalController.showModal(
+                KirjatGUIController.class.getResource("MuokkaaView.fxml"),
+                "Muokkaa kirjaa", null, "");
+    }
+
+
+    @FXML
+    void handleLisää() {
+        Dialogs.showMessageDialog("Vielä ei osata lisätä kirjoja");
+        // TODO: Käyttää samaa pohjaa kuin muokkaa
+    }
+
+
+    @FXML
     void handleApua() {
         Dialogs.showMessageDialog("Vielä ei osata auttaa");
     }
@@ -20,16 +37,9 @@ public class KirjatGUIController {
 
     @FXML
     void handleAvaa() {
-        Dialogs.showMessageDialog("Vielä ei osata avata kirjoja");
-    }
-
-
-    @FXML
-    void handleLisää() {
-        // Dialogs.showMessageDialog("Vielä ei osata lisätä kirjoja");
         ModalController.showModal(
-                KirjatGUIController.class.getResource("MuokkaaView.fxml"),
-                "Kirjat", null, "");
+                KirjatGUIController.class.getResource("TervetuloaView.fxml"),
+                "Kirjarekisteri", null, "");
     }
 
 
@@ -42,7 +52,12 @@ public class KirjatGUIController {
 
     @FXML
     void handlePoista() {
-        Dialogs.showMessageDialog("Vielä ei osata poistaa kirjoja");
+        // Dialogs.showMessageDialog("Vielä ei osata poistaa kirjoja");
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Poista");
+        alert.setHeaderText(null);
+        alert.setContentText("Poista kirja Adeno?");
+        alert.showAndWait();
     }
 
 
@@ -57,7 +72,7 @@ public class KirjatGUIController {
         // Dialogs.showMessageDialog("Vielä ei tiedetä mitään");
         ModalController.showModal(
                 KirjatGUIController.class.getResource("TietojaView.fxml"),
-                "Kirjat", null, "");
+                "Tietoja", null, "");
     }
 
 
@@ -66,7 +81,6 @@ public class KirjatGUIController {
         // Dialogs.showMessageDialog("Vielä ei osata tulostaa");
         ModalController.showModal(
                 KirjatGUIController.class.getResource("TulostaView.fxml"),
-                "Kirjat", null, "");
+                "Tulosta", null, "");
     }
-
 }

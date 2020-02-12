@@ -26,7 +26,7 @@ public class KirjatMain extends Application {
             primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();
-        }
+        } 
     }
 
     /**
