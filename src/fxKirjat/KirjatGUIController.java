@@ -83,4 +83,20 @@ public class KirjatGUIController {
                 KirjatGUIController.class.getResource("TulostaView.fxml"),
                 "Tulosta", null, "");
     }
+
+
+    @FXML
+    void handleKirjailija() {
+        ModalController.showModal(
+                KirjatGUIController.class.getResource("KirjailijaView.fxml"),
+                "Kirjailijat", null, "");
+    }
+
+
+    @FXML
+    void handleKustantaja() {
+        ModalController.showModal(
+                KirjatGUIController.class.getResource("KustantajaView.fxml"),
+                "Kustantajat", null, "");
+    }
 }

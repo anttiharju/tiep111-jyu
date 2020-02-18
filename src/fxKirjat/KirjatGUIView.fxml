@@ -35,6 +35,8 @@
               <MenuItem mnemonicParsing="false" onAction="#handleLisää" text="Lisää uusi kirja" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa kirjaa" />
                   <MenuItem mnemonicParsing="false" onAction="#handlePoista" text="Poista kirja..." />
+                  <MenuItem mnemonicParsing="false" onAction="#handleKirjailija" text="Muokkaa kirjailijoita" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleKustantaja" text="Muokkaa kustantajia" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Apua">
