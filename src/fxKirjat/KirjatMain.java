@@ -22,7 +22,7 @@ public class KirjatMain extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("kirjat.css").toExternalForm());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Kirjat");
+            primaryStage.setTitle("Kirjahylly");
             primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();
