@@ -1,4 +1,4 @@
-package fxKirjat;
+package fxKirjahylly;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
