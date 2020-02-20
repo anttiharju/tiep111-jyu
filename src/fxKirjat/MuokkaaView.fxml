@@ -108,9 +108,14 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </HBox.margin>
                   </ComboBoxChooser>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Muokkaa kirjailijoita">
+                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Lisää...">
                      <HBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Poista">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                      </HBox.margin>
                   </Button>
                </children>
@@ -122,9 +127,14 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </HBox.margin>
                   </ComboBoxChooser>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Muokkaa kustantajia">
+                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Lisää....">
                      <HBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Poista">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                      </HBox.margin>
                   </Button>
                </children>
