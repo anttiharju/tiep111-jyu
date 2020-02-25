@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
 
-
 /**
  * @author anvemaha
  * @version 26.1.2020
@@ -16,18 +15,22 @@ public class KirjatMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("KirjatGUIView.fxml"));
+            FXMLLoader ldr = new FXMLLoader(
+                    getClass().getResource("KirjatGUIView.fxml"));
             final Pane root = ldr.load();
-            //final KirjatGUIController kirjatCtrl = (KirjatGUIController) ldr.getController();
+            // final KirjatGUIController kirjatCtrl = (KirjatGUIController)
+            // ldr.getController();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("kirjat.css").toExternalForm());
+            scene.getStylesheets()
+                    .add(getClass().getResource("kirjat.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Kirjahylly");
             primaryStage.show();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
     }
+
 
     /**
      * @param args Ei käytössä
