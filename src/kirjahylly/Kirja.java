@@ -1,4 +1,4 @@
-package Kirjahylly;
+package kirjahylly;
 
 import java.io.PrintStream;
 import static kanta.apu.*;
