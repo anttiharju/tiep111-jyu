@@ -13,157 +13,190 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="540.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjahylly.MuokkaaController">
-   <left>
-      <GridPane prefHeight="400.0" prefWidth="500.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label text="Lisätietoja" GridPane.rowIndex="7">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </Label>
-            <Label text="Arvio" GridPane.rowIndex="6">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </Label>
-            <Label text="Luettu" GridPane.rowIndex="5">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </Label>
-            <Label text="Lyhyt kuvaus" GridPane.rowIndex="4" GridPane.valignment="TOP">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </Label>
-            <Label text="Julkaisuvuosi" GridPane.rowIndex="3">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </Label>
-            <Label text="Kustantaja" GridPane.rowIndex="2">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </Label>
-            <Label text="Kirjailija" GridPane.rowIndex="1">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </Label>
-            <Label text="Nimi">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </Label>
-            <TextField text="Diaspora" GridPane.columnIndex="1">
-               <GridPane.margin>
-                  <Insets left="5.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField text="1997" GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets left="5.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextArea prefHeight="200.0" prefWidth="200.0" text="Ihmiskunta elää ikuisesti tietoisena ohjelmistona" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets left="5.0" />
-               </GridPane.margin>
-            </TextArea>
-            <TextField text="9.1.2020" GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <GridPane.margin>
-                  <Insets left="5.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField text="4/5" GridPane.columnIndex="1" GridPane.rowIndex="6">
-               <GridPane.margin>
-                  <Insets left="5.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField text="Englanninkielinen" GridPane.columnIndex="1" GridPane.rowIndex="7">
-               <GridPane.margin>
-                  <Insets left="5.0" />
-               </GridPane.margin>
-            </TextField>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <ComboBoxChooser rivit="Ernest Cline&#10;Dmitri Gluhovski&#10;Randall Munroe&#10;Greg Egan">
-                     <HBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </HBox.margin>
-                  </ComboBoxChooser>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Lisää...">
-                     <HBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Poista">
-                     <HBox.margin>
-                        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <children>
-                  <ComboBoxChooser rivit="Random House&#10;Victor Gollancz&#10;John Murray&#10;AST&#10;Orion Publishing Group">
-                     <HBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </HBox.margin>
-                  </ComboBoxChooser>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Lisää....">
-                     <HBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Poista">
-                     <HBox.margin>
-                        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </GridPane>
-   </left>
-   <bottom>
-      <HBox prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" onAction="#handlePeruuta" text="Peruuta">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </Button>
-            <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Anna julkaisuvuosi numerona!">
-               <HBox.margin>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </HBox.margin>
-            </Text>
-         </children>
-      </HBox>
-   </bottom>
+<BorderPane prefHeight="540.0" prefWidth="400.0"
+	xmlns="http://javafx.com/javafx/11.0.1"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="fxKirjahylly.MuokkaaController">
+	<left>
+		<GridPane prefHeight="400.0" prefWidth="500.0"
+			BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES"
+					maxWidth="-Infinity" minWidth="10.0" />
+				<ColumnConstraints hgrow="SOMETIMES"
+					maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0"
+					vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0"
+					vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0"
+					vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0"
+					vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0"
+					vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0"
+					vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0"
+					vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0"
+					vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<Label text="Lisätietoja" GridPane.rowIndex="7">
+					<padding>
+						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+					</padding>
+				</Label>
+				<Label text="Arvio" GridPane.rowIndex="6">
+					<padding>
+						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+					</padding>
+				</Label>
+				<Label text="Luettu" GridPane.rowIndex="5">
+					<padding>
+						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+					</padding>
+				</Label>
+				<Label text="Lyhyt kuvaus" GridPane.rowIndex="4"
+					GridPane.valignment="TOP">
+					<padding>
+						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+					</padding>
+				</Label>
+				<Label text="Julkaisuvuosi" GridPane.rowIndex="3">
+					<padding>
+						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+					</padding>
+				</Label>
+				<Label text="Kustantaja" GridPane.rowIndex="2">
+					<padding>
+						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+					</padding>
+				</Label>
+				<Label text="Kirjailija" GridPane.rowIndex="1">
+					<padding>
+						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+					</padding>
+				</Label>
+				<Label text="Nimi">
+					<padding>
+						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+					</padding>
+				</Label>
+				<TextField text="Diaspora" GridPane.columnIndex="1">
+					<GridPane.margin>
+						<Insets left="5.0" />
+					</GridPane.margin>
+				</TextField>
+				<TextField text="1997" GridPane.columnIndex="1"
+					GridPane.rowIndex="3">
+					<GridPane.margin>
+						<Insets left="5.0" />
+					</GridPane.margin>
+				</TextField>
+				<TextArea prefHeight="200.0" prefWidth="200.0"
+					text="Ihmiskunta elää ikuisesti tietoisena ohjelmistona"
+					GridPane.columnIndex="1" GridPane.rowIndex="4">
+					<GridPane.margin>
+						<Insets left="5.0" />
+					</GridPane.margin>
+				</TextArea>
+				<TextField text="9.1.2020" GridPane.columnIndex="1"
+					GridPane.rowIndex="5">
+					<GridPane.margin>
+						<Insets left="5.0" />
+					</GridPane.margin>
+				</TextField>
+				<TextField text="4/5" GridPane.columnIndex="1"
+					GridPane.rowIndex="6">
+					<GridPane.margin>
+						<Insets left="5.0" />
+					</GridPane.margin>
+				</TextField>
+				<TextField text="Englanninkielinen"
+					GridPane.columnIndex="1" GridPane.rowIndex="7">
+					<GridPane.margin>
+						<Insets left="5.0" />
+					</GridPane.margin>
+				</TextField>
+				<HBox prefHeight="100.0" prefWidth="200.0"
+					GridPane.columnIndex="1" GridPane.rowIndex="1">
+					<children>
+						<ComboBoxChooser
+							rivit="Ernest Cline&#10;Dmitri Gluhovski&#10;Randall Munroe&#10;Greg Egan">
+							<HBox.margin>
+								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+							</HBox.margin>
+						</ComboBoxChooser>
+						<Button alignment="CENTER_RIGHT" mnemonicParsing="false"
+							text="Lisää...">
+							<HBox.margin>
+								<Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
+							</HBox.margin>
+						</Button>
+						<Button alignment="CENTER_RIGHT" mnemonicParsing="false"
+							text="Poista">
+							<HBox.margin>
+								<Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+							</HBox.margin>
+						</Button>
+					</children>
+				</HBox>
+				<HBox prefHeight="100.0" prefWidth="200.0"
+					GridPane.columnIndex="1" GridPane.rowIndex="2">
+					<children>
+						<ComboBoxChooser
+							rivit="Random House&#10;Victor Gollancz&#10;John Murray&#10;AST&#10;Orion Publishing Group">
+							<HBox.margin>
+								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+							</HBox.margin>
+						</ComboBoxChooser>
+						<Button alignment="CENTER_RIGHT" mnemonicParsing="false"
+							text="Lisää....">
+							<HBox.margin>
+								<Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
+							</HBox.margin>
+						</Button>
+						<Button alignment="CENTER_RIGHT" mnemonicParsing="false"
+							text="Poista">
+							<HBox.margin>
+								<Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+							</HBox.margin>
+						</Button>
+					</children>
+				</HBox>
+			</children>
+			<padding>
+				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+			</padding>
+		</GridPane>
+	</left>
+	<bottom>
+		<HBox prefHeight="50.0" prefWidth="200.0"
+			BorderPane.alignment="CENTER">
+			<children>
+				<Button mnemonicParsing="false" onAction="#handlePeruuta"
+					text="Peruuta">
+					<HBox.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</HBox.margin>
+				</Button>
+				<Button mnemonicParsing="false" onAction="#handleTallenna"
+					text="Tallenna">
+					<HBox.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</HBox.margin>
+				</Button>
+				<Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0"
+					text="Anna julkaisuvuosi numerona!">
+					<HBox.margin>
+						<Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+					</HBox.margin>
+				</Text>
+			</children>
+		</HBox>
+	</bottom>
 </BorderPane>

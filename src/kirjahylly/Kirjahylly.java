@@ -1,4 +1,4 @@
-package Kirjahylly;
+package kirjahylly;
 
 /**
  * @author anvemaha

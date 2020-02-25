@@ -1,10 +1,10 @@
-package Kirjahylly;
+package kirjahylly;
 
 /**
  * @author anvemaha
  * @version 20.2.2020
  *
  */
-public class Kirjailija {
+public class Kustantaja {
     //
 }
