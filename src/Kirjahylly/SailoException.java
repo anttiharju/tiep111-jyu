@@ -2,8 +2,8 @@ package kirjahylly;
 
 /**
  * Poikkeusluokka tietorakenteesta aiheutuville poikkeuksille.
- * @author Vesa Lappalainen // siis tajuan että kuuluu tehdä itse mutta kun nyt en oikein ymmärrä ja kyllähän tää selitettiin luennolla
- * @version 1.0, 22.02.2003
+ * @author antti
+ * @version 25.2.2020
  */
 public class SailoException extends Exception {
     private static final long serialVersionUID = 1L;
