@@ -8,13 +8,14 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjahylly.KirjatGUIController">
+<BorderPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjahylly.KirjahyllyGUIController">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
@@ -58,7 +59,7 @@
 								</Label>
 							</top>
 							<center>
-								<ListChooser rivit="Ready Player One&#10;Metro 2033&#10;What if?&#10;Metro 2035&#10;Diaspora&#10;Permutation City" BorderPane.alignment="CENTER" />
+								<ListChooser fx:id="chooserKirjat" rivit="Ready Player One&#10;Metro 2033&#10;What if?&#10;Metro 2035&#10;Diaspora&#10;Permutation City" BorderPane.alignment="CENTER" />
 							</center>
 						</BorderPane>
 					</bottom>
@@ -92,7 +93,11 @@
 						</Label>
 					</top>
                <center>
-                  <TextArea BorderPane.alignment="CENTER" />
+                  <ScrollPane fx:id="panelKirja" minHeight="440.0" minWidth="540.0" BorderPane.alignment="CENTER">
+                     <content>
+      						<TextArea minHeight="440.0" minWidth="540.0" />
+                     </content>
+                  </ScrollPane>
                </center>
 				</BorderPane>
 				<BorderPane maxWidth="-Infinity" prefWidth="200.0">

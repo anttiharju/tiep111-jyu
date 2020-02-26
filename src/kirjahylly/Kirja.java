@@ -29,9 +29,18 @@ public class Kirja {
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
+        /** /
         out.println(nimi + "|" + kirjailija + "|" + kustantaja + "|" + vuosi
                 + "|" + kuvaus + "|" + luettu + "|" + arvio + "|"
                 + lisatietoja);
+        /**/
+        // toimii paremmin koska textarea / scrollpane ei suostu olemaan leveä
+        // vaikka kuinka pakotan, ylempi tosin testatessa ehkä
+        /**/
+        out.println(nimi + "\n" + kirjailija + "\n" + kustantaja + "\n" + vuosi
+                + "\n" + kuvaus + "\n" + luettu + "\n" + arvio + "\n"
+                + lisatietoja);
+        /**/
     }
 
 
