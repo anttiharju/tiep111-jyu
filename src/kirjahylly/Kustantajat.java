@@ -167,7 +167,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
         kustantajat1.lisaa(tupu);
         kustantajat1.lisaa(lupu);
 
-        System.out.println("Kustantajat testi:");
+        System.out.println("+ Kustantajat testi:");
 
         List<Kustantaja> kustantajat2 = kustantajat1.annaKustantajat(2);
 

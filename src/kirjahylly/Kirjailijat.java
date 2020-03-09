@@ -166,7 +166,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
         kirjailijat1.lisaa(tupu);
         kirjailijat1.lisaa(lupu);
 
-        System.out.println("Kirjailijat testi:");
+        System.out.println("+ Kirjailijat testi:");
 
         List<Kirjailija> kirjailijat2 = kirjailijat1.annaKirjailijat(2);
 
