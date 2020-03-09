@@ -38,10 +38,10 @@ public class Kirjailija {
      * Apumetodi, jolla saadaan täytetyä testiarvot Kirjailijalle
      * kirjailijan nimen perään arvotaan numero, ettei kahdella kirjailijalla
      * olisi samaa nimeä.
-     * @param id kirjailijan id
+     * @param newId kirjailijan id
      */
-    public void tayta_tmp(int id) {
-        this.id = id;
+    public void tayta_tmp(int newId) {
+        this.id = newId;
         this.kirjailija = "Dimitrios " + rand(1000, 9999);
     }
 
