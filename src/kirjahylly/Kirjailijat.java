@@ -17,7 +17,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
     private final Collection<Kirjailija> alkiot = new ArrayList<Kirjailija>();
 
     /**
-     * Harrastusten alustaminen
+     * Kirjailijoiden alustaminen
      */
     public Kirjailijat() {
         // ei tarvita mitään (:
@@ -40,7 +40,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      * @throws SailoException jos lukeminen epäonnistuu
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
-        tiedostonNimi = hakemisto + ".kirjailijat";
+        tiedostonNimi = hakemisto + ".kir";
         throw new SailoException(
                 "Ei osata vielä lukea tiedostoa " + tiedostonNimi);
     }
