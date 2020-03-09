@@ -121,4 +121,20 @@ public class Kirja {
         metro2035.tayta_metro();
         metro2035.tulosta(System.out);
     }
+
+
+    /**
+     * @return kirjan kirjailijan id:n
+     */
+    public int getKirjailijaId() {
+        return kirjailija;
+    }
+
+
+    /**
+     * @return kirjan kustantajan id:n
+     */
+    public int getKustantajaId() {
+        return kustantaja;
+    }
 }

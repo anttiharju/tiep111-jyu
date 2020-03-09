@@ -1,12 +1,17 @@
 package kirjahylly;
 
+import java.util.List;
+
 /**
  * @author anvemaha
- * @version 20.2.2020
+ * @version 20.2.2020 testit
+ * @version 9.3.2020 kirjailijat ja kustantajat
  *
  */
 public class Kirjahylly {
     private final Kirjat kirjat = new Kirjat();
+    private final Kirjailijat kirjailijat = new Kirjailijat();
+    private final Kustantajat kustantajat = new Kustantajat();
 
     /**
      * Palauttaa kirjahyllyn kirjamäärän
@@ -14,6 +19,42 @@ public class Kirjahylly {
      */
     public int getKirjat() {
         return kirjat.getLkm();
+    }
+
+
+    /**
+     * Lisätään uusi kirjailija kirjahyllyyn
+     * @param kir lisättävä kirjailija
+     */
+    public void lisaa(Kirjailija kir) {
+        kirjailijat.lisaa(kir);
+    }
+
+
+    /**
+     * Lisätään uusi kustantaja kirjahyllyyn
+     * @param kus lisättävä kustantaja
+     */
+    public void lisaa(Kustantaja kus) {
+        kustantajat.lisaa(kus);
+    }
+
+
+    /**
+     * @param kirja kirja jonka kirjailija halutaan tietää
+     * @return kirjan kirjailijan
+     */
+    public Kirjailija annaKirjailija(Kirja kirja) {
+        return kirjailijat.annaKirjailija(kirja.getKirjailijaId());
+    }
+
+
+    /**
+     * @param kirja kirja jonka kustantaja halutaan tietää
+     * @return kirjan kustantajan
+     */
+    public Kustantaja annaKustantaja(Kirja kirja) {
+        return kirjailijat.annaKustantaja(kirja.getKustantajaId());
     }
 
 
@@ -81,6 +122,8 @@ public class Kirjahylly {
      */
     public void lueTiedostosta(String nimi) throws SailoException {
         kirjat.lueTiedostosta(nimi);
+        kirjailijat.lueTiedostosta(nimi);
+        kustantajat.lueTiedostosta(nimi);
     }
 
 
@@ -90,6 +133,8 @@ public class Kirjahylly {
      */
     public void talleta() throws SailoException {
         kirjat.talleta();
+        kustantajat.talleta();
+        kirjailijat.talleta();
         // TODO: yritä tallettaa toinen vaikka toinen epäonnistuisi
     }
 
@@ -112,12 +157,34 @@ public class Kirjahylly {
 
             hylly.lisaa(m1);
             hylly.lisaa(m2);
+            int id1 = m1.getId();
+            int id2 = m2.getId();
+            Kirjailija k11 = new Kirjailija(id1);
+            k11.tayta_tmp(id1);
+            hylly.lisaa(k11);
+            Kirjailija k21 = new Kirjailija(id1);
+            k21.tayta_tmp(id1);
+            hylly.lisaa(k21);
+            Kirjailija k32 = new Kirjailija(id1);
+            k32.tayta_tmp(id2);
+            hylly.lisaa(k32);
+            Kirjailija k42 = new Kirjailija(id1);
+            k42.tayta_tmp(id2);
+            hylly.lisaa(k42);
+            Kirjailija k52 = new Kirjailija(id1);
+            k52.tayta_tmp(id2);
+            hylly.lisaa(k52);
 
             System.out.println("+ Kirjahylly testi");
             for (int i = 0; i < hylly.getKirjat(); i++) {
                 Kirja kirja = hylly.annaKirja(i);
                 System.out.println("Kirja paikassa: " + i);
                 kirja.tulosta(System.out);
+                Kirjailija loytynytKir = hylly.annaKirjailija(kirja);
+                Kustantaja loytynytKus = hylly.annaKustantaja(kirja);
+                loytynytKir.tulosta(System.out);
+                loytynytKus.tulosta(System.out);
+
             }
         } catch (SailoException ex) {
             System.out.println(ex.getMessage());
