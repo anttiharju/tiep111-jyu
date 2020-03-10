@@ -61,6 +61,7 @@ public class Kirjahylly {
     /**
      * ComboBoxChooseria varten palauttaa kirjailijat muuttujan
      * @return kaikki kirjailijat
+     * TODO: PALAUTA KLOONI
      */
     public Kirjailijat getKirjailijat() {
         return kirjailijat;
@@ -70,6 +71,7 @@ public class Kirjahylly {
     /**
      * ComboBoxChooseria varten palauttaa kirjailijat muuttujan
      * @return kaikki kustantajat
+     * TODO: PALAUTA KLOONI
      */
     public Kustantajat getKustantajat() {
         return kustantajat;
