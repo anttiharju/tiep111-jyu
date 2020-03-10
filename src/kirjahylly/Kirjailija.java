@@ -28,6 +28,7 @@ public class Kirjailija {
     /**
      * Alustetaan kirjailija tietyllä id:llä
      * @param id haluttu id
+     * TODO: estä saman id:n käyttö jollain omalla exceptionilla?
      */
     public Kirjailija(int id) {
         this.id = id;
