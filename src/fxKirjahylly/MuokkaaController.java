@@ -1,10 +1,17 @@
 package fxKirjahylly;
 
+import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import kirjahylly.Kirja;
+import kirjahylly.Kirjahylly;
+import kirjahylly.Kirjailijat;
 
 /**
  * @author antti
@@ -12,6 +19,33 @@ import javafx.stage.Stage;
  *
  */
 public class MuokkaaController implements ModalControllerInterface<String> {
+
+    @FXML
+    private TextField mNimi;
+
+    @FXML
+    private ComboBoxChooser<String> mKirjailija;
+
+    @FXML
+    private ComboBoxChooser<String> mKustantaja;
+
+    @FXML
+    private TextField mVuosi;
+
+    @FXML
+    private TextArea mKuvaus;
+
+    @FXML
+    private TextField mLuettu;
+
+    @FXML
+    private TextField mArvio;
+
+    @FXML
+    private TextField mLisa;
+
+    @FXML
+    private Text error;
 
     @Override
     public String getResult() {
@@ -27,13 +61,45 @@ public class MuokkaaController implements ModalControllerInterface<String> {
 
     @Override
     public void handleShown() {
-        //
+        alusta();
     }
 
 
-    @FXML
-    void handleLisaaKirjailija() {
-        System.out.println("lol");
+    /**
+     * Alustetaan dialogin tiedot
+     */
+    public void alusta() {
+        Kirja kirja = KirjahyllyGUIController.kirjaKohdalla;
+        mNimi.setText(kirja.getNimi());
+        mKuvaus.setText(kirja.getKuvaus());
+        mLuettu.setText(kirja.getLuettu());
+        mArvio.setText("" + kirja.getArvio() + "/5");
+        mLisa.setText(kirja.getLisatietoja());
+        error.setText("");
+
+        Kirjahylly hylly = KirjahyllyGUIController.hylly;
+
+        Kirjailijat kir = hylly.getKirjailijat();
+        Kustantajat kus = hylly.getKustantajat();
+
+        mKirjailija.setRivit("");
+        mKustantaja.setRivit("");
+    }
+
+
+    /**
+     * Käsittelee kirjailijan lisäyksen
+     */
+    public void handleLisaaKirjailija() {
+        Dialogs.showMessageDialog("Vielä ei osata kirjailla");
+    }
+
+
+    /**
+     * Käsittelee kirjailijan lisäyksen
+     */
+    public void handleLisaaKustantaja() {
+        Dialogs.showMessageDialog("Vielä ei osata kustantaa");
     }
 
 
@@ -41,7 +107,7 @@ public class MuokkaaController implements ModalControllerInterface<String> {
      * Käsittelee peruutuksen
      */
     public void handlePeruuta() {
-        //
+        Dialogs.showMessageDialog("Vielä ei osata peruuttaa");
     }
 
 
