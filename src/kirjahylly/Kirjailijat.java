@@ -75,14 +75,14 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      * #PACKAGEIMPORT
      * #import java.util.*;
      * 
-     *  Kirjailijat authors = new Kirjailijat();
-     *  Kirjailija pete = new Kirjailija(2); authors.lisaa(pete);
-     *  Kirjailija vesa = new Kirjailija(1); authors.lisaa(vesa);
-     *  Kirjailija tupu = new Kirjailija(2); authors.lisaa(tupu);
-     *  Kirjailija hupu = new Kirjailija(1); authors.lisaa(hupu);
-     *  Kirjailija lupu = new Kirjailija(2); authors.lisaa(lupu);
+     *  Kirjailijat kirjailijatVar = new Kirjailijat();
+     *  Kirjailija pete = new Kirjailija(2); kirjailijatVar.lisaa(pete);
+     *  Kirjailija vesa = new Kirjailija(1); kirjailijatVar.lisaa(vesa);
+     *  Kirjailija tupu = new Kirjailija(2); kirjailijatVar.lisaa(tupu);
+     *  Kirjailija hupu = new Kirjailija(1); kirjailijatVar.lisaa(hupu);
+     *  Kirjailija lupu = new Kirjailija(2); kirjailijatVar.lisaa(lupu);
      *  
-     *  Iterator<Kirjailija> i2 = authors.iterator();
+     *  Iterator<Kirjailija> i2 = kirjailijatVar.iterator();
      *  i2.next() === pete;
      *  i2.next() === vesa;
      *  i2.next() === tupu;
@@ -93,8 +93,8 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      *  int n = 0;
      *  int jnrot[] = {2,1,2,1,2};
      *  
-     *  for ( Kirjailija kir : kirjailijaVar ) {
-     *      kir.getKirjailijaId() === jnrot[n]; n++;
+     *  for ( Kirjailija kir : kirjailijatVar ) {
+     *      kir.getId() === jnrot[n]; n++;
      *  }
      *  
      *  n === 5;
@@ -115,33 +115,34 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      * #import java.util.*;
      * 
      *  Kirjailijat kirjailijatVar = new Kirjailijat();
-     *  Kirjailija pete = new Kirjailija(2); authors.lisaa(pete);
-     *  Kirjailija vesa = new Kirjailija(1); authors.lisaa(vesa);
-     *  Kirjailija tupu = new Kirjailija(2); authors.lisaa(tupu);
-     *  Kirjailija hupu = new Kirjailija(1); authors.lisaa(hupu);
-     *  Kirjailija lupu = new Kirjailija(2); authors.lisaa(lupu);
-     *  Kirjailija rupu = new Kirjailija(5); authors.lisaa(rupu);
+     *  Kirjailija pete = new Kirjailija(0); kirjailijatVar.lisaa(pete);
+     *  Kirjailija vesa = new Kirjailija(1); kirjailijatVar.lisaa(vesa);
+     *  Kirjailija tupu = new Kirjailija(2); kirjailijatVar.lisaa(tupu);
+     *  Kirjailija hupu = new Kirjailija(3); kirjailijatVar.lisaa(hupu);
+     *  Kirjailija lupu = new Kirjailija(4); kirjailijatVar.lisaa(lupu);
+     *  Kirjailija rupu = new Kirjailija(5); kirjailijatVar.lisaa(rupu);
      *  
-     *  List<Kirjailija> loytyneet;
-     *  loytyneet = kirjailijatVar.annaKirjailijat(3);
-     *  loytyneet.size() === 0;
-     *  loytyneet = kirjailijatVar.annaKirjailijat(1);
-     *  loytyneet.size() === 2;
-     *  loytyneet.get(0) == vesa === true;
-     *  loytyneet.get(1) == hupu === true;
-     *  loytyneet = kirjailijatVar.annaKirjailijat(5);
-     *  loytyneet.size() === 1;
-     *  loytyneet.get(0) == rupu === true;
+     *  Kirjailija etsitty = new Kirjailija();
+     *  
+     *  etsitty = kirjailijatVar.annaKirjailija(0);
+     *  etsitty == pete === true;
+     *  etsitty = kirjailijatVar.annaKirjailija(1);
+     *  etsitty == vesa === true;
+     *  etsitty = kirjailijatVar.annaKirjailija(2);
+     *  etsitty == tupu === true;
+     *  etsitty = kirjailijatVar.annaKirjailija(3);
+     *  etsitty == hupu === true;
+     *  etsitty = kirjailijatVar.annaKirjailija(4);
+     *  etsitty == lupu === true;
+     *  etsitty = kirjailijatVar.annaKirjailija(5);
+     *  etsitty == rupu === true;
      * </pre>
      */
-    public List<Kirjailija> annaKirjailijat(int id) {
-        // TODO: koska kirjalla voi olla vain yksi kirjailija, ei tarvita List,
-        // vaihda nimi (-t) ja testit ja muualla missä käytetään
-        List<Kirjailija> loydetyt = new ArrayList<Kirjailija>();
+    public Kirjailija annaKirjailija(int id) {
         for (Kirjailija kir : alkiot)
             if (kir.getId() == id)
-                loydetyt.add(kir);
-        return loydetyt;
+                return kir;
+        return new Kirjailija();
     }
 
 
@@ -150,7 +151,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      * @param args ei käytössä
      */
     public static void main(String[] args) {
-        Kirjailijat kirjailijat1 = new Kirjailijat();
+        Kirjailijat kirjailijat = new Kirjailijat();
         Kirjailija vesa = new Kirjailija();
         vesa.tayta_tmp(2);
         Kirjailija tupu = new Kirjailija();
@@ -160,17 +161,15 @@ public class Kirjailijat implements Iterable<Kirjailija> {
         Kirjailija lupu = new Kirjailija();
         lupu.tayta_tmp(2);
 
-        kirjailijat1.lisaa(vesa);
-        kirjailijat1.lisaa(tupu);
-        kirjailijat1.lisaa(hupu);
-        kirjailijat1.lisaa(tupu);
-        kirjailijat1.lisaa(lupu);
+        kirjailijat.lisaa(vesa);
+        kirjailijat.lisaa(tupu);
+        kirjailijat.lisaa(hupu);
+        kirjailijat.lisaa(tupu);
+        kirjailijat.lisaa(lupu);
 
         System.out.println("+ Kirjailijat testi:");
 
-        List<Kirjailija> kirjailijat2 = kirjailijat1.annaKirjailijat(2);
-
-        for (Kirjailija kir : kirjailijat2) {
+        for (Kirjailija kir : kirjailijat) {
             System.out.println(kir.getId() + " ");
             kir.tulosta(System.out);
         }

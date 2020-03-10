@@ -3,6 +3,7 @@ package fxKirjahylly;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
+import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
 /**
@@ -27,6 +28,12 @@ public class MuokkaaController implements ModalControllerInterface<String> {
     @Override
     public void handleShown() {
         //
+    }
+
+
+    @FXML
+    void handleLisaaKirjailija() {
+        System.out.println("lol");
     }
 
 

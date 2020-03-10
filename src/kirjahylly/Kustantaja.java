@@ -28,6 +28,7 @@ public class Kustantaja {
     /**
      * Alustetaan kustantaja tietyllä id:llä
      * @param id haluttu id
+     * TODO: estä saman id:n käyttö jollain omalla exceptionilla?
      */
     public Kustantaja(int id) {
         this.id = id;

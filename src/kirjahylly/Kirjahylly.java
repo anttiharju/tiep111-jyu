@@ -54,7 +54,7 @@ public class Kirjahylly {
      * @return kirjan kustantajan
      */
     public Kustantaja annaKustantaja(Kirja kirja) {
-        return kirjailijat.annaKustantaja(kirja.getKustantajaId());
+        return kustantajat.annaKustantaja(kirja.getKustantajaId());
     }
 
 
