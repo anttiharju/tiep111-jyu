@@ -118,31 +118,34 @@ public class Kustantajat implements Iterable<Kustantaja> {
      * #import java.util.*;
      * 
      *  Kustantajat kustantajatVar = new Kustantajat();
-     *  Kustantaja p12 = new Kustantaja(2); kustantajatVar.lisaa(12);
-     *  Kustantaja p21 = new Kustantaja(1); kustantajatVar.lisaa(21);
-     *  Kustantaja p32 = new Kustantaja(2); kustantajatVar.lisaa(32);
-     *  Kustantaja p41 = new Kustantaja(1); kustantajatVar.lisaa(41);
-     *  Kustantaja p52 = new Kustantaja(2); kustantajatVar.lisaa(52);
-     *  Kustantaja p65 = new Kustantaja(5); kustantajatVar.lisaa(65);
+     *  Kustantaja pete = new Kustantaja(0); kustantajatVar.lisaa(pete);
+     *  Kustantaja vesa = new Kustantaja(1); kustantajatVar.lisaa(vesa);
+     *  Kustantaja tupu = new Kustantaja(2); kustantajatVar.lisaa(tupu);
+     *  Kustantaja hupu = new Kustantaja(3); kustantajatVar.lisaa(hupu);
+     *  Kustantaja lupu = new Kustantaja(4); kustantajatVar.lisaa(lupu);
+     *  Kustantaja rupu = new Kustantaja(5); kustantajatVar.lisaa(rupu);
      *  
-     *  List<Kirjailija> loytyneet;
-     *  loytyneet = kujstantajatVar.annaKustantajat(3);
-     *  loytyneet.size() === 0;
-     *  loytyneet = kustantajatVar.annaKustantajat(1);
-     *  loytyneet.size() === 2;
-     *  loytyneet.get(0) == 12 === true;
-     *  loytyneet.get(1) == 21 === true;
-     *  loytyneet = kustantajatVar.annaKustantajat(5);
-     *  loytyneet.size() === 1;
-     *  loytyneet.get(0) == p65 === true;
+     *  Kustantaja etsitty = new Kustantaja();
+     *  
+     *  kustantajatVar.annaKustantaja(0);
+     *  etsitty == pete === true;
+     *  kustantajatVar.annaKustantaja(1);
+     *  etsitty == vesa === true;
+     *  kustantajatVar.annaKustantaja(2);
+     *  etsitty == tupu === true;
+     *  kustantajatVar.annaKustantaja(3);
+     *  etsitty == hupu === true;
+     *  kustantajatVar.annaKustantaja(4);
+     *  etsitty == lupu === true;
+     *  kustantajatVar.annaKustantaja(5);
+     *  etsitty == rupu === true;
      * </pre>
      */
-    public List<Kustantaja> annaKustantajat(int id) {
-        List<Kustantaja> loydetyt = new ArrayList<Kustantaja>();
+    public Kustantaja annaKustantaja(int id) {
         for (Kustantaja kus : alkiot)
             if (kus.getId() == id)
-                loydetyt.add(kus);
-        return loydetyt;
+                return kus;
+        return new Kustantaja();
     }
 
 
@@ -151,7 +154,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
      * @param args ei käytössä
      */
     public static void main(String[] args) {
-        Kustantajat kustantajat1 = new Kustantajat();
+        Kustantajat kustantajat = new Kustantajat();
         Kustantaja vesa = new Kustantaja();
         vesa.tayta_tmp(2);
         Kustantaja tupu = new Kustantaja();
@@ -161,17 +164,15 @@ public class Kustantajat implements Iterable<Kustantaja> {
         Kustantaja lupu = new Kustantaja();
         lupu.tayta_tmp(2);
 
-        kustantajat1.lisaa(vesa);
-        kustantajat1.lisaa(tupu);
-        kustantajat1.lisaa(hupu);
-        kustantajat1.lisaa(tupu);
-        kustantajat1.lisaa(lupu);
+        kustantajat.lisaa(vesa);
+        kustantajat.lisaa(tupu);
+        kustantajat.lisaa(hupu);
+        kustantajat.lisaa(tupu);
+        kustantajat.lisaa(lupu);
 
         System.out.println("+ Kustantajat testi:");
 
-        List<Kustantaja> kustantajat2 = kustantajat1.annaKustantajat(2);
-
-        for (Kustantaja kus : kustantajat2) {
+        for (Kustantaja kus : kustantajat) {
             System.out.println(kus.getId() + " ");
             kus.tulosta(System.out);
         }

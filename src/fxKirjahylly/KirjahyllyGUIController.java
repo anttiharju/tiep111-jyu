@@ -75,11 +75,7 @@ public class KirjahyllyGUIController implements Initializable {
     @FXML
     void handlePoista() {
         // Dialogs.showMessageDialog("Vielä ei osata poistaa kirjoja");
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Poista");
-        alert.setHeaderText(null);
-        alert.setContentText("Poista kirja Adeno?");
-        alert.showAndWait();
+        poista();
     }
 
 
@@ -203,5 +199,21 @@ public class KirjahyllyGUIController implements Initializable {
         }
         chooserKirjat.setSelectedIndex(index); // tästä tulee muutosviesti joka
                                                // näyttää kirjan
+    }
+
+
+    /**
+     * Poistaa valitun kirjan
+     * TODO: oikeasti poista
+     */
+    protected void poista() {
+        kirjaKohdalla = chooserKirjat.getSelectedObject();
+        if (kirjaKohdalla == null)
+            return;
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Poista");
+        alert.setHeaderText(null);
+        alert.setContentText("Poista kirja " + kirjaKohdalla.getNimi() + "?");
+        alert.showAndWait();
     }
 }
