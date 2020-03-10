@@ -1,5 +1,7 @@
 package kirjahylly;
 
+import java.util.Iterator;
+
 /**
  * @author anvemaha
  * @version 20.2.2020 testit
@@ -205,5 +207,23 @@ public class Kirjahylly {
         } catch (SailoException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+
+    /**
+     * @param nimi nimi jonka perusteella etsitään id:tä
+     * @return kirjailijan id:n nimen perusteella
+     */
+    public int annaKirjailijaId(String nimi) {
+        Iterator<Kirjailija> iterator = kirjailijat.iterator();
+
+        for (int i = 0; i < kirjailijat.getLkm(); i++) {
+            Kirjailija nyk = iterator.next();
+            if (nyk.getNimi().equals(nimi)) {
+                return nyk.getId();
+            }
+        }
+
+        return -1; // ei löydetty
     }
 }

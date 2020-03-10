@@ -13,7 +13,7 @@ import static kanta.apu.*;
  */
 public class Kirjailija {
     private int id;
-    private String kirjailija;
+    private String nimi;
 
     private static int seuraavaId = 1;
 
@@ -22,6 +22,15 @@ public class Kirjailija {
      */
     public Kirjailija() {
         // ei tarvita mitään :-)
+    }
+
+
+    /**
+     * Alustetaan kirjailija.
+     * @param nimi haluttu kirjailijan nimi
+     */
+    public Kirjailija(String nimi) {
+        this.nimi = nimi;
     }
 
 
@@ -43,7 +52,15 @@ public class Kirjailija {
      */
     public void tayta_tmp(int newId) {
         this.id = newId;
-        this.kirjailija = "Dimitrios " + rand(1000, 9999);
+        this.nimi = "Dimitrios " + rand(1000, 9999);
+    }
+
+
+    /**
+     * @return Palauttaa kirjailijan nimen
+     */
+    public String getNimi() {
+        return nimi;
     }
 
 
@@ -52,7 +69,7 @@ public class Kirjailija {
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(id + " " + kirjailija);
+        out.println(id + " " + nimi);
     }
 
 

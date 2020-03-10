@@ -13,7 +13,7 @@ import static kanta.apu.*;
  */
 public class Kustantaja {
     private int id;
-    private String kustantaja;
+    private String nimi;
 
     private static int seuraavaId = 1;
 
@@ -22,6 +22,15 @@ public class Kustantaja {
      */
     public Kustantaja() {
         // ei tarvita mitään :-)
+    }
+
+
+    /**
+     * Alustetaan kustantaja.
+     * @param nimi haluttu kustantajan nimi
+     */
+    public Kustantaja(String nimi) {
+        this.nimi = nimi;
     }
 
 
@@ -36,6 +45,14 @@ public class Kustantaja {
 
 
     /**
+     * @return Palauttaa kustantajan nimen
+     */
+    public String getNimi() {
+        return nimi;
+    }
+
+
+    /**
      * Apumetodi, jolla saadaan täytetyä testiarvot kustantajalle
      * kustantajan nimen perään arvotaan numero, ettei kahdella kustantajalla
      * olisi samaa nimeä.
@@ -43,7 +60,7 @@ public class Kustantaja {
      */
     public void tayta_tmp(int newId) {
         this.id = newId;
-        this.kustantaja = "Generic Publisher " + rand(1000, 9999);
+        this.nimi = "Generic Publisher " + rand(1000, 9999);
     }
 
 
@@ -52,7 +69,7 @@ public class Kustantaja {
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(id + " " + kustantaja);
+        out.println(id + " " + nimi);
     }
 
 

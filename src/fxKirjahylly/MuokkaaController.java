@@ -1,5 +1,7 @@
 package fxKirjahylly;
 
+import java.util.Iterator;
+
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
@@ -11,7 +13,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
+import kirjahylly.Kirjailija;
 import kirjahylly.Kirjailijat;
+import kirjahylly.Kustantaja;
+import kirjahylly.Kustantajat;
 
 /**
  * @author antti
@@ -49,6 +54,8 @@ public class MuokkaaController implements ModalControllerInterface<String> {
 
     @Override
     public String getResult() {
+        kirja.setKirjailijaId(
+                hylly.annaKirjailijaId(mKirjailija.getSelectedText()));
         return "";
     }
 
@@ -64,12 +71,18 @@ public class MuokkaaController implements ModalControllerInterface<String> {
         alusta();
     }
 
+    // -------------------------------
+
+    private Kirjahylly hylly;
+    private Kirja kirja;
 
     /**
      * Alustetaan dialogin tiedot
      */
     public void alusta() {
-        Kirja kirja = KirjahyllyGUIController.kirjaKohdalla;
+        hylly = KirjahyllyGUIController.hylly;
+        kirja = KirjahyllyGUIController.kirjaKohdalla;
+
         mNimi.setText(kirja.getNimi());
         mKuvaus.setText(kirja.getKuvaus());
         mLuettu.setText(kirja.getLuettu());
@@ -77,13 +90,40 @@ public class MuokkaaController implements ModalControllerInterface<String> {
         mLisa.setText(kirja.getLisatietoja());
         error.setText("");
 
-        Kirjahylly hylly = KirjahyllyGUIController.hylly;
-
-        Kirjailijat kir = hylly.getKirjailijat();
-        Kustantajat kus = hylly.getKustantajat();
-
-        mKirjailija.setRivit("");
+        paivitaKirjailijatComboBox();
+        paivitaKustantajatComboBox();
         mKustantaja.setRivit("");
+    }
+
+
+    public void paivitaKirjailijatComboBox() {
+        Kirjailijat kir = hylly.getKirjailijat();
+        StringBuilder sb = new StringBuilder("");
+
+        Iterator<Kirjailija> iterator = kir.iterator();
+
+        sb.append(hylly.annaKirjailija(kirja).getNimi()).append("\n");
+        for (int i = 0; i < kir.getLkm(); i++) {
+            Kirjailija tmp = iterator.next();
+            if (tmp.getNimi() != hylly.annaKirjailija(kirja).getNimi())
+                sb.append(tmp.getNimi()).append("\n");
+        }
+
+        mKirjailija.setRivit(sb.toString());
+    }
+
+
+    public void paivitaKustantajatComboBox() {
+        Kustantajat kus = hylly.getKustantajat();
+        StringBuilder sb = new StringBuilder("");
+
+        Iterator<Kustantaja> iterator = kus.iterator();
+
+        for (int i = 0; i < kus.getLkm(); i++) {
+            sb.append(iterator.next().getNimi()).append("\n");
+        }
+
+        mKustantaja.setRivit(sb.toString());
     }
 
 
@@ -91,7 +131,14 @@ public class MuokkaaController implements ModalControllerInterface<String> {
      * Käsittelee kirjailijan lisäyksen
      */
     public void handleLisaaKirjailija() {
-        Dialogs.showMessageDialog("Vielä ei osata kirjailla");
+        String kirjailijanNimi = Dialogs
+                .showInputDialog("Anna kirjailijan nimi", "");
+        if (kirjailijanNimi == null)
+            return;
+        Kirjailija tmp = new Kirjailija(kirjailijanNimi);
+        tmp.rekisteroi();
+        hylly.lisaa(tmp);
+        paivitaKirjailijatComboBox();
     }
 
 
@@ -99,7 +146,12 @@ public class MuokkaaController implements ModalControllerInterface<String> {
      * Käsittelee kirjailijan lisäyksen
      */
     public void handleLisaaKustantaja() {
-        Dialogs.showMessageDialog("Vielä ei osata kustantaa");
+        String kustantajanNimi = Dialogs
+                .showInputDialog("Anna kirjailijan nimi", "");
+        if (kustantajanNimi == null)
+            return;
+        hylly.lisaa(new Kustantaja(kustantajanNimi));
+        paivitaKustantajatComboBox();
     }
 
 
