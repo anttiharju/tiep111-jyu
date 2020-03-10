@@ -172,9 +172,27 @@ public class Kirja {
 
 
     /**
+     * Asetaa kirjan kirjailijan (id:n)
+     * @param id uusi kirjailijan id
+     */
+    public void setKirjailijaId(int id) {
+        this.kirjailija = id;
+    }
+
+
+    /**
      * @return kirjan kustantajan id:n
      */
     public int getKustantajaId() {
         return kustantaja;
+    }
+
+
+    /**
+     * Asetaa kirjan kustantaja (id:n)
+     * @param id uusi kustantajan id
+     */
+    public void setKustantajaId(int id) {
+        this.kustantaja = id;
     }
 }
