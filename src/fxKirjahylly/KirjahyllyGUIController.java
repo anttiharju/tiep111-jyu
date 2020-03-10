@@ -18,6 +18,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.text.Font;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
+import kirjahylly.Kirjailija;
 import kirjahylly.SailoException;
 
 /**
