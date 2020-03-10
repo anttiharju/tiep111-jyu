@@ -96,34 +96,51 @@ public class MuokkaaController implements ModalControllerInterface<String> {
     }
 
 
+    /**
+     * Päivittää comboboxchooserin niin, että kirjan kirjailija
+     * on ensimmäisenä (ts. valittuna) ja kaikki muut mahdolliset kirjailijat ovat valittavissa
+     */
     public void paivitaKirjailijatComboBox() {
-        Kirjailijat kir = hylly.getKirjailijat();
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sisalto = new StringBuilder("");
+        var k = hylly.getKirjailijat();
+        var iterator = k.iterator();
 
-        Iterator<Kirjailija> iterator = kir.iterator();
+        // Lisätään valitun kirjan kirjailija ekana jotta se olisi valittuna
+        String valitunKirjanKirjailija = hylly.annaKirjailija(kirja).getNimi();
+        sisalto.append(valitunKirjanKirjailija).append("\n");
 
-        sb.append(hylly.annaKirjailija(kirja).getNimi()).append("\n");
-        for (int i = 0; i < kir.getLkm(); i++) {
-            Kirjailija tmp = iterator.next();
-            if (tmp.getNimi() != hylly.annaKirjailija(kirja).getNimi())
-                sb.append(tmp.getNimi()).append("\n");
+        for (int i = 0; i < k.getLkm(); i++) {
+            var tmp = iterator.next();
+            // ei saa lisätä uudestaan ekana lisättyä (kallista ifftellä?)
+            if (tmp.getNimi() != valitunKirjanKirjailija)
+                sisalto.append(tmp.getNimi()).append("\n");
         }
 
-        mKirjailija.setRivit(sb.toString());
+        mKirjailija.setRivit(sisalto.toString());
     }
 
 
+    /**
+     * Päivittää comboboxchooserin niin, että kirjan kirjailija
+     * on ensimmäisenä (ts. valittuna) ja kaikki muut mahdolliset kirjailijat ovat valittavissa
+     */
     public void paivitaKustantajatComboBox() {
-        Kustantajat kus = hylly.getKustantajat();
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sisalto = new StringBuilder("");
+        var k = hylly.getKustantajat();
+        var iterator = k.iterator();
 
-        Iterator<Kustantaja> iterator = kus.iterator();
+        // Lisätään valitun kirjan kirjailija ekana jotta se olisi valittuna
+        String valitunKirjanKustantaja = hylly.annaKustantaja(kirja).getNimi();
+        sisalto.append(valitunKirjanKustantaja).append("\n");
 
-        for (int i = 0; i < kus.getLkm(); i++) {
-            sb.append(iterator.next().getNimi()).append("\n");
+        for (int i = 0; i < k.getLkm(); i++) {
+            var tmp = iterator.next();
+            // ei saa lisätä uudestaan ekana lisättyä (kallista ifftellä?)
+            if (tmp.getNimi() != valitunKirjanKustantaja)
+                sisalto.append(tmp.getNimi()).append("\n");
         }
 
-        mKustantaja.setRivit(sb.toString());
+        mKirjailija.setRivit(sisalto.toString());
     }
 
 
