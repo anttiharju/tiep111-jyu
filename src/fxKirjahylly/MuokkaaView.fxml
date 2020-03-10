@@ -71,48 +71,48 @@
 						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 					</padding>
 				</Label>
-				<TextField text="Diaspora" GridPane.columnIndex="1">
+				<TextField fx:id="mNimi" text="Diaspora" GridPane.columnIndex="1">
 					<GridPane.margin>
 						<Insets left="5.0" />
 					</GridPane.margin>
 				</TextField>
-				<TextField text="1997" GridPane.columnIndex="1" GridPane.rowIndex="3">
+				<TextField fx:id="mVuosi" text="1997" GridPane.columnIndex="1" GridPane.rowIndex="3">
 					<GridPane.margin>
 						<Insets left="5.0" />
 					</GridPane.margin>
 				</TextField>
-				<TextArea prefHeight="200.0" prefWidth="200.0" text="Ihmiskunta elää ikuisesti tietoisena ohjelmistona" GridPane.columnIndex="1" GridPane.rowIndex="4">
+				<TextArea fx:id="mKuvaus" prefHeight="200.0" prefWidth="200.0" text="Ihmiskunta elää ikuisesti tietoisena ohjelmistona" GridPane.columnIndex="1" GridPane.rowIndex="4">
 					<GridPane.margin>
 						<Insets left="5.0" />
 					</GridPane.margin>
 				</TextArea>
-				<TextField text="9.1.2020" GridPane.columnIndex="1" GridPane.rowIndex="5">
+				<TextField fx:id="mLuettu" text="9.1.2020" GridPane.columnIndex="1" GridPane.rowIndex="5">
 					<GridPane.margin>
 						<Insets left="5.0" />
 					</GridPane.margin>
 				</TextField>
-				<TextField text="4/5" GridPane.columnIndex="1" GridPane.rowIndex="6">
+				<TextField fx:id="mArvio" text="4/5" GridPane.columnIndex="1" GridPane.rowIndex="6">
 					<GridPane.margin>
 						<Insets left="5.0" />
 					</GridPane.margin>
 				</TextField>
-				<TextField text="Englanninkielinen" GridPane.columnIndex="1" GridPane.rowIndex="7">
+				<TextField fx:id="mLisa" text="Englanninkielinen" GridPane.columnIndex="1" GridPane.rowIndex="7">
 					<GridPane.margin>
 						<Insets left="5.0" />
 					</GridPane.margin>
 				</TextField>
 				<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
 					<children>
-						<ComboBoxChooser rivit="Ernest Cline&#10;Dmitri Gluhovski&#10;Randall Munroe&#10;Greg Egan">
+						<ComboBoxChooser fx:id="mKirjailija" rivit="Ernest Cline&#10;Dmitri Gluhovski&#10;Randall Munroe&#10;Greg Egan">
 							<HBox.margin>
 								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
 							</HBox.margin>
 						</ComboBoxChooser>
-						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleLisaaKirjailija" text="Lisää...">
+            						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleLisaaKirjailija" text="Lisää...">
 							<HBox.margin>
 								<Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
 							</HBox.margin>
-						</Button>
+            						</Button>
 						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Poista">
 							<HBox.margin>
 								<Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
@@ -122,7 +122,7 @@
 				</HBox>
 				<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
 					<children>
-						<ComboBoxChooser rivit="Random House&#10;Victor Gollancz&#10;John Murray&#10;AST&#10;Orion Publishing Group">
+						<ComboBoxChooser fx:id="mKustantaja" rivit="Random House&#10;Victor Gollancz&#10;John Murray&#10;AST&#10;Orion Publishing Group">
 							<HBox.margin>
 								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
 							</HBox.margin>
@@ -158,7 +158,7 @@
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
 				</Button>
-				<Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Anna julkaisuvuosi numerona!">
+				<Text fx:id="error" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Anna julkaisuvuosi numerona!">
 					<HBox.margin>
 						<Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
 					</HBox.margin>

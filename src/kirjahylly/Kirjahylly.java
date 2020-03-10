@@ -1,7 +1,5 @@
 package kirjahylly;
 
-import java.util.List;
-
 /**
  * @author anvemaha
  * @version 20.2.2020 testit
@@ -55,6 +53,24 @@ public class Kirjahylly {
      */
     public Kustantaja annaKustantaja(Kirja kirja) {
         return kustantajat.annaKustantaja(kirja.getKustantajaId());
+    }
+
+
+    /**
+     * ComboBoxChooseria varten palauttaa kirjailijat muuttujan
+     * @return kaikki kirjailijat
+     */
+    public Kirjailijat getKirjailijat() {
+        return kirjailijat;
+    }
+
+
+    /**
+     * ComboBoxChooseria varten palauttaa kirjailijat muuttujan
+     * @return kaikki kustantajat
+     */
+    public Kustantajat getKustantajat() {
+        return kustantajat;
     }
 
 

@@ -40,9 +40,7 @@ public class KirjahyllyGUIController implements Initializable {
 
     @FXML
     void handleMuokkaa() {
-        ModalController.showModal(
-                KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
-                "Muokkaa kirjaa", null, "");
+        muokkaa();
     }
 
 
@@ -118,17 +116,18 @@ public class KirjahyllyGUIController implements Initializable {
 
     // ----------------------------------------------------
 
-    private Kirjahylly hylly;
-    private Kirja kirjaKohdalla;
+    // onko static jutut ok? pakkohan nuo on säilöä että pääsee kaikista
+    // controllereista
+    static Kirjahylly hylly;
+    static Kirja kirjaKohdalla;
     private TextArea areaKirja = new TextArea();
 
     /**
-     * @param hylly Kirjahylly jota käytetään
+     * @param ihylly Kirjahylly jota käytetään
      */
-    public void setHylly(Kirjahylly hylly) {
-        this.hylly = hylly;
+    public void setHylly(Kirjahylly ihylly) {
+        hylly = ihylly;
         naytaKirja();
-
     }
 
 
@@ -199,6 +198,21 @@ public class KirjahyllyGUIController implements Initializable {
         }
         chooserKirjat.setSelectedIndex(index); // tästä tulee muutosviesti joka
                                                // näyttää kirjan
+    }
+
+
+    /**
+     * Käynnistää muokkaa modaalisen dialogin
+     */
+    protected void muokkaa() {
+        kirjaKohdalla = chooserKirjat.getSelectedObject();
+        if (kirjaKohdalla == null) {
+            Dialogs.showMessageDialog("Valitse ensin kirja!");
+            return;
+        }
+        ModalController.showModal(
+                KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
+                "Muokkaa kirjaa", null, "");
     }
 
 
