@@ -89,6 +89,46 @@ public class Kirja {
 
 
     /**
+     * @return kirjan julkaisuvuoden
+     */
+    public int getVuosi() {
+        return vuosi;
+    }
+
+
+    /**
+     * @return kirjan kuvauksen
+     */
+    public String getKuvaus() {
+        return kuvaus;
+    }
+
+
+    /**
+     * @return kirjan lukemispvm
+     */
+    public String getLuettu() {
+        return luettu;
+    }
+
+
+    /**
+     * @return kirjan arvion (jotakin/5)
+     */
+    public int getArvio() {
+        return arvio;
+    }
+
+
+    /**
+     * @return kirjan lisätiedot
+     */
+    public String getLisatietoja() {
+        return lisatietoja;
+    }
+
+
+    /**
      * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
      * TODO: poista 
      */
