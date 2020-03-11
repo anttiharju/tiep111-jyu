@@ -1,7 +1,5 @@
 package fxKirjahylly;
 
-import java.util.Iterator;
-
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
@@ -14,9 +12,7 @@ import javafx.stage.Stage;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
 import kirjahylly.Kirjailija;
-import kirjahylly.Kirjailijat;
 import kirjahylly.Kustantaja;
-import kirjahylly.Kustantajat;
 
 /**
  * @author antti
@@ -92,7 +88,6 @@ public class MuokkaaController implements ModalControllerInterface<String> {
 
         paivitaKirjailijatComboBox();
         paivitaKustantajatComboBox();
-        mKustantaja.setRivit("");
     }
 
 
@@ -106,17 +101,18 @@ public class MuokkaaController implements ModalControllerInterface<String> {
         var iterator = k.iterator();
 
         // Lisätään valitun kirjan kirjailija ekana jotta se olisi valittuna
-        String valitunKirjanKirjailija = hylly.annaKirjailija(kirja).getNimi();
-        sisalto.append(valitunKirjanKirjailija).append("\n");
+        String kirjailija = hylly.annaKirjailija(kirja).getNimi();
+        sisalto.append(kirjailija).append("\n");
 
         for (int i = 0; i < k.getLkm(); i++) {
             var tmp = iterator.next();
-            // ei saa lisätä uudestaan ekana lisättyä (kallista ifftellä?)
-            if (tmp.getNimi() != valitunKirjanKirjailija)
+            // ei saa lisätä uudestaan ekana lisättyä (kallista iffitellä?)
+            if (tmp.getNimi() != kirjailija)
                 sisalto.append(tmp.getNimi()).append("\n");
         }
-
         mKirjailija.setRivit(sisalto.toString());
+        if (mKirjailija.getSelectedText().equals("null"))
+            mKirjailija.setRivit("Ei kirjailijoita");
     }
 
 
@@ -130,17 +126,19 @@ public class MuokkaaController implements ModalControllerInterface<String> {
         var iterator = k.iterator();
 
         // Lisätään valitun kirjan kirjailija ekana jotta se olisi valittuna
-        String valitunKirjanKustantaja = hylly.annaKustantaja(kirja).getNimi();
-        sisalto.append(valitunKirjanKustantaja).append("\n");
+        String kustantaja = hylly.annaKustantaja(kirja).getNimi();
+        sisalto.append(kustantaja).append("\n");
 
         for (int i = 0; i < k.getLkm(); i++) {
             var tmp = iterator.next();
-            // ei saa lisätä uudestaan ekana lisättyä (kallista ifftellä?)
-            if (tmp.getNimi() != valitunKirjanKustantaja)
+            // ei saa lisätä uudestaan ekana lisättyä (kallista iffitellä?)
+            if (tmp.getNimi() != kustantaja)
                 sisalto.append(tmp.getNimi()).append("\n");
         }
 
-        mKirjailija.setRivit(sisalto.toString());
+        mKustantaja.setRivit(sisalto.toString());
+        if (mKustantaja.getSelectedText().equals("null"))
+            mKustantaja.setRivit("Ei kustantajia");
     }
 
 
@@ -148,11 +146,10 @@ public class MuokkaaController implements ModalControllerInterface<String> {
      * Käsittelee kirjailijan lisäyksen
      */
     public void handleLisaaKirjailija() {
-        String kirjailijanNimi = Dialogs
-                .showInputDialog("Anna kirjailijan nimi", "");
-        if (kirjailijanNimi == null)
+        String nimi = Dialogs.showInputDialog("Anna kirjailijan nimi", "");
+        if (nimi == null)
             return;
-        Kirjailija tmp = new Kirjailija(kirjailijanNimi);
+        Kirjailija tmp = new Kirjailija(nimi);
         tmp.rekisteroi();
         hylly.lisaa(tmp);
         paivitaKirjailijatComboBox();
@@ -163,11 +160,12 @@ public class MuokkaaController implements ModalControllerInterface<String> {
      * Käsittelee kirjailijan lisäyksen
      */
     public void handleLisaaKustantaja() {
-        String kustantajanNimi = Dialogs
-                .showInputDialog("Anna kirjailijan nimi", "");
-        if (kustantajanNimi == null)
+        String nimi = Dialogs.showInputDialog("Anna kustantajan nimi", "");
+        if (nimi == null)
             return;
-        hylly.lisaa(new Kustantaja(kustantajanNimi));
+        Kustantaja tmp = new Kustantaja(nimi);
+        tmp.rekisteroi();
+        hylly.lisaa(tmp);
         paivitaKustantajatComboBox();
     }
 

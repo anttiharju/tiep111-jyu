@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
 import kirjahylly.Kirjailija;
+import kirjahylly.Kustantaja;
 import kirjahylly.SailoException;
 
 /**
