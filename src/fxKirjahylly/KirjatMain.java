@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 /**
  * @author anvemaha
  * @version 26.1.2020
- *
  */
 public class KirjatMain extends Application {
     @Override
