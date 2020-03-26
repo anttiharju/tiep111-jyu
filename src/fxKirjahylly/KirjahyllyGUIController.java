@@ -118,10 +118,8 @@ public class KirjahyllyGUIController implements Initializable {
 
     // ----------------------------------------------------
 
-    // onko static jutut ok? pakkohan nuo on säilöä että pääsee kaikista
-    // controllereista
-    static Kirjahylly hylly;
-    static Kirja kirjaKohdalla;
+    private Kirjahylly hylly;
+    private Kirja kirjaKohdalla;
     private TextArea areaKirja = new TextArea();
 
     /**
