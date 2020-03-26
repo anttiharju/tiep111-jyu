@@ -59,26 +59,6 @@ public class Kirjahylly {
 
 
     /**
-     * ComboBoxChooseria varten palauttaa kirjailijat muuttujan
-     * @return kaikki kirjailijat
-     * TODO: PALAUTA KLOONI
-     */
-    public Kirjailijat getKirjailijat() {
-        return kirjailijat;
-    }
-
-
-    /**
-     * ComboBoxChooseria varten palauttaa kirjailijat muuttujan
-     * @return kaikki kustantajat
-     * TODO: PALAUTA KLOONI
-     */
-    public Kustantajat getKustantajat() {
-        return kustantajat;
-    }
-
-
-    /**
      * Poistaa hyllystä ne kirjat joilla nro
      * @param nro viitenumero, jonka mukaan poistetaan
      * @return montako kirjaa poistettiin

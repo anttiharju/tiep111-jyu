@@ -89,46 +89,6 @@ public class Kirja {
 
 
     /**
-     * @return kirjan julkaisuvuoden
-     */
-    public int getVuosi() {
-        return vuosi;
-    }
-
-
-    /**
-     * @return kirjan kuvauksen
-     */
-    public String getKuvaus() {
-        return kuvaus;
-    }
-
-
-    /**
-     * @return kirjan lukemispvm
-     */
-    public String getLuettu() {
-        return luettu;
-    }
-
-
-    /**
-     * @return kirjan arvion (jotakin/5)
-     */
-    public int getArvio() {
-        return arvio;
-    }
-
-
-    /**
-     * @return kirjan lisätiedot
-     */
-    public String getLisatietoja() {
-        return lisatietoja;
-    }
-
-
-    /**
      * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
      * TODO: poista 
      */
@@ -172,27 +132,10 @@ public class Kirja {
 
 
     /**
-     * Asetaa kirjan kirjailijan (id:n)
-     * @param id uusi kirjailijan id
-     */
-    public void setKirjailijaId(int id) {
-        this.kirjailija = id;
-    }
-
-
-    /**
      * @return kirjan kustantajan id:n
      */
     public int getKustantajaId() {
         return kustantaja;
     }
 
-
-    /**
-     * Asetaa kirjan kustantaja (id:n)
-     * @param id uusi kustantajan id
-     */
-    public void setKustantajaId(int id) {
-        this.kustantaja = id;
-    }
 }
