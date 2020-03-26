@@ -118,7 +118,6 @@ public class KirjahyllyGUIController implements Initializable {
 
     // ----------------------------------------------------
 
-    // testi
     private Kirjahylly hylly;
     private Kirja kirjaKohdalla;
     private TextArea areaKirja = new TextArea();
