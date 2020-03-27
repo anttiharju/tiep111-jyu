@@ -42,7 +42,9 @@ public class KirjahyllyGUIController implements Initializable {
 
     @FXML
     void handleMuokkaa() {
-        muokkaa();
+        ModalController.showModal(
+                KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
+                "Tulosta", null, "");
     }
 
 
@@ -198,21 +200,6 @@ public class KirjahyllyGUIController implements Initializable {
         }
         chooserKirjat.setSelectedIndex(index); // tästä tulee muutosviesti joka
                                                // näyttää kirjan
-    }
-
-
-    /**
-     * Käynnistää muokkaa modaalisen dialogin
-     */
-    protected void muokkaa() {
-        kirjaKohdalla = chooserKirjat.getSelectedObject();
-        if (kirjaKohdalla == null) {
-            Dialogs.showMessageDialog("Valitse ensin kirja!");
-            return;
-        }
-        ModalController.showModal(
-                KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
-                "Muokkaa kirjaa", null, "");
     }
 
 
