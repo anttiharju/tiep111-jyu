@@ -52,7 +52,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
      * TODO: kesken
      * @throws SailoException jos talletus epäonnistuu
      */
-    public void talleta() throws SailoException {
+    public void tallenna() throws SailoException {
         throw new SailoException(
                 "Ei osta vielä tallettaa tiedostoa " + tiedostonNimi);
     }

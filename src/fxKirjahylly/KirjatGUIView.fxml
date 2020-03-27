@@ -32,8 +32,6 @@
 						<MenuItem mnemonicParsing="false" onAction="#handleLisää" text="Lisää uusi kirja" />
 						<MenuItem mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa kirjaa" />
 						<MenuItem mnemonicParsing="false" onAction="#handlePoista" text="Poista kirja..." />
-						<MenuItem mnemonicParsing="false" onAction="#handleKirjailija" text="Muokkaa kirjailijoita" />
-						<MenuItem mnemonicParsing="false" onAction="#handleKustantaja" text="Muokkaa kustantajia" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Apua">
@@ -76,10 +74,10 @@
 								</Label>
 							</left>
 							<bottom>
-								<TextField BorderPane.alignment="CENTER" />
+								<TextField fx:id="hakuehto" BorderPane.alignment="CENTER" />
 							</bottom>
 							<right>
-								<ComboBoxChooser prefHeight="25.0" prefWidth="110.0" rivit="Aakkoset&#10;Arvosana&#10;Ääkköset" BorderPane.alignment="CENTER" />
+								<ComboBoxChooser fx:id="cbKentat" onAction="#handleHakuehto" prefHeight="25.0" prefWidth="110.0" rivit="Aakkoset&#10;Arvosana&#10;Ääkköset" BorderPane.alignment="CENTER" />
 							</right>
 						</BorderPane>
 					</top>
@@ -138,6 +136,11 @@
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
 				</Button>
+            <Label fx:id="labelVirhe">
+               <HBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </HBox.margin>
+            </Label>
 			</children>
 		</HBox>
 	</bottom>
