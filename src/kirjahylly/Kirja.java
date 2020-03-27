@@ -1,18 +1,20 @@
 package kirjahylly;
 
+import java.io.OutputStream;
 import java.io.PrintStream;
+
+import fi.jyu.mit.ohj2.Mjonot;
+
 import static kanta.apu.*;
 
 /**
  * Kirjahyllyn kirja joka osaa huolehtia id:stään.
  * @author anvemaha
- * @version 20.2.2020
- *
+ * @version 27.3.2020
  */
 public class Kirja {
 
     private int id;
-
     private String nimi;
     private int kirjailija;
     private int kustantaja;
@@ -23,6 +25,36 @@ public class Kirja {
     private String lisatietoja;
 
     private static int seuraavaId = 1;
+
+    /**
+     * @return kirjan nimen
+     * @example
+     * <pre name="test">
+     *  Kirja metro = new Kirja();
+     *  metro.tayta_metro();
+     *  metro.getNimi() =R= "Metro .*";
+     * </pre>
+     */
+    public String getNimi() {
+        return nimi;
+    }
+
+
+    /**
+     * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
+     * TODO: poista 
+     */
+    public void tayta_metro() {
+        nimi = "Metro " + rand(1, 9999);
+        kirjailija = 1;
+        kustantaja = 1;
+        vuosi = 2005;
+        kuvaus = "Artjom seikkailee metrossa";
+        luettu = "31.7.2017";
+        arvio = 5;
+        lisatietoja = "Peli oli huono";
+    }
+
 
     /**
      * Tulostetaan kirjan tiedot
@@ -41,6 +73,15 @@ public class Kirja {
                 + "\n" + kuvaus + "\n" + luettu + "\n" + arvio + "\n"
                 + lisatietoja);
         /**/
+    }
+
+
+    /**
+     * Tulostetaan kirjan tiedot
+     * @param os tietovirta johon tulostetaan
+     */
+    public void tulosta(OutputStream os) {
+        tulosta(new PrintStream(os));
     }
 
 
@@ -75,32 +116,84 @@ public class Kirja {
 
 
     /**
-     * @return kirjan nimen
-     * @example
-     * <pre name="test">
-     *  Kirja metro = new Kirja();
-     *  metro.tayta_metro();
-     *  metro.getNimi() =R= "Metro .*";
-     * </pre>
+     * Asettaa id:n ja samalla varmistaa että
+     * seuraava id on aina suurempi kuin tähän mennessä suurin.
+     * @param n asetettava id
      */
-    public String getNimi() {
-        return nimi;
+    private void setId(int n) {
+        id = n;
+        if (id >= seuraavaId)
+            seuraavaId = id + 1;
     }
 
 
     /**
-     * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
-     * TODO: poista 
+     * Palauttaa kirjan tiedot merkkijonona jonka voi tallentaa tiedostoon.
+     * @return kirja tolppaeroteltuna merkkijonona 
+     * @example
+     * <pre name="test">
+     *   Kirja k = new Kirja();
+     *   k.parse("   3  |  Ankka Aku   | 030201-111C");
+     *   k.toString().startsWith("3|Ankka Aku|030201-111C|") === true; // on enemmäkin kuin 3 kenttää, siksi loppu |
+     * </pre>  
      */
-    public void tayta_metro() {
-        nimi = "Metro " + rand(1, 9999);
-        kirjailija = 1;
-        kustantaja = 1;
-        vuosi = 2005;
-        kuvaus = "Artjom seikkailee metrossa";
-        luettu = "31.7.2017";
-        arvio = 5;
-        lisatietoja = "Peli oli huono";
+    @Override
+    public String toString() {
+        return "" + getId() + "|" + nimi + "|" + kirjailija + "|" + kustantaja
+                + "|" + vuosi + "|" + kuvaus + "|" + luettu + "|" + arvio + "|"
+                + lisatietoja;
+    }
+
+
+    /**
+     * Selvitää kirjan tiedot | erotellusta merkkijonosta
+     * Pitää huolen että seuraavaNro on suurempi kuin tuleva tunnusNro.
+     * @param rivi josta kirjan tiedot otetaan
+     * 
+     * @example
+     * <pre name="test">
+     *   Kirja k = new Kirja();
+     *   k.parse("   3  |  Ankka Aku   | 030201-111C");
+     *   k.getTunnusNro() === 3;
+     *    // loppuu | koska kenttiä on enemmänkin
+     *   k.toString().startsWith("3|Ankka Aku|030201-111C|") === true;
+     *
+     *   k.rekisteroi();
+     *   int n = k.getTunnusNro();
+     *   // otetaan pelkkä id
+     *   k.parse(""+(n+20));
+     *   // tarkistetaan, että seuraavalla on isompi
+     *   k.rekisteroi();
+     *   k.getTunnusNro() === n+20+1;
+     *     
+     * </pre>
+     */
+    public void parse(String rivi) {
+        StringBuffer sb = new StringBuffer(rivi);
+        setId(Mjonot.erota(sb, '|', getId()));
+        nimi = Mjonot.erota(sb, '|', nimi);
+        kirjailija = Mjonot.erota(sb, '|', kirjailija);
+        kustantaja = Mjonot.erota(sb, '|', kustantaja);
+        vuosi = Mjonot.erota(sb, '|', vuosi);
+        kuvaus = Mjonot.erota(sb, '|', kuvaus);
+        luettu = Mjonot.erota(sb, '|', luettu);
+        arvio = Mjonot.erota(sb, '|', arvio);
+        lisatietoja = Mjonot.erota(sb, '|', lisatietoja);
+    }
+
+
+    @Override
+    public boolean equals(Object kirja) {
+        if (kirja == null)
+            return false;
+        return this.toString().equals(kirja.toString());
+    }
+
+
+    @Override
+    public int hashCode() {
+        // alkeellinen
+        return id;
     }
 
 
@@ -137,5 +230,4 @@ public class Kirja {
     public int getKustantajaId() {
         return kustantaja;
     }
-
 }

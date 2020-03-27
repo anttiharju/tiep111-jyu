@@ -1,5 +1,9 @@
 package kirjahylly;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -9,12 +13,16 @@ import java.util.List;
  * Kirjahyllyn kustantajat, joka osaa mm. lisätä uuden kustantajan
  * 
  * @author anvemaha
- * @version 9.3.2020
- * TODO: kustantaja ja kirjailija hommat voi yhdistää TYPE hommilla?
+ * @version 9.3.2020 pohjaa
+ * @version 27.3.2020 mallin mukaiseksi koska sooloilu kostautui
+ * TODO: Luennolla mainittiin että kirjailijat ja kustantajat voi yhdistää. Ihan lopuksi jos jää aikaa.
  */
 public class Kustantajat implements Iterable<Kustantaja> {
 
-    private String tiedostonNimi = "";
+    private boolean muutettu = false;
+    private String tiedostonPerusNimi = "";
+
+    // Taulukko Kustantajista
     private final Collection<Kustantaja> alkiot = new ArrayList<Kustantaja>();
 
     /**
@@ -31,19 +39,74 @@ public class Kustantajat implements Iterable<Kustantaja> {
      */
     public void lisaa(Kustantaja kustantaja) {
         alkiot.add(kustantaja);
+        muutettu = true;
     }
 
 
     /**
      * Lukee kustantajat tiedostosta
-     * TODO: kesken
-     * @param hakemisto tiedoston hakemisto
+     * @param tied tiedoston nimen alkuosa
      * @throws SailoException jos lukeminen epäonnistuu
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     *  Kustantajat kustantajat = new Kustantajat();
+     *  Kustantaja k21 = new Kustantaja(); k21.tayta(2);
+     *  Kustantaja k11 = new Kustantaja(); k11.tayta(1);
+     *  Kustantaja k22 = new Kustantaja(); k22.tayta(2); 
+     *  Kustantaja k12 = new Kustantaja(); k12.tayta(1); 
+     *  Kustantaja k23 = new Kustantaja(); k23.tayta(2); 
+     *  String tiedNimi = "testihylly";
+     *  File ftied = new File(tiedNimi+".dat");
+     *  ftied.delete();
+     *  kustantajat.lueTiedostosta(tiedNimi); #THROWS SailoException
+     *  kustantajat.lisaa(k21);
+     *  kustantajat.lisaa(k11);
+     *  kustantajat.lisaa(k22);
+     *  kustantajat.lisaa(k12);
+     *  kustantajat.lisaa(k23);
+     *  kustantajat.tallenna();
+     *  kustantajat = new Kustantajat();
+     *  kustantajat.lueTiedostosta(tiedNimi);
+     *  Iterator<Kustantaja> i = kustantajat.iterator();
+     *  i.next().toString() === k21.toString();
+     *  i.next().toString() === k11.toString();
+     *  i.next().toString() === k22.toString();
+     *  i.next().toString() === k12.toString();
+     *  i.next().toString() === k23.toString();
+     *  i.hasNext() === false;
+     *  kustantajat.lisaa(k23);
+     *  kustantajat.tallenna();
+     *  ftied.delete() === true;
+     *  File fbak = new File(tiedNimi+".backup");
+     *  fbak.delete() === true;
+     * </pre>
      */
-    public void lueTiedostosta(String hakemisto) throws SailoException {
-        tiedostonNimi = hakemisto + ".kus";
-        throw new SailoException(
-                "Ei osata vielä lukea tiedostoa " + tiedostonNimi);
+    public void lueTiedostosta(String tied) throws SailoException {
+        setTiedostonPerusNimi(tied);
+        try (BufferedReader fi = new BufferedReader(
+                new FileReader(getTiedostonNimi()))) {
+
+            String rivi;
+            while ((rivi = fi.readLine()) != null) {
+                rivi = rivi.trim();
+                if ("".equals(rivi) || rivi.charAt(0) == ';')
+                    continue;
+                Kustantaja kus = new Kustantaja();
+                kus.parse(rivi); // voisi olla virhekäsittely
+                lisaa(kus);
+            }
+            muutettu = false;
+
+        } catch (FileNotFoundException e) {
+            throw new SailoException(
+                    "Tiedosto " + getTiedostonNimi() + " ei aukea");
+        } catch (IOException e) {
+            throw new SailoException(
+                    "Ongelmia tiedoston kanssa: " + e.getMessage());
+        }
+
     }
 
 

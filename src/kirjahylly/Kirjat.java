@@ -1,14 +1,29 @@
 package kirjahylly;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * @author anvemaha
- * @version 20.2.2020
+ * @version 20.2.2020 pohjaa
+ * @version 27.3.2020 mallin mukaiseksi
  */
-public class Kirjat {
+public class Kirjat implements Iterable<Kirja> {
 
     private static final int MAX_JASENIA = 10;
+    private boolean muutettu = false;
     private int lkm = 0;
-    private String tiedostonNimi = "";
+    private String kokoNimi = "";
+    private String tiedostonPerusNimi = "kirjat";
     private Kirja alkiot[] = new Kirja[MAX_JASENIA];
 
     /**
@@ -53,6 +68,7 @@ public class Kirjat {
             throw new SailoException("Liikaa alkioita");
         alkiot[lkm] = kirja; // selitettiin luennolla
         lkm++;
+        muutettu = true;
     }
 
 
@@ -71,25 +87,103 @@ public class Kirjat {
 
     /**
      * Lukee kirjan tiedostosta.
-     * @param hakemisto tiedoston hakemisto
+     * @param tied tiedoston perusnimi
      * @throws SailoException jos lukeminen epäonnistuu
      * TODO: tee valmiiksi
      */
-    public void lueTiedostosta(String hakemisto) throws SailoException {
-        tiedostonNimi = hakemisto + "\\nimet.dat";
-        throw new SailoException(
-                "Ei osata vielä lukea tiedostoa " + tiedostonNimi);
+    public void lueTiedostosta(String tied) throws SailoException {
+        setTiedostonPerusNimi(tied);
+        try (BufferedReader fi = new BufferedReader(
+                new FileReader(getTiedostonNimi()))) {
+            kokoNimi = fi.readLine();
+            if (kokoNimi == null)
+                throw new SailoException("Kerhon nimi puuttuu");
+            String rivi = fi.readLine();
+            if (rivi == null)
+                throw new SailoException("Maksimikoko puuttuu");
+            // int maxKoko = Mjonot.erotaInt(rivi,10); // tehdään jotakin
+
+            while ((rivi = fi.readLine()) != null) {
+                rivi = rivi.trim();
+                if ("".equals(rivi) || rivi.charAt(0) == ';')
+                    continue;
+                Kirja k = new Kirja();
+                k.parse(rivi); // voisi olla virhekäsittely
+                lisaa(k);
+            }
+            muutettu = false;
+        } catch (FileNotFoundException e) {
+            throw new SailoException(
+                    "Tiedosto " + getTiedostonNimi() + " ei aukea");
+        } catch (IOException e) {
+            throw new SailoException(
+                    "Ongelmia tiedoston kanssa: " + e.getMessage());
+        }
+
     }
 
 
     /**
-     * Tallentaa kirjan tiedostoon
-     * @throws SailoException jos talletus epäonnistuu
-     * TODO: tee valmiiksi
+     * Luetaan aikaisemmin annetun nimisestä tiedostosta
+     * @throws SailoException jos tulee poikkeus
+     */
+    public void lueTiedostosta() throws SailoException {
+        lueTiedostosta(getTiedostonPerusNimi());
+    }
+
+
+    /**
+     * Tallentaa kirjat tiedostoon.  
+     * Tiedoston muoto:
+     * <pre>
+     *  antti
+     *  ;id|kirjan nimi     |kirjailija|kustantaja|vuosi|lyhyt kuvaus                      |luettu    |arvio|lisätietoja
+     *  1  |Ready Player One|1         |1         |2011 |Wade Wattsin seikkailut           |26.12.2016|4    |Elokuva pilas tän
+     *  2  |Metro 2033      |2         |2         |2005 |Artjom seikkailee metrossa        |31.7.2017 |5    |Peli oli huono
+     *  3  |What if?        |3         |3         |2014 |Absurdeja hypoteettisiä kysymyksiä|1.1.2020  |5    |xkcd sarjakuvien tekijältä
+     *  4  |Metro 2035      |2         |4         |2015 |Artjom on sekaisin                |14.8.2018 |4    |2034 voi jättää lukematta
+     *  5  |Diaspora        |4         |5         |1997 |Ihmiskunta elää ohjelmistona      |5.3.2019  |3    |Englanninkielinen
+     *  6  |Permutation City|4         |5         |1994 |Simuloitu yhteiskunta             |6.9.2019  |3    |Painaa 306g
+     * </pre>
+     * @throws SailoException jos tallennus epäonnistuu
      */
     public void tallenna() throws SailoException {
-        throw new SailoException(
-                "Ei osata vielä tallettaa tiedostoa " + tiedostonNimi);
+        if (!muutettu)
+            return;
+
+        File fbak = new File(getBackupNimi());
+        File ftied = new File(getTiedostonNimi());
+        fbak.delete(); // if .. System.err.println("Ei voi tuhota");
+        ftied.renameTo(fbak); // if .. System.err.println("Ei voi nimetä");
+
+        try (PrintWriter fo = new PrintWriter(
+                new FileWriter(ftied.getCanonicalPath()))) {
+            fo.println(getKokoNimi());
+            fo.println(alkiot.length);
+            for (Kirja k : this) {
+                fo.println(k.toString());
+            }
+            // } catch ( IOException e ) { // ei heitä poikkeusta
+            // throw new SailoException("Tallettamisessa ongelmia: " +
+            // e.getMessage());
+        } catch (FileNotFoundException ex) {
+            throw new SailoException(
+                    "Tiedosto " + ftied.getName() + " ei aukea");
+        } catch (IOException ex) {
+            throw new SailoException("Tiedoston " + ftied.getName()
+                    + " kirjoittamisessa ongelmia");
+        }
+
+        muutettu = false;
+    }
+
+
+    /**
+     * Palauttaa hyllyn koko nimen
+     * @return Hyllyn koko nimi merkkijononna
+     */
+    public String getKokoNimi() {
+        return kokoNimi;
     }
 
 
@@ -99,6 +193,159 @@ public class Kirjat {
      */
     public int getLkm() {
         return lkm;
+    }
+
+
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonPerusNimi() {
+        return tiedostonPerusNimi;
+    }
+
+
+    /**
+     * Asettaa tiedoston perusnimen ilman tarkenninta
+     * @param nimi tallennustiedoston perusnimi
+     */
+    public void setTiedostonPerusNimi(String nimi) {
+        tiedostonPerusNimi = nimi;
+    }
+
+
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonNimi() {
+        return getTiedostonPerusNimi() + ".dat";
+    }
+
+
+    /**
+     * Palauttaa varmuuskopiotiedoston nimen
+     * @return varmuuskopiotiedoston nimi
+     */
+    public String getBackupNimi() {
+        return tiedostonPerusNimi + ".backup";
+    }
+
+    /**
+     * Luokka kirjojen iteroimiseksi.
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #PACKAGEIMPORT
+     * #import java.util.*;
+     * 
+     * Kirjat kirjat = new Kirjat();
+     * Kirja k1 = new Kirja(), k2 = new Kirja();
+     * k1.rekisteroi(); k2.rekisteroi();
+     *
+     * kirjat.lisaa(k1); 
+     * kirjat.lisaa(k2); 
+     * kirjat.lisaa(k1); 
+     * 
+     * StringBuffer ids = new StringBuffer(30);
+     * for (Kirja k:kirjat)   // Kokeillaan for-silmukan toimintaa
+     *   ids.append(" " + k.getId());           
+     * 
+     * String tulos = " " + k1.getId() + " " + k2.getId() + " " + k1.getId();
+     * 
+     * ids.toString() === tulos; 
+     * 
+     * ids = new StringBuffer(30);
+     * for (Iterator<Kirja>  i=kirjat.iterator(); i.hasNext(); ) { // ja iteraattorin toimintaa
+     *   Kirja k = i.next();
+     *   ids.append(" " + k.getId());           
+     * }
+     * 
+     * ids.toString() === tulos;
+     * 
+     * Iterator<Kirja>  i=kirjat.iterator();
+     * i.next() == k1  === true;
+     * i.next() == k2  === true;
+     * i.next() == k1  === true;
+     * 
+     * i.next();  #THROWS NoSuchElementException
+     *  
+     * </pre>
+     */
+    public class KirjatIterator implements Iterator<Kirja> {
+        private int kohdalla = 0;
+
+        /**
+         * Onko seuraava kirja olemassa
+         * @see java.util.Iterator#hasNext()
+         * @return true jos on vielä kirjoja
+         */
+        @Override
+        public boolean hasNext() {
+            return kohdalla < getLkm();
+        }
+
+
+        /**
+         * Annetaan seuraava kirja
+         * @return seuraava kirja
+         * @throws NoSuchElementException jos seuraava alkiota ei enää ole
+         * @see java.util.Iterator#next()
+         */
+        @Override
+        public Kirja next() throws NoSuchElementException {
+            if (!hasNext())
+                throw new NoSuchElementException("Kirjat loppu");
+            return anna(kohdalla++);
+        }
+
+
+        /**
+         * Tuhoamista ei ole toteutettu
+         * @throws UnsupportedOperationException aina
+         * @see java.util.Iterator#remove()
+         */
+        @Override
+        public void remove() throws UnsupportedOperationException {
+            throw new UnsupportedOperationException("Ei osata vielä poistaa");
+        }
+    }
+
+    /**
+     * Palautetaan iteraattori kirjoista
+     * @return kirja iteraattori
+     */
+    @Override
+    public Iterator<Kirja> iterator() {
+        return new KirjatIterator();
+    }
+
+
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien kirjojen viitteet 
+     * @param hakuehto hakuehto 
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä kirjoista 
+     * @example 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     *   Kirjat kirjat = new Kirjat(); 
+     *   Kirja k1 = new Kirja(); k1.parse("1|Ready Player One|1|1|"); 
+     *   Kirja k2 = new Kirja(); k2.parse("2|Metro 2033|2|2|"); 
+     *   Kirja k3 = new Kirja(); k3.parse("3|What if?|3|3|"); 
+     *   Kirja k4 = new Kirja(); k4.parse("4|Metro 2035|2|4|"); 
+     *   Kirja k5 = new Kirja(); k5.parse("5|Diaspora|4|5|); 
+     *   kirjat.lisaa(k1); kirjat.lisaa(k2); kirjat.lisaa(k3); kirjat.lisaa(k4); kirjat.lisaa(k5);
+     *   // TODO: toistaiseksi palauttaa kaikki kirjat
+     * </pre> 
+     */
+    @SuppressWarnings("unused")
+    public Collection<Kirja> etsi(String hakuehto, int k) {
+        Collection<Kirja> loytyneet = new ArrayList<Kirja>();
+        for (Kirja kir : this) {
+            loytyneet.add(kir);
+        }
+        return loytyneet;
     }
 
 

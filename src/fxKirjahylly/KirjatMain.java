@@ -1,6 +1,7 @@
 package fxKirjahylly;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import kirjahylly.Kirjahylly;
 import javafx.scene.Scene;
@@ -26,10 +27,22 @@ public class KirjatMain extends Application {
                     .add(getClass().getResource("kirjat.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Kirjahylly");
-            primaryStage.show();
 
+            primaryStage.setOnCloseRequest((event) -> {
+                if (!hyllyCtrl.voikoSulkea())
+                    event.consume();
+            });
             Kirjahylly hylly = new Kirjahylly();
             hyllyCtrl.setHylly(hylly);
+
+            primaryStage.show();
+
+            Application.Parameters params = getParameters();
+            if (params.getRaw().size() > 0)
+                hyllyCtrl.lueTiedosto(params.getRaw().get(0));
+            else if (!hyllyCtrl.avaa())
+                Platform.exit();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
