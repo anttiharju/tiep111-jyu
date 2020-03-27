@@ -1,62 +1,19 @@
 package kirjahylly;
 
+import java.io.File;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
  * @author anvemaha
  * @version 20.2.2020 testit
  * @version 9.3.2020 kirjailijat ja kustantajat
- *
+ * @version 27.3.2020 mallin mukaiseksi (ht5 sooloilin)
  */
 public class Kirjahylly {
-    private final Kirjat kirjat = new Kirjat();
-    private final Kirjailijat kirjailijat = new Kirjailijat();
-    private final Kustantajat kustantajat = new Kustantajat();
-
-    /**
-     * Palauttaa kirjahyllyn kirjamäärän
-     * @return kirjamäärän
-     */
-    public int getKirjat() {
-        return kirjat.getLkm();
-    }
-
-
-    /**
-     * Lisätään uusi kirjailija kirjahyllyyn
-     * @param kir lisättävä kirjailija
-     */
-    public void lisaa(Kirjailija kir) {
-        kirjailijat.lisaa(kir);
-    }
-
-
-    /**
-     * Lisätään uusi kustantaja kirjahyllyyn
-     * @param kus lisättävä kustantaja
-     */
-    public void lisaa(Kustantaja kus) {
-        kustantajat.lisaa(kus);
-    }
-
-
-    /**
-     * @param kirja kirja jonka kirjailija halutaan tietää
-     * @return kirjan kirjailijan
-     */
-    public Kirjailija annaKirjailija(Kirja kirja) {
-        return kirjailijat.annaKirjailija(kirja.getKirjailijaId());
-    }
-
-
-    /**
-     * @param kirja kirja jonka kustantaja halutaan tietää
-     * @return kirjan kustantajan
-     */
-    public Kustantaja annaKustantaja(Kirja kirja) {
-        return kustantajat.annaKustantaja(kirja.getKustantajaId());
-    }
-
+    private Kirjat kirjat = new Kirjat();
+    private Kirjailijat kirjailijat = new Kirjailijat();
+    private Kustantajat kustantajat = new Kustantajat();
 
     /**
      * Poistaa hyllystä ne kirjat joilla nro
@@ -105,13 +62,74 @@ public class Kirjahylly {
 
 
     /**
-     * Palauttaa i:n kirjan
-     * @param i monesko kirja palautetaan
-     * @return viite i:teen kirjaan
-     * @throws IndexOutOfBoundsException jos i väärin
+     * Lisätään uusi kirjailija kirjahyllyyn
+     * @param kir lisättävä kirjailija
+     * @throws SailoException jos tulee ongelmia
      */
-    public Kirja annaKirja(int i) throws IndexOutOfBoundsException {
-        return kirjat.anna(i);
+    public void lisaa(Kirjailija kir) throws SailoException {
+        kirjailijat.lisaa(kir);
+    }
+
+
+    /**
+     * Lisätään uusi kustantaja kirjahyllyyn
+     * @param kus lisättävä kustantaja
+     * @throws SailoException jos tulee ongelmia
+     */
+    public void lisaa(Kustantaja kus) throws SailoException {
+        kustantajat.lisaa(kus);
+    }
+
+
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien kirjojen viitteet 
+     * @param hakuehto hakuehto  
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä kirjoista 
+     * @throws SailoException Jos jotakin menee väärin
+     */
+    public Collection<Kirja> etsi(String hakuehto, int k)
+            throws SailoException {
+        return kirjat.etsi(hakuehto, k);
+    }
+
+    // ei metodia annaKirjailijat / annaKustantajat koska yhdellä kirjalla ei
+    // mun ohjelmassa voi olla montaa kirjailijaa / kustantajaa
+
+
+    /**
+     * @param kirja kirja jonka kirjailija halutaan tietää
+     * @return kirjan kirjailijan
+     * TODO: testaa
+     */
+    public Kirjailija annaKirjailija(Kirja kirja) {
+        return kirjailijat.annaKirjailija(kirja.getKirjailijaId());
+    }
+
+
+    /**
+     * @param kirja kirja jonka kustantaja halutaan tietää
+     * @return kirjan kustantajan
+     * TODO: testaa
+     */
+    public Kustantaja annaKustantaja(Kirja kirja) {
+        return kustantajat.annaKustantaja(kirja.getKustantajaId());
+    }
+
+
+    /**
+     * Asettaa tiedostojen perusnimet
+     * @param nimi uusi nimi
+     */
+    public void setTiedosto(String nimi) {
+        File dir = new File(nimi);
+        dir.mkdirs();
+        String hakemistonNimi = "";
+        if (!nimi.isEmpty())
+            hakemistonNimi = nimi + "/";
+        kirjat.setTiedostonPerusNimi(hakemistonNimi + "kirjat");
+        kirjailijat.setTiedostonPerusNimi(hakemistonNimi + "kirjailijat");
+        kustantajat.setTiedostonPerusNimi(hakemistonNimi + "kustantajat");
     }
 
 
@@ -119,8 +137,15 @@ public class Kirjahylly {
      * Lukee hyllyn tiedot tiedostosta
      * @param nimi jota käytetään lukemisessa
      * @throws SailoException jos lukeminen epäonnistuu
+     * TODO: testaa
      */
     public void lueTiedostosta(String nimi) throws SailoException {
+        // jos luetaan olemassa olevaan niin helpoin tyhjentää näin
+        kirjat = new Kirjat();
+        kirjailijat = new Kirjailijat();
+        kustantajat = new Kustantajat();
+
+        setTiedosto(nimi);
         kirjat.lueTiedostosta(nimi);
         kirjailijat.lueTiedostosta(nimi);
         kustantajat.lueTiedostosta(nimi);
@@ -128,14 +153,33 @@ public class Kirjahylly {
 
 
     /**
-     * Tallettaa hyllyn tiedot tiedostoon
-     * @throws SailoException jos tallettamisessa ongelmia
+     * Tallentaa hyllyn tiedot tiedostoon.  
+     * Vaikka kirjojen tallettamien epäonistuisi, niin yritetään silti tallettaa
+     * kirjailijat ja kustantajat ennen poikkeuksen heittämistä.    
+     * @throws SailoException jos tallentamisessa ongelmia
      */
     public void tallenna() throws SailoException {
-        kirjat.tallenna();
-        kustantajat.tallenna();
-        kirjailijat.tallenna();
-        // TODO: yritä tallettaa toinen vaikka toinen epäonnistuisi
+        String virhe = "";
+        try {
+            kirjat.tallenna();
+        } catch (SailoException ex) {
+            virhe = ex.getMessage();
+        }
+
+        try {
+            kirjailijat.tallenna();
+        } catch (SailoException ex) {
+            virhe += ex.getMessage();
+        }
+
+        try {
+            kustantajat.tallenna();
+        } catch (SailoException ex) {
+            virhe += ex.getMessage();
+        }
+        if (!"".equals(virhe))
+            throw new SailoException(virhe);
+
     }
 
 
@@ -176,36 +220,21 @@ public class Kirjahylly {
             hylly.lisaa(k52);
 
             System.out.println("+ Kirjahylly testi");
-            for (int i = 0; i < hylly.getKirjat(); i++) {
-                Kirja kirja = hylly.annaKirja(i);
+            Collection<Kirja> kirjat = hylly.etsi("", -1);
+            int i = 0;
+            for (Kirja k : kirjat) {
                 System.out.println("Kirja paikassa: " + i);
-                kirja.tulosta(System.out);
-                Kirjailija loytynytKir = hylly.annaKirjailija(kirja);
-                Kustantaja loytynytKus = hylly.annaKustantaja(kirja);
-                loytynytKir.tulosta(System.out);
-                loytynytKus.tulosta(System.out);
-
+                k.tulosta(System.out);
+                Kirjailija kir = hylly.annaKirjailija(k);
+                kir.tulosta(System.out);
+                Kustantaja kus = hylly.annaKustantaja(k);
+                kus.tulosta(System.out);
+                i++;
             }
+
         } catch (SailoException ex) {
             System.out.println(ex.getMessage());
         }
-    }
 
-
-    /**
-     * @param nimi nimi jonka perusteella etsitään id:tä
-     * @return kirjailijan id:n nimen perusteella
-     */
-    public int annaKirjailijaId(String nimi) {
-        Iterator<Kirjailija> iterator = kirjailijat.iterator();
-
-        for (int i = 0; i < kirjailijat.getLkm(); i++) {
-            Kirjailija nyk = iterator.next();
-            if (nyk.getNimi().equals(nimi)) {
-                return nyk.getId();
-            }
-        }
-
-        return -1; // ei löydetty
     }
 }
