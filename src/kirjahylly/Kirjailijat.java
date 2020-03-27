@@ -40,7 +40,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      * @throws SailoException jos lukeminen epäonnistuu
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
-        tiedostonNimi = hakemisto + ".kir";
+        tiedostonNimi = hakemisto + "\\kirjailijat.dat";
         throw new SailoException(
                 "Ei osata vielä lukea tiedostoa " + tiedostonNimi);
     }
