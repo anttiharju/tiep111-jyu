@@ -87,7 +87,7 @@ public class Kirjat {
      * @throws SailoException jos talletus epäonnistuu
      * TODO: tee valmiiksi
      */
-    public void talleta() throws SailoException {
+    public void tallenna() throws SailoException {
         throw new SailoException(
                 "Ei osata vielä tallettaa tiedostoa " + tiedostonNimi);
     }

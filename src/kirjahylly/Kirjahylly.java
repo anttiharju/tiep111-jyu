@@ -131,10 +131,10 @@ public class Kirjahylly {
      * Tallettaa hyllyn tiedot tiedostoon
      * @throws SailoException jos tallettamisessa ongelmia
      */
-    public void talleta() throws SailoException {
-        kirjat.talleta();
-        kustantajat.talleta();
-        kirjailijat.talleta();
+    public void tallenna() throws SailoException {
+        kirjat.tallenna();
+        kustantajat.tallenna();
+        kirjailijat.tallenna();
         // TODO: yritä tallettaa toinen vaikka toinen epäonnistuisi
     }
 
