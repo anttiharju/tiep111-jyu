@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -20,12 +21,11 @@ import java.util.NoSuchElementException;
  */
 public class Kirjat implements Iterable<Kirja> {
 
-    private static final int MAX_JASENIA = 10;
     private boolean muutettu = false;
     private int lkm = 0;
     private String kokoNimi = "";
     private String tiedostonPerusNimi = "";
-    private Kirja alkiot[] = new Kirja[MAX_JASENIA];
+    private Kirja alkiot[] = new Kirja[8];
 
     /**
      * Oletusmuodostaja
@@ -61,13 +61,13 @@ public class Kirjat implements Iterable<Kirja> {
      * kirjat.lisaa(k1); kirjat.getLkm() === 8;
      * kirjat.lisaa(k1); kirjat.getLkm() === 9;
      * kirjat.lisaa(k1); kirjat.getLkm() === 10;
-     * kirjat.lisaa(k1); #THROWS SailoException
+     * kirjat.lisaa(k1); kirjat.getLkm() === 11;
      * </pre>
      */
     public void lisaa(Kirja kirja) throws SailoException {
         if (lkm >= alkiot.length)
-            throw new SailoException("Liikaa alkioita");
-        alkiot[lkm] = kirja; // selitettiin luennolla
+            alkiot = Arrays.copyOf(alkiot, alkiot.length * 2);
+        alkiot[lkm] = kirja;
         lkm++;
         muutettu = true;
     }
@@ -106,7 +106,7 @@ public class Kirjat implements Iterable<Kirja> {
 
             while ((rivi = fi.readLine()) != null) {
                 rivi = rivi.trim();
-                if ("".equals(rivi) || rivi.charAt(0) == ';')
+                if ("".equals(rivi) || rivi.charAt(0) == '#')
                     continue;
                 Kirja k = new Kirja();
                 k.parse(rivi); // voisi olla virhekäsittely
@@ -160,7 +160,8 @@ public class Kirjat implements Iterable<Kirja> {
         try (PrintWriter fo = new PrintWriter(
                 new FileWriter(ftied.getCanonicalPath()))) {
             fo.println(getKokoNimi());
-            fo.println(alkiot.length);
+            fo.println(
+                    "#id|kirjan nimi|kirjailija|kustantaja|vuosi|lyhyt kuvaus|luettu|arvio|lisätietoja");
             for (Kirja k : this) {
                 fo.println(k.toString());
             }

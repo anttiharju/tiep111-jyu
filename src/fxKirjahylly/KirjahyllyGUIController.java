@@ -151,7 +151,8 @@ public class KirjahyllyGUIController implements Initializable {
 
 
     private void setTitle(String title) {
-        ModalController.getStage(hakuehto).setTitle(title);
+        ModalController.getStage(hakuehto)
+                .setTitle("Kirjahylly (" + title + ")");
     }
 
 

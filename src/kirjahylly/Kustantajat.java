@@ -91,7 +91,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
             String rivi;
             while ((rivi = fi.readLine()) != null) {
                 rivi = rivi.trim();
-                if ("".equals(rivi) || rivi.charAt(0) == ';')
+                if ("".equals(rivi) || rivi.charAt(0) == '#')
                     continue;
                 Kustantaja kus = new Kustantaja();
                 kus.parse(rivi); // voisi olla virhekäsittely
@@ -134,6 +134,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
 
         try (PrintWriter fo = new PrintWriter(
                 new FileWriter(ftied.getCanonicalPath()))) {
+            fo.println("#id|kustantaja");
             for (Kustantaja kus : this) {
                 fo.println(kus.toString());
             }
