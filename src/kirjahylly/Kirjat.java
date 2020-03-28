@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
+ * Hyllyn kirjat joka osaa mm. lisätä uuden kirjan
  * @author anvemaha
  * @version 20.2.2020 pohjaa
  * @version 27.3.2020 mallin mukaiseksi

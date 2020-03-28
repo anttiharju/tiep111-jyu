@@ -13,7 +13,6 @@ import java.util.Iterator;
 
 /**
  * Kirjahyllyn kirjailijat, joka osaa mm. lisätä uuden kirjailijan
- * 
  * @author anvemaha
  * @version 20.2.2020 pohjaa
  * @version 27.3.2020 mallin mukaiseksi koska sooloilu kostautui

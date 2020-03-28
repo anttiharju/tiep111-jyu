@@ -2,7 +2,7 @@ package kirjahylly;
 
 /**
  * Poikkeusluokka tietorakenteesta aiheutuville poikkeuksille.
- * @author antti
+ * @author anvemaha
  * @version 25.2.2020
  */
 public class SailoException extends Exception {

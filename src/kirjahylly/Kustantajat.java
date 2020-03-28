@@ -10,11 +10,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Kirjahyllyn kustantajat, joka osaa mm. lisätä uuden kustantajan
- * 
  * @author anvemaha
  * @version 9.3.2020 pohjaa
  * @version 27.3.2020 mallin mukaiseksi koska sooloilu kostautui
