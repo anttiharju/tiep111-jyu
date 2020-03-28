@@ -195,28 +195,28 @@ public class Kirjahylly {
 
             Kirja m1 = new Kirja(), m2 = new Kirja();
             m1.rekisteroi();
-            m1.tayta_metro();
+            m1.tayta();
             m2.rekisteroi();
-            m2.tayta_metro();
+            m2.tayta();
 
             hylly.lisaa(m1);
             hylly.lisaa(m2);
             int id1 = m1.getId();
             int id2 = m2.getId();
             Kirjailija k11 = new Kirjailija(id1);
-            k11.tayta_tmp(id1);
+            k11.tayta(id1);
             hylly.lisaa(k11);
             Kirjailija k21 = new Kirjailija(id1);
-            k21.tayta_tmp(id1);
+            k21.tayta(id1);
             hylly.lisaa(k21);
             Kirjailija k32 = new Kirjailija(id1);
-            k32.tayta_tmp(id2);
+            k32.tayta(id2);
             hylly.lisaa(k32);
             Kirjailija k42 = new Kirjailija(id1);
-            k42.tayta_tmp(id2);
+            k42.tayta(id2);
             hylly.lisaa(k42);
             Kirjailija k52 = new Kirjailija(id1);
-            k52.tayta_tmp(id2);
+            k52.tayta(id2);
             hylly.lisaa(k52);
 
             System.out.println("+ Kirjahylly testi");
