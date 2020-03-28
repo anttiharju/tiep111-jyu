@@ -1,8 +1,9 @@
 package kanta;
 
 /**
+ * Luokka satunnaisille apufunktioille
  * @author anvemaha
- * @version 20.2.2020 pohjaa
+ * @version 20.2.2020 rand
  */
 public class apu {
 

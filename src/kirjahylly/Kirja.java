@@ -131,9 +131,9 @@ public class Kirja {
      * @return kirja tolppaeroteltuna merkkijonona 
      * @example
      * <pre name="test">
-     *   Kirja k = new Kirja();
-     *   k.parse("   3  |  Ankka Aku   | 030201-111C");
-     *   k.toString().startsWith("3|Ankka Aku|030201-111C|") === true; // on enemmäkin kuin 3 kenttää, siksi loppu |
+     *  Kirja k = new Kirja();
+     *  k.parse("2  |Metro 2033      |2         |2         |2005 |Artjom seikkailee metrossa");
+     *  k.toString().startsWith("2|Metro 2033|2|2|2005|Artjom seikkailee metrossa") === true;
      * </pre>  
      */
     @Override
@@ -151,20 +151,18 @@ public class Kirja {
      * 
      * @example
      * <pre name="test">
-     *   Kirja k = new Kirja();
-     *   k.parse("   3  |  Ankka Aku   | 030201-111C");
-     *   k.getTunnusNro() === 3;
-     *    // loppuu | koska kenttiä on enemmänkin
-     *   k.toString().startsWith("3|Ankka Aku|030201-111C|") === true;
-     *
-     *   k.rekisteroi();
-     *   int n = k.getTunnusNro();
-     *   // otetaan pelkkä id
-     *   k.parse(""+(n+20));
-     *   // tarkistetaan, että seuraavalla on isompi
-     *   k.rekisteroi();
-     *   k.getTunnusNro() === n+20+1;
-     *     
+     *  Kirja k = new Kirja();
+     *  k.parse("3  |What if?        |3         |3         |2014 |Absurdeja hypoteettisiä kysymyksiä");
+     *  k.getId() === 3;
+     *  k.toString().startsWith("3|What if?|3|3|2014|Absurdeja hypoteettisiä kysymyksiä") === true;
+     *  
+     *  k.rekisteroi();
+     *  int n = k.getId();
+     *  // otetaan pelkkä id
+     *  k.parse(""+(n+20));
+     *  // tarkistetaan, että seuraavalla on isompi
+     *  k.rekisteroi();
+     *  k.getId() === n+20+1;
      * </pre>
      */
     public void parse(String rivi) {
@@ -191,7 +189,6 @@ public class Kirja {
 
     @Override
     public int hashCode() {
-        // alkeellinen
         return id;
     }
 
@@ -204,7 +201,7 @@ public class Kirja {
         metro2033.rekisteroi();
         metro2035.rekisteroi();
         metro2033.tulosta(System.out);
-        metro2033.tayta(); // rakennusteline
+        metro2033.tayta();
         metro2033.tulosta(System.out);
 
         metro2035.tayta();
