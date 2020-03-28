@@ -91,7 +91,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
             String rivi;
             while ((rivi = fi.readLine()) != null) {
                 rivi = rivi.trim();
-                if ("".equals(rivi) || rivi.charAt(0) == ';')
+                if ("".equals(rivi) || rivi.charAt(0) == '#')
                     continue;
                 Kirjailija kir = new Kirjailija();
                 kir.parse(rivi); // voisi olla virhekäsittely
@@ -134,6 +134,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
 
         try (PrintWriter fo = new PrintWriter(
                 new FileWriter(ftied.getCanonicalPath()))) {
+            fo.println("#id|kirjailija");
             for (Kirjailija kir : this) {
                 fo.println(kir.toString());
             }

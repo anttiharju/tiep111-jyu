@@ -44,14 +44,14 @@ public class Kirja {
      * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
      */
     public void tayta() {
-        nimi = "Metro " + rand(1, 9999);
-        kirjailija = 1;
-        kustantaja = 1;
-        vuosi = 2005;
-        kuvaus = "Artjom seikkailee metrossa";
-        luettu = "31.7.2017";
+        nimi = "Kirja " + rand(1, 9999);
+        kirjailija = 0;
+        kustantaja = 0;
+        vuosi = 2020;
+        kuvaus = "Asioita tapahtuu";
+        luettu = "28.3.2020";
         arvio = 5;
-        lisatietoja = "Peli oli huono";
+        lisatietoja = "Jänniä juttuja";
     }
 
 
