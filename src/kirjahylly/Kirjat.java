@@ -24,7 +24,7 @@ public class Kirjat implements Iterable<Kirja> {
     private boolean muutettu = false;
     private int lkm = 0;
     private String kokoNimi = "";
-    private String tiedostonPerusNimi = "kirjat";
+    private String tiedostonPerusNimi = "";
     private Kirja alkiot[] = new Kirja[MAX_JASENIA];
 
     /**
@@ -220,7 +220,7 @@ public class Kirjat implements Iterable<Kirja> {
      * @return tallennustiedoston nimi
      */
     public String getTiedostonNimi() {
-        return getTiedostonPerusNimi() + "\\kirjat.dat";
+        return getTiedostonPerusNimi() + ".dat";
     }
 
 
@@ -229,7 +229,7 @@ public class Kirjat implements Iterable<Kirja> {
      * @return varmuuskopiotiedoston nimi
      */
     public String getBackupNimi() {
-        return tiedostonPerusNimi + "\\kirjat.backup";
+        return tiedostonPerusNimi + ".backup";
     }
 
     /**
@@ -335,7 +335,7 @@ public class Kirjat implements Iterable<Kirja> {
      *   Kirja k2 = new Kirja(); k2.parse("2|Metro 2033|2|2|"); 
      *   Kirja k3 = new Kirja(); k3.parse("3|What if?|3|3|"); 
      *   Kirja k4 = new Kirja(); k4.parse("4|Metro 2035|2|4|"); 
-     *   Kirja k5 = new Kirja(); k5.parse("5|Diaspora|4|5|); 
+     *   Kirja k5 = new Kirja(); k5.parse("5|Diaspora|4|5|"); 
      *   kirjat.lisaa(k1); kirjat.lisaa(k2); kirjat.lisaa(k3); kirjat.lisaa(k4); kirjat.lisaa(k5);
      *   // TODO: toistaiseksi palauttaa kaikki kirjat
      * </pre> 

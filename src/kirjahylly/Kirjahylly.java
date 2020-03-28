@@ -2,7 +2,6 @@ package kirjahylly;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * @author anvemaha
@@ -29,33 +28,29 @@ public class Kirjahylly {
     /**
      * Lisää hyllyyn uuden kirjan
      * @param kirja lisättävä kirja
-     * @throws SailoException jos ei voida lisätä
+     * @throws SailoException jos lisäystä ei voida tehdä
      * @example
      * <pre name="test">
-     * #THROWS SailoException
-     * Kirjahylly hylly = new Kirjahylly();
-     * Kirja m1 = new Kirja(), m2 = new Kirja();
-     * m1.rekisteroi();
-     * m2.rekisteroi();
-     * hylly.getKirjat() === 0;
-     * hylly.lisaa(m1); hylly.getKirjat() === 1;
-     * hylly.lisaa(m2); hylly.getKirjat() === 2;
-     * hylly.lisaa(m1); hylly.getKirjat() === 3;
-     * hylly.getKirjat() === 3;
-     * hylly.annaKirja(0) === m1;
-     * hylly.annaKirja(1) === m2;
-     * hylly.annaKirja(2) === m1;
-     * hylly.annaKirja(3) === m1; #THROWS IndexOutOfBoundsException
-     * hylly.lisaa(m1); hylly.getKirjat() === 4;
-     * hylly.lisaa(m1); hylly.getKirjat() === 5;
-     * hylly.lisaa(m1); hylly.getKirjat() === 6;
-     * hylly.lisaa(m1); hylly.getKirjat() === 7;
-     * hylly.lisaa(m1); hylly.getKirjat() === 8;
-     * hylly.lisaa(m1); hylly.getKirjat() === 9;
-     * hylly.lisaa(m1); hylly.getKirjat() === 10;
-     * hylly.lisaa(m1); #THROWS SailoException
+     *  #import java.util.Collection;
+     *  #import java.util.Iterator;
+     *  #THROWS SailoException
+     *  Kirjahylly hylly = new Kirjahylly();
+     *  Kirja k1 = new Kirja(), k2 = new Kirja();
+     *  try {
+     *      hylly.lisaa(k1); 
+     *      hylly.lisaa(k2); 
+     *      hylly.lisaa(k1);
+     *      Collection<Kirja> loytyneet = hylly.etsi("",-1); 
+     *      Iterator<Kirja> it = loytyneet.iterator();
+     *      it.next() === k1;
+     *      it.next() === k2;
+     *      it.next() === k1;
+     *  } catch (SailoException e) {
+     *      k1.toString(); // pelkkä // ei riitä koska ComTest ei vie sitä mukanaan
+     *  }
      * </pre>
      */
+
     public void lisaa(Kirja kirja) throws SailoException {
         kirjat.lisaa(kirja);
     }
@@ -126,10 +121,10 @@ public class Kirjahylly {
         dir.mkdirs();
         String hakemistonNimi = "";
         if (!nimi.isEmpty())
-            hakemistonNimi = nimi + "/";
-        kirjat.setTiedostonPerusNimi(hakemistonNimi + "kirjat");
-        kirjailijat.setTiedostonPerusNimi(hakemistonNimi + "kirjailijat");
-        kustantajat.setTiedostonPerusNimi(hakemistonNimi + "kustantajat");
+            hakemistonNimi = nimi;
+        kirjat.setTiedostonPerusNimi(hakemistonNimi + "\\kirjat");
+        kirjailijat.setTiedostonPerusNimi(hakemistonNimi + "\\kirjailijat");
+        kustantajat.setTiedostonPerusNimi(hakemistonNimi + "\\kustantajat");
     }
 
 
@@ -146,9 +141,9 @@ public class Kirjahylly {
         kustantajat = new Kustantajat();
 
         setTiedosto(nimi);
-        kirjat.lueTiedostosta(nimi);
-        kirjailijat.lueTiedostosta(nimi);
-        kustantajat.lueTiedostosta(nimi);
+        kirjat.lueTiedostosta();
+        kirjailijat.lueTiedostosta();
+        kustantajat.lueTiedostosta();
     }
 
 

@@ -9,12 +9,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
- * Kystään hyllyn nimi ja luodaan tätä varten dialogi.
- * 
+ * Kysytään hyllyn nimi ja luodaan tätä varten dialogi.
  * @author anvemaha
  * @version 27.3.2020
  */
-public class HyllynNimiController implements ModalControllerInterface<String> {
+public class AvaaController implements ModalControllerInterface<String> {
 
     @FXML
     private TextField textVastaus;
@@ -33,11 +32,15 @@ public class HyllynNimiController implements ModalControllerInterface<String> {
     }
 
 
+    /**
+     * Nopeuttaa ohjelman käyttöä kun voi painaa Enter kirjoittaessa ja haluttu tiedosto aukeaa
+     * TODO: Voi tehdä jotenkin toisella tapaa? Samaan tyyliin kun menuitemien jutut suoraan scenebuilderista
+     * @param keyEvent painettu näppäin
+     */
     @FXML
     private void keyPressed(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
+        if (keyEvent.getCode() == KeyCode.ENTER)
             handleSeuraava();
-        }
     }
 
 
@@ -72,7 +75,7 @@ public class HyllynNimiController implements ModalControllerInterface<String> {
      */
     public static String kysyNimi(Stage modalityStage, String oletus) {
         return ModalController.showModal(
-                HyllynNimiController.class.getResource("AvaaView.fxml"),
-                "Kerho", modalityStage, oletus);
+                AvaaController.class.getResource("AvaaView.fxml"), "Kerho",
+                modalityStage, oletus);
     }
 }

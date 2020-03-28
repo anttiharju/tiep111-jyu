@@ -150,9 +150,8 @@ public class Kirjailija {
      * <pre name="test">
      *  Kirjailija kir = new Kirjailija();
      *  kir.parse("3  |Randall Munroe");
-     *  kir.getId() === 1;
+     *  kir.getId() === 3;
      *  kir.toString() === "3|Randall Munroe";
-     *  
      *  kir.rekisteroi();
      *  int n = kir.getId();
      *  kir.parse("" + (n+20));

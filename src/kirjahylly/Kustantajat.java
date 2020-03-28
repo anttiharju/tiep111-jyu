@@ -22,7 +22,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
     private boolean muutettu = false;
     private String tiedostonPerusNimi = "";
 
-    // Taulukko Kustantajista
+    // Taulukko kustantajista
     private final Collection<Kustantaja> alkiot = new ArrayList<Kustantaja>();
 
     /**
@@ -57,7 +57,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
      *  Kustantaja k22 = new Kustantaja(); k22.tayta(2); 
      *  Kustantaja k12 = new Kustantaja(); k12.tayta(1); 
      *  Kustantaja k23 = new Kustantaja(); k23.tayta(2); 
-     *  String tiedNimi = "testihylly";
+     *  String tiedNimi = "tmp_testihylly";
      *  File ftied = new File(tiedNimi+".dat");
      *  ftied.delete();
      *  kustantajat.lueTiedostosta(tiedNimi); #THROWS SailoException
@@ -80,7 +80,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
      *  kustantajat.tallenna();
      *  ftied.delete() === true;
      *  File fbak = new File(tiedNimi+".backup");
-     *  fbak.delete() === true;
+     *  fbak.delete() === true;     
      * </pre>
      */
     public void lueTiedostosta(String tied) throws SailoException {
@@ -181,7 +181,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
      * @return tallennustiedoston nimi
      */
     public String getTiedostonNimi() {
-        return tiedostonPerusNimi + "\\kustantajat.dat";
+        return tiedostonPerusNimi + ".dat";
     }
 
 
@@ -190,7 +190,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
      * @return varmuuskopiotiedoston nimi
      */
     public String getBackupNimi() {
-        return tiedostonPerusNimi + "\\kustantajat.backup";
+        return tiedostonPerusNimi + ".backup";
     }
 
 
@@ -203,14 +203,14 @@ public class Kustantajat implements Iterable<Kustantaja> {
      * #PACKAGEIMPORT
      * #import java.util.*;
      * 
-     *  Kustantajat publishers = new Kustantajat();
-     *  Kustantaja p12 = new Kustantaja(2); publishers.lisaa(p12);
-     *  Kustantaja p21 = new Kustantaja(1); publishers.lisaa(p21);
-     *  Kustantaja p32 = new Kustantaja(2); publishers.lisaa(p32);
-     *  Kustantaja p41 = new Kustantaja(1); publishers.lisaa(p41);
-     *  Kustantaja p52 = new Kustantaja(2); publishers.lisaa(p52);
+     *  Kustantajat kustantajat = new Kustantajat();
+     *  Kustantaja p12 = new Kustantaja(2); kustantajat.lisaa(p12);
+     *  Kustantaja p21 = new Kustantaja(1); kustantajat.lisaa(p21);
+     *  Kustantaja p32 = new Kustantaja(2); kustantajat.lisaa(p32);
+     *  Kustantaja p41 = new Kustantaja(1); kustantajat.lisaa(p41);
+     *  Kustantaja p52 = new Kustantaja(2); kustantajat.lisaa(p52);
      *  
-     *  Iterator<Kirjailija> i2 = publishers.iterator();
+     *  Iterator<Kustantaja> i2 = kustantajat.iterator();
      *  i2.next() === p12;
      *  i2.next() === p21;
      *  i2.next() === p32;
@@ -221,8 +221,8 @@ public class Kustantajat implements Iterable<Kustantaja> {
      *  int n = 0;
      *  int jnrot[] = {2,1,2,1,2};
      *  
-     *  for ( Kustantaja kus : kustantajaVar ) {
-     *      kus.getKirjailijaId() === jnrot[n]; n++;
+     *  for ( Kustantaja kus : kustantajat ) {
+     *      kus.getId() === jnrot[n]; n++;
      *  }
      *  
      *  n === 5;
@@ -235,8 +235,6 @@ public class Kustantajat implements Iterable<Kustantaja> {
 
 
     /**
-     * TODO: mun tietorakenteella ei voi tehdä näin? kirjat tietää juttunsa mutta jutut ei tiedä kirjaansa
-     * TODO: koska kirjalla voi olla vain yksi kustantaja, ei tarvita List, vaihda nimi (-t) ja testit ja muualla missä käytetään
      * Haetaan kirjan kustantaja
      * @param id kirjan id jonka kustantajaa etsitään
      * @return tietorakenne jossa viite löydettyyn kustantajaan
@@ -244,27 +242,27 @@ public class Kustantajat implements Iterable<Kustantaja> {
      * <pre name="test">
      * #import java.util.*;
      * 
-     *  Kustantajat kustantajatVar = new Kustantajat();
-     *  Kustantaja pete = new Kustantaja(0); kustantajatVar.lisaa(pete);
-     *  Kustantaja vesa = new Kustantaja(1); kustantajatVar.lisaa(vesa);
-     *  Kustantaja tupu = new Kustantaja(2); kustantajatVar.lisaa(tupu);
-     *  Kustantaja hupu = new Kustantaja(3); kustantajatVar.lisaa(hupu);
-     *  Kustantaja lupu = new Kustantaja(4); kustantajatVar.lisaa(lupu);
-     *  Kustantaja rupu = new Kustantaja(5); kustantajatVar.lisaa(rupu);
+     *  Kustantajat kustantajat = new Kustantajat();
+     *  Kustantaja pete = new Kustantaja(0); kustantajat.lisaa(pete);
+     *  Kustantaja vesa = new Kustantaja(1); kustantajat.lisaa(vesa);
+     *  Kustantaja tupu = new Kustantaja(2); kustantajat.lisaa(tupu);
+     *  Kustantaja hupu = new Kustantaja(3); kustantajat.lisaa(hupu);
+     *  Kustantaja lupu = new Kustantaja(4); kustantajat.lisaa(lupu);
+     *  Kustantaja rupu = new Kustantaja(5); kustantajat.lisaa(rupu);
      *  
      *  Kustantaja etsitty = new Kustantaja();
      *  
-     *  kustantajatVar.annaKustantaja(0);
+     *  etsitty = kustantajat.annaKustantaja(0);
      *  etsitty == pete === true;
-     *  kustantajatVar.annaKustantaja(1);
+     *  etsitty = kustantajat.annaKustantaja(1);
      *  etsitty == vesa === true;
-     *  kustantajatVar.annaKustantaja(2);
+     *  etsitty = kustantajat.annaKustantaja(2);
      *  etsitty == tupu === true;
-     *  kustantajatVar.annaKustantaja(3);
+     *  etsitty = kustantajat.annaKustantaja(3);
      *  etsitty == hupu === true;
-     *  kustantajatVar.annaKustantaja(4);
+     *  etsitty = kustantajat.annaKustantaja(4);
      *  etsitty == lupu === true;
-     *  kustantajatVar.annaKustantaja(5);
+     *  etsitty = kustantajat.annaKustantaja(5);
      *  etsitty == rupu === true;
      * </pre>
      */
