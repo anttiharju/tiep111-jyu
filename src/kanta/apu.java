@@ -1,9 +1,8 @@
 package kanta;
 
 /**
- * @author antti
- * @version 20.2.2020
- *
+ * @author anvemaha
+ * @version 20.2.2020 pohjaa
  */
 public class apu {
 
