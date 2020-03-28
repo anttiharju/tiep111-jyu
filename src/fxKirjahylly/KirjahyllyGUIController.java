@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.ResourceBundle;
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
@@ -231,38 +232,47 @@ public class KirjahyllyGUIController implements Initializable {
 
     /**
      * Hakee kirjojen tiedot listaan
-     * @param jnro kirjan numero joka aktivoidaan haun jälkeen
+     * @param kid kirjan numero joka aktivoidaan haun jälkeen
      */
-    protected void hae(int jnro) {
+    protected void hae(int kid) {
         int k = cbKentat.getSelectionModel().getSelectedIndex();
         String ehto = hakuehto.getText();
         if (k > 0 || ehto.length() > 0)
-            naytaVirhe(String.format("Ei osata hakea (kenttä %d, ehto %s)", k,
+            naytaVirhe(String.format("Ei osata hakea (kenttä: %d, ehto: %s)", k,
                     ehto));
         else
             naytaVirhe(null);
 
         chooserKirjat.clear();
+
         int index = 0;
-        for (int i = 0; i < hylly.getKirjat(); i++) {
-            Kirja kirja = hylly.annaKirja(i);
-            if (kirja.getId() == jnro)
-                index = i;
-            chooserKirjat.add(kirja.getNimi(), kirja);
+        Collection<Kirja> kirjat;
+        try {
+            kirjat = hylly.etsi(ehto, k);
+            int i = 0;
+            for (Kirja kirja : kirjat) {
+                if (kirja.getId() == kid)
+                    index = i;
+                chooserKirjat.add(kirja.getNimi(), kirja);
+                i++;
+            }
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog(
+                    "Kirjan hakemisessa ongelmia! " + ex.getMessage());
         }
-        chooserKirjat.setSelectedIndex(index); // tästä tulee muutosviesti joka
-                                               // näyttää kirjan
+        // tästä tulee muutosviesti joka näyttää kirjan
+        chooserKirjat.setSelectedIndex(index);
     }
 
 
     /**
      * Luo uuden kirjan jota aletaan editoimaan
-     * TODO: rakennusteline (tayta_metro)
+     * TODO: rakennusteline (tayta)
      */
     protected void uusiKirja() {
         Kirja uusi = new Kirja();
         uusi.rekisteroi();
-        uusi.tayta_metro();
+        uusi.tayta();
         try {
             hylly.lisaa(uusi);
         } catch (SailoException e) {

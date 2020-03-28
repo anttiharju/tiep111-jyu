@@ -31,7 +31,7 @@ public class Kirja {
      * @example
      * <pre name="test">
      *  Kirja metro = new Kirja();
-     *  metro.tayta_metro();
+     *  metro.tayta();
      *  metro.getNimi() =R= "Metro .*";
      * </pre>
      */
@@ -42,9 +42,8 @@ public class Kirja {
 
     /**
      * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
-     * TODO: poista 
      */
-    public void tayta_metro() {
+    public void tayta() {
         nimi = "Metro " + rand(1, 9999);
         kirjailija = 1;
         kustantaja = 1;
@@ -205,13 +204,13 @@ public class Kirja {
         metro2033.rekisteroi();
         metro2035.rekisteroi();
         metro2033.tulosta(System.out);
-        metro2033.tayta_metro(); // rakennusteline
+        metro2033.tayta(); // rakennusteline
         metro2033.tulosta(System.out);
 
-        metro2035.tayta_metro();
+        metro2035.tayta();
         metro2035.tulosta(System.out);
 
-        metro2035.tayta_metro();
+        metro2035.tayta();
         metro2035.tulosta(System.out);
     }
 
