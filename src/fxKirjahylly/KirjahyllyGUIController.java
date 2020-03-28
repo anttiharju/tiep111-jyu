@@ -8,7 +8,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
-
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
@@ -52,9 +51,7 @@ public class KirjahyllyGUIController implements Initializable {
 
     @FXML
     void handleMuokkaa() {
-        ModalController.showModal(
-                KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
-                "Tulosta", null, "");
+        muokkaa();
     }
 
 
@@ -291,6 +288,16 @@ public class KirjahyllyGUIController implements Initializable {
     public void setHylly(Kirjahylly uusiHylly) {
         this.hylly = uusiHylly;
         naytaKirja();
+    }
+
+
+    private void muokkaa() {
+        kirjaKohdalla = chooserKirjat.getSelectedObject();
+        if (kirjaKohdalla == null)
+            return;
+        ModalController.showModal(
+                KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
+                "Muokkaa", null, kirjaKohdalla);
     }
 
 

@@ -32,7 +32,7 @@ public class Kirja {
      * <pre name="test">
      *  Kirja metro = new Kirja();
      *  metro.tayta();
-     *  metro.getNimi() =R= "Metro .*";
+     *  metro.getNimi() =R= "Kirja .*";
      * </pre>
      */
     public String getNimi() {
@@ -225,5 +225,45 @@ public class Kirja {
      */
     public int getKustantajaId() {
         return kustantaja;
+    }
+
+
+    /**
+     * @return kirjan julkaisuvuoden
+     */
+    public int getVuosi() {
+        return vuosi;
+    }
+
+
+    /**
+     * @return kirjan kuvauksen
+     */
+    public String getKuvaus() {
+        return kuvaus;
+    }
+
+
+    /**
+     * @return kirjan lukupvm
+     */
+    public String getLuettu() {
+        return luettu;
+    }
+
+
+    /**
+     * @return kirjan saaman arvion
+     */
+    public int getArvio() {
+        return arvio;
+    }
+
+
+    /**
+     * @return kirjan lisätiedot
+     */
+    public String getLisatietoja() {
+        return lisatietoja;
     }
 }

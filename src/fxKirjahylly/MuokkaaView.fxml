@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefHeight="540.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="540.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjahylly.MuokkaaController">
 	<left>
 		<GridPane prefHeight="400.0" prefWidth="500.0" BorderPane.alignment="CENTER">
 			<columnConstraints>
@@ -95,7 +95,7 @@
 						<Insets left="5.0" />
 					</GridPane.margin>
 				</TextField>
-				<TextField fx:id="mLisa" text="Englanninkielinen" GridPane.columnIndex="1" GridPane.rowIndex="7">
+				<TextField fx:id="mLisatietoja" text="Englanninkielinen" GridPane.columnIndex="1" GridPane.rowIndex="7">
 					<GridPane.margin>
 						<Insets left="5.0" />
 					</GridPane.margin>
@@ -107,12 +107,12 @@
 								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
 							</HBox.margin>
 						</ComboBoxChooser>
-            						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Lisää...">
+            						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleLisaaKirjailija" text="Lisää...">
 							<HBox.margin>
 								<Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
 							</HBox.margin>
             						</Button>
-						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Poista">
+						<Button fx:id="handlePoistaKirjailija" alignment="CENTER_RIGHT" mnemonicParsing="false" text="Poista">
 							<HBox.margin>
 								<Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
 							</HBox.margin>
@@ -126,12 +126,12 @@
 								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
 							</HBox.margin>
 						</ComboBoxChooser>
-						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Lisää....">
+						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleLisaaKustantaja" text="Lisää....">
 							<HBox.margin>
 								<Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
 							</HBox.margin>
 						</Button>
-						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Poista">
+						<Button fx:id="handlePoistaKustantaja" alignment="CENTER_RIGHT" mnemonicParsing="false" text="Poista">
 							<HBox.margin>
 								<Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
 							</HBox.margin>
@@ -147,17 +147,17 @@
 	<bottom>
 		<HBox prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
-				<Button mnemonicParsing="false" text="Peruuta">
+				<Button mnemonicParsing="false" onAction="#handlePeruuta" text="Peruuta">
 					<HBox.margin>
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
 				</Button>
-				<Button mnemonicParsing="false" text="Tallenna">
+				<Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
 					<HBox.margin>
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
 				</Button>
-            <Label text="Anna julkaisuvuosi numerona!" textFill="RED">
+            <Label fx:id="error" text="Anna julkaisuvuosi numerona!" textFill="RED">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
