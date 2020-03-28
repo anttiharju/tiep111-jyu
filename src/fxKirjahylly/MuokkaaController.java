@@ -108,6 +108,7 @@ public class MuokkaaController implements ModalControllerInterface<Kirja> {
         mLuettu.setText("");
         mArvio.setText("");
         mLisatietoja.setText("");
+        error.setText("");
     }
 
 
@@ -127,19 +128,5 @@ public class MuokkaaController implements ModalControllerInterface<Kirja> {
         mArvio.setText("" + kirja.getArvio());
         mLisatietoja.setText(kirja.getLisatietoja());
         error.setText("");
-    }
-
-
-    /**
-     * Luodaan kirjan muokkausdialogi ja palautetaan sama tietue muutettuna tai null
-     * TODO: korjattava toimimaan
-     * @param modalityStage mille ollaan modaalisia, null = sovellukselle
-     * @param oletus mitä dataan näytetään oletuksena
-     * @return null jos painetaan Cancel, muuten täytetty tietue
-     */
-    public static Kirja kysyKirja(Stage modalityStage, Kirja oletus) {
-        return ModalController.showModal(
-                MuokkaaController.class.getResource("MuokkaaView.fxml"),
-                "Muokkaa", modalityStage, oletus, null);
     }
 }
