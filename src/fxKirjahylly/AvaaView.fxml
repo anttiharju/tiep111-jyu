@@ -33,7 +33,7 @@
 				</Text>
 				<BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
 					<right>
-						<TextField fx:id="textVastaus" BorderPane.alignment="BOTTOM_CENTER" />
+						<TextField fx:id="textVastaus" onKeyPressed="#keyPressed" BorderPane.alignment="BOTTOM_CENTER" />
 					</right>
 					<left>
 						<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hyllyn nimi" BorderPane.alignment="BOTTOM_CENTER">

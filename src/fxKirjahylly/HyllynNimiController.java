@@ -4,6 +4,8 @@ import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
@@ -31,6 +33,14 @@ public class HyllynNimiController implements ModalControllerInterface<String> {
     }
 
 
+    @FXML
+    private void keyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            handleSeuraava();
+        }
+    }
+
+
     @Override
     public String getResult() {
         return vastaus;
@@ -50,6 +60,8 @@ public class HyllynNimiController implements ModalControllerInterface<String> {
     public void handleShown() {
         textVastaus.requestFocus();
     }
+
+    // =============================
 
 
     /**
