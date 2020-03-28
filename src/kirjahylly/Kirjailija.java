@@ -2,14 +2,16 @@ package kirjahylly;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+
+import fi.jyu.mit.ohj2.Mjonot;
+
 import static kanta.apu.*;
 
 /**
  * Kirjailija joka osaa mm. itse huolehtia id:stään
  * @author anvemaha
- * @version 20.2.2020
- * TODO: poiketaan mallista joten joudutaan pyörittelemään asioita erilailla mutta tässä nyt vain pohjaa
- * (ei luultavasti edes toimi nyt järkevästi)
+ * @version 20.2.2020 pohjaa
+ * @version 28.3.2020 mallin mukaiseksi
  */
 public class Kirjailija {
     private int id;
@@ -35,32 +37,23 @@ public class Kirjailija {
 
 
     /**
-     * Alustetaan kirjailija tietyllä id:llä
-     * @param id haluttu id
-     * TODO: estä saman id:n käyttö jollain omalla exceptionilla?
+     * Alustetaan kirjailija.
+     * @param n haluttu kirjailijan id
      */
-    public Kirjailija(int id) {
-        this.id = id;
+    public Kirjailija(int n) {
+        this.id = n;
     }
 
 
     /**
-     * Apumetodi, jolla saadaan täytetyä testiarvot Kirjailijalle
-     * kirjailijan nimen perään arvotaan numero, ettei kahdella kirjailijalla
+     * Apumetodi, jolla saadaan täytetyä testiarvot kirjailijalle.
+     * Kirjailijan nimen perään arvotaan numero, ettei kahdella kirjailijalla
      * olisi samaa nimeä.
-     * @param newId kirjailijan id
+     * @param n kirjailijan id
      */
-    public void tayta_tmp(int newId) {
-        this.id = newId;
-        this.nimi = "Dimitrios " + rand(1000, 9999);
-    }
-
-
-    /**
-     * @return Palauttaa kirjailijan nimen
-     */
-    public String getNimi() {
-        return nimi;
+    public void tayta(int n) {
+        this.id = n;
+        this.nimi = "Kirjailija " + rand(1000, 9999);
     }
 
 
@@ -87,13 +80,13 @@ public class Kirjailija {
      * @return kirjailijan uusi id
      * @example
      * <pre name="test">
-     *  Kirjailija mortti = new Kirjailija();
-     *  mortti.getId() === 0;
-     *  mortti.rekisteroi();
-     *  Kirjailija vertti = new Kirjailija();
-     *  vertti.rekisteroi();
-     *  int n1 = mortti.getId();
-     *  int n2 = vertti.getId();
+     *  Kirjailija kir1 = new Kirjailija();
+     *  kir1.getId() === 0;
+     *  kir1.rekisteroi();
+     *  Kirjailija kir2 = new Kirjailija();
+     *  kir2.rekisteroi();
+     *  int n1 = kir1.getId();
+     *  int n2 = kir2.getId();
      *  n1 === n2-1;
      * </pre>
      */
@@ -101,6 +94,14 @@ public class Kirjailija {
         id = seuraavaId;
         seuraavaId++;
         return id;
+    }
+
+
+    /**
+     * @return Palauttaa kirjailijan nimen
+     */
+    public String getNimi() {
+        return nimi;
     }
 
 
@@ -114,12 +115,80 @@ public class Kirjailija {
 
 
     /**
-     * Testiohjelma Kirjailijalle
+     * Asettaa id:n ja samalla varmistaa että
+     * seuraava numero on aina suurempi kuin tähän mennessä suurin.
+     * @param n asetettava id
+     */
+    private void setId(int n) {
+        id = n;
+        if (id >= seuraavaId)
+            seuraavaId = id + 1;
+    }
+
+
+    /**
+     * Palauttaa kirjailijan tiedot merkkijonona jonka voi tallentaa tiedostoon.
+     * @return kirjailija tollpaeroteltuna merkkijonona
+     * @example
+     * <pre name="test">
+     *  Kirjailija kir = new Kirjailija();
+     *  kir.parse("2  |Dmitri Gluhovski");
+     *  kir.toString() === "2|Dmitri Gluhovski";
+     * </pre>
+     */
+    @Override
+    public String toString() {
+        return "" + getId() + "|" + getNimi();
+    }
+
+
+    /**
+     * Selvittää kirjailijan tiedot | erotellusta merkkijonosta.
+     * Pitää huolen, että seuraavaId on suurempi kuin tuleva id
+     * @param rivi josta kirjailijan tiedot otetaan
+     * @example
+     * <pre name="test">
+     *  Kirjailija kir = new Kirjailija();
+     *  kir.parse("3  |Randall Munroe");
+     *  kir.getId() === 1;
+     *  kir.toString() === "3|Randall Munroe";
+     *  
+     *  kir.rekisteroi();
+     *  int n = kir.getId();
+     *  kir.parse("" + (n+20));
+     *  kir.rekisteroi();
+     *  kir.getId() === n+20+1;
+     *  kir.toString() === "" + (n+20+1) + "|Randall Munroe";
+     * </pre>
+     */
+    public void parse(String rivi) {
+        StringBuffer sb = new StringBuffer(rivi);
+        setId(Mjonot.erota(sb, '|', getId()));
+        nimi = Mjonot.erota(sb, '|', nimi);
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        return this.toString().equals(obj.toString());
+    }
+
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+
+    /**
+     * Testiohjelma kirjailijalle
      * @param args ei käytössä
      */
     public static void main(String[] args) {
         Kirjailija kir = new Kirjailija();
-        kir.tayta_tmp(2);
+        kir.tayta(2);
         kir.tulosta(System.out);
     }
 }

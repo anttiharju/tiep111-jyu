@@ -1,9 +1,12 @@
 package kirjahylly;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -15,7 +18,6 @@ import java.util.List;
  * @author anvemaha
  * @version 9.3.2020 pohjaa
  * @version 27.3.2020 mallin mukaiseksi koska sooloilu kostautui
- * TODO: Luennolla mainittiin että kirjailijat ja kustantajat voi yhdistää. Ihan lopuksi jos jää aikaa.
  */
 public class Kustantajat implements Iterable<Kustantaja> {
 
@@ -111,13 +113,41 @@ public class Kustantajat implements Iterable<Kustantaja> {
 
 
     /**
+     * Luetaan aikaisemmin annetun nimisestä tiedostosta
+     * @throws SailoException jos tulee poikkeus
+     */
+    public void lueTiedostosta() throws SailoException {
+        lueTiedostosta(getTiedostonPerusNimi());
+    }
+
+
+    /**
      * Tallentaa kustantajat tiedostoon.
-     * TODO: kesken
-     * @throws SailoException jos talletus epäonnistuu
+     * @throws SailoException jos tallennus epäonnistuu
      */
     public void tallenna() throws SailoException {
-        throw new SailoException(
-                "Ei osta vielä tallettaa tiedostoa " + tiedostonNimi);
+        if (!muutettu)
+            return;
+
+        File fbackup = new File(getBackupNimi());
+        File ftied = new File(getTiedostonNimi());
+        fbackup.delete(); // if ... System.err.println("Ei voi tuhota");
+        ftied.renameTo(fbackup); // if ... System.err.println("Ei voi nimetä");
+
+        try (PrintWriter fo = new PrintWriter(
+                new FileWriter(ftied.getCanonicalPath()))) {
+            for (Kustantaja kus : this) {
+                fo.println(kus.toString());
+            }
+        } catch (FileNotFoundException ex) {
+            throw new SailoException(
+                    "Tiedosto " + ftied.getName() + " ei aukea");
+        } catch (IOException ex) {
+            throw new SailoException("Tiedoston " + ftied.getName()
+                    + " kirjoittamisessa ongelmia");
+        }
+
+        muutettu = false;
     }
 
 
@@ -127,6 +157,42 @@ public class Kustantajat implements Iterable<Kustantaja> {
      */
     public int getLkm() {
         return alkiot.size();
+    }
+
+
+    /**
+     * Asettaa tiedoston perusnimen ilman tarkenninta
+     * @param tied tallennustiedoston perusnimi
+     */
+    public void setTiedostonPerusNimi(String tied) {
+        tiedostonPerusNimi = tied;
+    }
+
+
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonPerusNimi() {
+        return tiedostonPerusNimi;
+    }
+
+
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonNimi() {
+        return tiedostonPerusNimi + ".dat";
+    }
+
+
+    /**
+     * Palauttaa varmuuskopiotiedoston nimen
+     * @return varmuuskopiotiedoston nimi
+     */
+    public String getBackupNimi() {
+        return tiedostonPerusNimi + ".backup";
     }
 
 
@@ -219,13 +285,13 @@ public class Kustantajat implements Iterable<Kustantaja> {
     public static void main(String[] args) {
         Kustantajat kustantajat = new Kustantajat();
         Kustantaja vesa = new Kustantaja();
-        vesa.tayta_tmp(2);
+        vesa.tayta(2);
         Kustantaja tupu = new Kustantaja();
-        tupu.tayta_tmp(1);
+        tupu.tayta(1);
         Kustantaja hupu = new Kustantaja();
-        hupu.tayta_tmp(2);
+        hupu.tayta(2);
         Kustantaja lupu = new Kustantaja();
-        lupu.tayta_tmp(2);
+        lupu.tayta(2);
 
         kustantajat.lisaa(vesa);
         kustantajat.lisaa(tupu);
