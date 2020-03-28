@@ -183,7 +183,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
      * @return tallennustiedoston nimi
      */
     public String getTiedostonNimi() {
-        return tiedostonPerusNimi + ".dat";
+        return tiedostonPerusNimi + "\\kustantajat.dat";
     }
 
 
@@ -192,7 +192,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
      * @return varmuuskopiotiedoston nimi
      */
     public String getBackupNimi() {
-        return tiedostonPerusNimi + ".backup";
+        return tiedostonPerusNimi + "\\kustantajat.backup";
     }
 
 

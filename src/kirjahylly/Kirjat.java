@@ -219,7 +219,7 @@ public class Kirjat implements Iterable<Kirja> {
      * @return tallennustiedoston nimi
      */
     public String getTiedostonNimi() {
-        return getTiedostonPerusNimi() + ".dat";
+        return getTiedostonPerusNimi() + "\\kirjat.dat";
     }
 
 
@@ -228,7 +228,7 @@ public class Kirjat implements Iterable<Kirja> {
      * @return varmuuskopiotiedoston nimi
      */
     public String getBackupNimi() {
-        return tiedostonPerusNimi + ".backup";
+        return tiedostonPerusNimi + "\\kirjat.backup";
     }
 
     /**
