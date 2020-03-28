@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
 
 /**
+ * Pääohjelma Kirjahylly-ohjelman käynnistämiseksi
  * @author anvemaha
  * @version 26.1.2020
  */

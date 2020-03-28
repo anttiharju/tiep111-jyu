@@ -37,6 +37,15 @@ public class Kustantaja {
 
 
     /**
+     * Alustetaan kustantaja tietyllä id:llä.
+     * @param n haluttu kustantajan nimi
+     */
+    public Kustantaja(int n) {
+        this.id = n;
+    }
+
+
+    /**
      * Apumetodi, jolla saadaan täytetyä testiarvot kustantajalle.
      * Kustantajan nimen perään arvotaan numero, ettei kahdella kustantajalla
      * olisi samaa nimeä.
@@ -141,7 +150,7 @@ public class Kustantaja {
      * <pre name="test">
      *  Kustantaja kus = new Kustantaja();
      *  kus.parse("5  |Orion Publishing Group");
-     *  kus.getId() === 1;
+     *  kus.getId() === 5;
      *  kus.toString() === "5|Orion Publishing Group";
      *  
      *  kus.rekisteroi();

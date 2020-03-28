@@ -27,6 +27,7 @@ import kirjahylly.Kirjahylly;
 import kirjahylly.SailoException;
 
 /**
+ * Luokka hyllyn käyttöliittymän tapahtumien hoitamiseksi.
  * @author anvemaha
  * @version 27.3.2020
  */
@@ -181,7 +182,7 @@ public class KirjahyllyGUIController implements Initializable {
      * @return true jos onnistui, false jos ei
      */
     public boolean avaa() {
-        String uusiNimi = HyllynNimiController.kysyNimi(null, hyllynNimi);
+        String uusiNimi = AvaaController.kysyNimi(null, hyllynNimi);
         if (uusiNimi == null)
             return false;
         lueTiedosto(uusiNimi);
@@ -267,7 +268,6 @@ public class KirjahyllyGUIController implements Initializable {
 
     /**
      * Luo uuden kirjan jota aletaan editoimaan
-     * TODO: rakennusteline (tayta)
      */
     protected void uusiKirja() {
         Kirja uusi = new Kirja();
@@ -285,10 +285,10 @@ public class KirjahyllyGUIController implements Initializable {
 
 
     /**
-     * @param ihylly Kirjahylly jota käytetään
+     * @param uusiHylly Kirjahylly jota käytetään
      */
-    public void setHylly(Kirjahylly ihylly) {
-        hylly = ihylly;
+    public void setHylly(Kirjahylly uusiHylly) {
+        this.hylly = uusiHylly;
         naytaKirja();
     }
 

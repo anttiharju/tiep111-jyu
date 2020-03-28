@@ -57,7 +57,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      *  Kirjailija k22 = new Kirjailija(); k22.tayta(2); 
      *  Kirjailija k12 = new Kirjailija(); k12.tayta(1); 
      *  Kirjailija k23 = new Kirjailija(); k23.tayta(2); 
-     *  String tiedNimi = "testihylly";
+     *  String tiedNimi = "tmp_testihylly";
      *  File ftied = new File(tiedNimi+".dat");
      *  ftied.delete();
      *  kirjailijat.lueTiedostosta(tiedNimi); #THROWS SailoException
@@ -80,7 +80,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      *  kirjailijat.tallenna();
      *  ftied.delete() === true;
      *  File fbak = new File(tiedNimi+".backup");
-     *  fbak.delete() === true;
+     *  fbak.delete() === true;         
      * </pre>
      */
     public void lueTiedostosta(String tied) throws SailoException {
@@ -181,7 +181,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      * @return tallennustiedoston nimi
      */
     public String getTiedostonNimi() {
-        return tiedostonPerusNimi + "\\kirjailijat.dat";
+        return tiedostonPerusNimi + ".dat";
     }
 
 
@@ -190,7 +190,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      * @return varmuuskopiotiedoston nimi
      */
     public String getBackupNimi() {
-        return tiedostonPerusNimi + "\\kirjailijat.backup";
+        return tiedostonPerusNimi + ".backup";
     }
 
 
@@ -219,10 +219,10 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      *  i2.next() === p21; #THROWS NoSuchElementException
      *  
      *  int n = 0;
-     *  int jnrot[] = {2,1,2,1,2};
+     *  int kidt[] = {2,1,2,1,2};
      *  
      *  for ( Kirjailija kir : kirjailijat ) {
-     *      kir.getKirjailijaId() === jnrot[n]; n++;
+     *      kir.getId() === kidt[n]; n++;
      *  }
      *  
      *  n === 5;
@@ -235,8 +235,6 @@ public class Kirjailijat implements Iterable<Kirjailija> {
 
 
     /**
-     * TODO: mun tietorakenteella ei voi tehdä näin? kirjat tietää juttunsa mutta jutut ei tiedä kirjaansa
-     * TODO: koska kirjalla voi olla vain yksi kirjailija, ei tarvita List, vaihda nimi (-t) ja testit ja muualla missä käytetään
      * Haetaan kirjan kirjailija
      * @param id kirjan id jonka kirjailijaa etsitään
      * @return tietorakenne jossa viite löydettyyn kirjailijaan
@@ -254,17 +252,17 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      *  
      *  Kirjailija etsitty = new Kirjailija();
      *  
-     *  kirjailijat.annaKirjailija(0);
+     *  etsitty = kirjailijat.annaKirjailija(0);
      *  etsitty == pete === true;
-     *  kirjailijat.annaKirjailija(1);
+     *  etsitty = kirjailijat.annaKirjailija(1);
      *  etsitty == vesa === true;
-     *  kirjailijat.annaKirjailija(2);
+     *  etsitty = kirjailijat.annaKirjailija(2);
      *  etsitty == tupu === true;
-     *  kirjailijat.annaKirjailija(3);
+     *  etsitty = kirjailijat.annaKirjailija(3);
      *  etsitty == hupu === true;
-     *  kirjailijat.annaKirjailija(4);
+     *  etsitty = kirjailijat.annaKirjailija(4);
      *  etsitty == lupu === true;
-     *  kirjailijat.annaKirjailija(5);
+     *  etsitty = kirjailijat.annaKirjailija(5);
      *  etsitty == rupu === true;
      * </pre>
      */
