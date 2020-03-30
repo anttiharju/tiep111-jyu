@@ -266,4 +266,70 @@ public class Kirja {
     public String getLisatietoja() {
         return lisatietoja;
     }
+
+
+    /**
+     * @param nimi asetettava nimi
+     */
+    public void setNimi(String nimi) {
+        this.nimi = nimi;
+
+    }
+
+
+    /**
+     * @param kirjailija asetettava kirjailija
+     */
+    public void setKirjailija(int kirjailija) {
+        this.kirjailija = kirjailija;
+
+    }
+
+
+    /**
+     * @param kustantaja asetettava kustantaja
+     */
+    public void setKustantaja(int kustantaja) {
+        this.kustantaja = kustantaja;
+    }
+
+
+    /**
+     * @param vuosi asetettava vuosi
+     */
+    public void setVuosi(int vuosi) {
+        this.vuosi = vuosi;
+    }
+
+
+    /**
+     * @param kuvaus asetettava kuvaus
+     */
+    public void setKuvaus(String kuvaus) {
+        this.kuvaus = kuvaus;
+    }
+
+
+    /**
+     * @param luettu asetettava lukupvm
+     */
+    public void setLuettu(String luettu) {
+        this.luettu = luettu;
+    }
+
+
+    /**
+     * @param arvio asettava arvio
+     */
+    public void setArvio(int arvio) {
+        this.arvio = arvio;
+    }
+
+
+    /**
+     * @param lisatietoja asettavat lisätiedot
+     */
+    public void setLisatietoja(String lisatietoja) {
+        this.lisatietoja = lisatietoja;
+    }
 }

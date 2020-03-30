@@ -25,7 +25,7 @@ public class Kirjat implements Iterable<Kirja> {
     private int lkm = 0;
     private String kokoNimi = "";
     private String tiedostonPerusNimi = "";
-    private Kirja alkiot[] = new Kirja[8];
+    private Kirja[] alkiot = new Kirja[8];
 
     /**
      * Oletusmuodostaja
@@ -70,6 +70,22 @@ public class Kirjat implements Iterable<Kirja> {
         alkiot[lkm] = kirja;
         lkm++;
         muutettu = true;
+    }
+
+
+    /**
+     * Korvaa annetulla id:llä löytyvän kirjan annetulla kirjalla
+     * @param vid korvattavan kirjan id
+     * @param kir uusi kirja
+     * TODO: ilmeisesti lkm ei päivity oikein ja siksi tuo null tarkistus
+     */
+    public void korvaa(int vid, Kirja kir) {
+        for (Kirja k : alkiot) {
+            if (k != null && k.getId() == vid) {
+                k = kir;
+                muutettu = true;
+            }
+        }
     }
 
 
@@ -138,13 +154,14 @@ public class Kirjat implements Iterable<Kirja> {
      * Tiedoston muoto:
      * <pre>
      *  antti
-     *  ;id|kirjan nimi     |kirjailija|kustantaja|vuosi|lyhyt kuvaus                      |luettu    |arvio|lisätietoja
+     *  #id|kirjan nimi     |kirjailija|kustantaja|vuosi|lyhyt kuvaus                      |luettu    |arvio|lisätietoja
      *  1  |Ready Player One|1         |1         |2011 |Wade Wattsin seikkailut           |26.12.2016|4    |Elokuva pilas tän
      *  2  |Metro 2033      |2         |2         |2005 |Artjom seikkailee metrossa        |31.7.2017 |5    |Peli oli huono
      *  3  |What if?        |3         |3         |2014 |Absurdeja hypoteettisiä kysymyksiä|1.1.2020  |5    |xkcd sarjakuvien tekijältä
      *  4  |Metro 2035      |2         |4         |2015 |Artjom on sekaisin                |14.8.2018 |4    |2034 voi jättää lukematta
      *  5  |Diaspora        |4         |5         |1997 |Ihmiskunta elää ohjelmistona      |5.3.2019  |3    |Englanninkielinen
      *  6  |Permutation City|4         |5         |1994 |Simuloitu yhteiskunta             |6.9.2019  |3    |Painaa 306g
+     *  
      * </pre>
      * @throws SailoException jos tallennus epäonnistuu
      */
@@ -163,11 +180,9 @@ public class Kirjat implements Iterable<Kirja> {
             fo.println(
                     "#id|kirjan nimi|kirjailija|kustantaja|vuosi|lyhyt kuvaus|luettu|arvio|lisätietoja");
             for (Kirja k : this) {
+                System.out.println(k.getNimi());
                 fo.println(k.toString());
             }
-            // } catch ( IOException e ) { // ei heitä poikkeusta
-            // throw new SailoException("Tallettamisessa ongelmia: " +
-            // e.getMessage());
         } catch (FileNotFoundException ex) {
             throw new SailoException(
                     "Tiedosto " + ftied.getName() + " ei aukea");
