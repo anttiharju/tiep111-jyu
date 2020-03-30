@@ -82,7 +82,6 @@ public class Kirjahylly {
      * @param kir uusi kirja
      */
     public void korvaa(int vid, Kirja kir) {
-        System.out.println(kir == null);
         kirjat.korvaa(vid, kir);
     }
 

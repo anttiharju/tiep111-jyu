@@ -122,6 +122,16 @@ public class Kustantajat implements Iterable<Kustantaja> {
     /**
      * Tallentaa kustantajat tiedostoon.
      * @throws SailoException jos tallennus epäonnistuu
+     * Tiedoston muoto:
+     * <pre>
+     *  #id|kustantaja
+     *  1|Random House
+     *  2|Victor Gollancz
+     *  3|John Murray
+     *  4|AST
+     *  5|Orion Publishing Group
+     *  
+     * </pre>
      */
     public void tallenna() throws SailoException {
         if (!muutettu)
