@@ -37,6 +37,22 @@ public class KirjahyllyGUIController implements Initializable {
     @FXML
     private TextField hakuehto;
     @FXML
+    private TextField nNimi;
+    @FXML
+    private TextField nKirjailija;
+    @FXML
+    private TextField nKustantaja;
+    @FXML
+    private TextField nVuosi;
+    @FXML
+    private TextField nKuvaus;
+    @FXML
+    private TextField nLuettu;
+    @FXML
+    private TextField nArvio;
+    @FXML
+    private TextField nLisatietoja;
+    @FXML
     private ComboBoxChooser<String> cbKentat;
     @FXML
     private Label viesti;
@@ -121,19 +137,12 @@ public class KirjahyllyGUIController implements Initializable {
     private Kirjahylly hylly;
     private Kirja kirjaKohdalla;
     private Nippu nippu = new Nippu(null, null);
-    private TextArea areaKirja = new TextArea();
     private String hyllynNimi = "antti";
 
     /**
-     * Tekee tarvittavat muut alustukset, nyt vaihdetaan GridPanen tilalle
-     * yksi iso tekstikenttä, johon voidaan tulostaa kirjojen tiedot.
-     * Alustetaan myös kirjalistan kuuntelija.
+     * Alustetaan kirjalistan kuuntelija.
      */
     protected void alusta() {
-        panelKirja.setContent(areaKirja);
-        areaKirja.setFont(new Font("Courier New", 12));
-        panelKirja.setFitToHeight(true);
-
         chooserKirjat.clear();
         chooserKirjat.addSelectionListener(e -> naytaKirja());
     }
@@ -223,14 +232,35 @@ public class KirjahyllyGUIController implements Initializable {
         kirjaKohdalla = chooserKirjat.getSelectedObject();
 
         if (kirjaKohdalla == null) {
-            areaKirja.clear();
+            // tyhjenna();
             return;
         }
-        areaKirja.setText("");
-        try (PrintStream os = TextAreaOutputStream
-                .getTextPrintStream(areaKirja)) {
-            kirjaKohdalla.tulosta(os);
-        }
+        nNimi.setText(kirjaKohdalla.getNimi());
+        nKirjailija.setText(hylly.annaKirjailija(kirjaKohdalla).getNimi());
+        nKustantaja.setText(hylly.annaKustantaja(kirjaKohdalla).getNimi());
+        nVuosi.setText("" + kirjaKohdalla.getVuosi());
+        nKuvaus.setText(kirjaKohdalla.getKuvaus());
+        nLuettu.setText(kirjaKohdalla.getLuettu());
+        nArvio.setText("" + kirjaKohdalla.getArvio());
+        nLisatietoja.setText(kirjaKohdalla.getLisatietoja());
+        viesti.setText("");
+
+    }
+
+
+    /**
+     * Tyhjentään tekstikentät 
+     */
+    public void tyhjenna() {
+        nNimi.setText("");
+        nKirjailija.setPromptText("");
+        nKustantaja.setPromptText("");
+        nVuosi.setText("");
+        nKuvaus.setText("");
+        nLuettu.setText("");
+        nArvio.setText("");
+        nLisatietoja.setText("");
+        viesti.setText("");
     }
 
 
@@ -300,8 +330,6 @@ public class KirjahyllyGUIController implements Initializable {
         kirjaKohdalla = chooserKirjat.getSelectedObject();
         if (kirjaKohdalla == null)
             return;
-
-        System.out.println(hylly.getKirjailijat().getLkm());
         nippu.set(hylly, kirjaKohdalla);
         nippu = ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
@@ -310,6 +338,7 @@ public class KirjahyllyGUIController implements Initializable {
         kirjaKohdalla = nippu.getKirja();
         hylly.korvaa(kirjaKohdalla.getId(), kirjaKohdalla);
         naytaKirja();
+        hae(0);
     }
 
 

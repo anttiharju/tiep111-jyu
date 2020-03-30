@@ -179,10 +179,8 @@ public class Kirjat implements Iterable<Kirja> {
             fo.println(getKokoNimi());
             fo.println(
                     "#id|kirjan nimi|kirjailija|kustantaja|vuosi|lyhyt kuvaus|luettu|arvio|lisätietoja");
-            for (Kirja k : this) {
-                System.out.println(k.getNimi());
+            for (Kirja k : this)
                 fo.println(k.toString());
-            }
         } catch (FileNotFoundException ex) {
             throw new SailoException(
                     "Tiedosto " + ftied.getName() + " ei aukea");

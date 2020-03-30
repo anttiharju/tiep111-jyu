@@ -122,6 +122,15 @@ public class Kirjailijat implements Iterable<Kirjailija> {
     /**
      * Tallentaa kirjailijat tiedostoon.
      * @throws SailoException jos tallennus epäonnistuu
+     * Tiedoston muoto:
+     * <pre>
+     *  #id|kirjailija
+     *  1|Ernest Cline
+     *  2|Dmitri Gluhovski
+     *  3|Randall Munroe
+     *  4|Greg Egan
+     *  
+     * </pre>
      */
     public void tallenna() throws SailoException {
         if (!muutettu)
@@ -135,10 +144,8 @@ public class Kirjailijat implements Iterable<Kirjailija> {
         try (PrintWriter fo = new PrintWriter(
                 new FileWriter(ftied.getCanonicalPath()))) {
             fo.println("#id|kirjailija");
-            for (Kirjailija kir : this) {
-                System.out.println(kir.getNimi());
+            for (Kirjailija kir : this)
                 fo.println(kir.toString());
-            }
         } catch (FileNotFoundException ex) {
             throw new SailoException(
                     "Tiedosto " + ftied.getName() + " ei aukea");
