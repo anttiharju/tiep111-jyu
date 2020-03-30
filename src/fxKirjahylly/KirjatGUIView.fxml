@@ -151,42 +151,42 @@
                                     <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                  </GridPane.margin>
                               </Label>
-                              <TextField fx:id="nNimi" GridPane.columnIndex="1">
+                              <TextField fx:id="nNimi" editable="false" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="15.0" right="50.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="nKirjailija" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <TextField fx:id="nKirjailija" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="15.0" right="50.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="nKustantaja" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <TextField fx:id="nKustantaja" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="15.0" right="50.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="nJulkaisuvuosi" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <TextField fx:id="nVuosi" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="15.0" right="50.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="nKuvaus" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <TextField fx:id="nKuvaus" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="15.0" right="50.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="nLuettu" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                              <TextField fx:id="nLuettu" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <GridPane.margin>
                                     <Insets left="15.0" right="50.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="nArvio" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                              <TextField fx:id="nArvio" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                  <GridPane.margin>
                                     <Insets left="15.0" right="50.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="nLisatietoja" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                              <TextField fx:id="nLisatietoja" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                  <GridPane.margin>
                                     <Insets left="15.0" right="50.0" />
                                  </GridPane.margin>

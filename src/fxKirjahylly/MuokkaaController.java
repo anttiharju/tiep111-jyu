@@ -6,7 +6,6 @@ import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import kirjahylly.Kirja;
@@ -32,7 +31,7 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
     @FXML
     private TextField mVuosi;
     @FXML
-    private TextArea mKuvaus;
+    private TextField mKuvaus;
     @FXML
     private TextField mLuettu;
     @FXML
