@@ -20,9 +20,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
+import kirjahylly.Nippu;
 import kirjahylly.SailoException;
 
 /**
@@ -37,7 +39,7 @@ public class KirjahyllyGUIController implements Initializable {
     @FXML
     private ComboBoxChooser<String> cbKentat;
     @FXML
-    private Label labelVirhe;
+    private Label viesti;
     @FXML
     private ScrollPane panelKirja;
     @FXML
@@ -118,6 +120,7 @@ public class KirjahyllyGUIController implements Initializable {
 
     private Kirjahylly hylly;
     private Kirja kirjaKohdalla;
+    private Nippu nippu = new Nippu(null, null);
     private TextArea areaKirja = new TextArea();
     private String hyllynNimi = "antti";
 
@@ -138,12 +141,12 @@ public class KirjahyllyGUIController implements Initializable {
 
     private void naytaVirhe(String virhe) {
         if (virhe == null || virhe.isEmpty()) {
-            labelVirhe.setText("");
-            labelVirhe.getStyleClass().removeAll("virhe");
+            viesti.setText("");
+            viesti.getStyleClass().removeAll("virhe");
             return;
         }
-        labelVirhe.setText(virhe);
-        labelVirhe.getStyleClass().add("virhe");
+        viesti.setText(virhe);
+        viesti.getStyleClass().add("virhe");
     }
 
 
@@ -191,6 +194,8 @@ public class KirjahyllyGUIController implements Initializable {
     private String tallenna() {
         try {
             hylly.tallenna();
+            viesti.setTextFill(Color.GREEN);
+            viesti.setText("Tallennettu!");
             return null;
         } catch (SailoException e) {
             Dialogs.showMessageDialog(
@@ -205,7 +210,7 @@ public class KirjahyllyGUIController implements Initializable {
      * @return true jos saa sulkea sovelluksen, false jos ei
      */
     public boolean voikoSulkea() {
-        tallenna();
+        // tallenna(); // hyi
         return true;
     }
 
@@ -295,9 +300,16 @@ public class KirjahyllyGUIController implements Initializable {
         kirjaKohdalla = chooserKirjat.getSelectedObject();
         if (kirjaKohdalla == null)
             return;
-        ModalController.showModal(
+
+        System.out.println(hylly.getKirjailijat().getLkm());
+        nippu.set(hylly, kirjaKohdalla);
+        nippu = ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
-                "Muokkaa", null, kirjaKohdalla);
+                "Muokkaa", null, nippu);
+        hylly = nippu.getHylly();
+        kirjaKohdalla = nippu.getKirja();
+        hylly.korvaa(kirjaKohdalla.getId(), kirjaKohdalla);
+        naytaKirja();
     }
 
 

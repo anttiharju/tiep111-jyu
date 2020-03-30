@@ -136,6 +136,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
                 new FileWriter(ftied.getCanonicalPath()))) {
             fo.println("#id|kirjailija");
             for (Kirjailija kir : this) {
+                System.out.println(kir.getNimi());
                 fo.println(kir.toString());
             }
         } catch (FileNotFoundException ex) {

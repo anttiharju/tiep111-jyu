@@ -76,6 +76,17 @@ public class Kirjahylly {
     }
 
 
+    /**
+     * Korvaa annetulla id:llä löytyvän kirjan annetulla kirjalla
+     * @param vid korvattavan kirjan id
+     * @param kir uusi kirja
+     */
+    public void korvaa(int vid, Kirja kir) {
+        System.out.println(kir == null);
+        kirjat.korvaa(vid, kir);
+    }
+
+
     /** 
      * Palauttaa "taulukossa" hakuehtoon vastaavien kirjojen viitteet 
      * @param hakuehto hakuehto  
@@ -109,6 +120,34 @@ public class Kirjahylly {
      */
     public Kustantaja annaKustantaja(Kirja kirja) {
         return kustantajat.annaKustantaja(kirja.getKustantajaId());
+    }
+
+
+    /**
+     * Etsii tietyn nimisen kirjailijan
+     * @param nimi etsittävän kirjailijan nimi
+     * @param oletus arvo joka palautetaan, jos ei löydetä kirjailijaa
+     * @return kirjailijan id:n
+     */
+    public int getKirjailijanId(String nimi, int oletus) {
+        for (Kirjailija kirjailija : kirjailijat)
+            if (kirjailija.getNimi().equals(nimi))
+                return kirjailija.getId();
+        return oletus;
+    }
+
+
+    /**
+     * Etsii tietyn nimisen kustantajan
+     * @param nimi etsittävän kirjailijan nimi
+     * @param oletus arvo joka palautetaan, jos ei löydetä kustantajaa
+     * @return kustantajan id:n
+     */
+    public int getKustantajanId(String nimi, int oletus) {
+        for (Kustantaja kustantaja : kustantajat)
+            if (kustantaja.getNimi().equals(nimi))
+                return kustantaja.getId();
+        return oletus;
     }
 
 
@@ -175,6 +214,26 @@ public class Kirjahylly {
         if (!"".equals(virhe))
             throw new SailoException(virhe);
 
+    }
+
+
+    /**
+     * Comboboxien täyttöä varten
+     * @return kirjailijat
+     * TODO: palauta klooni
+     */
+    public Kirjailijat getKirjailijat() {
+        return kirjailijat;
+    }
+
+
+    /**
+     * Comboboxien täyttöä varten
+     * @return kustantajat
+     * TODO: palauta klooni
+     */
+    public Kustantajat getKustantajat() {
+        return kustantajat;
     }
 
 
