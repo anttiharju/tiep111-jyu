@@ -235,7 +235,7 @@
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
 				</Button>
-            <Label fx:id="labelVirhe">
+            <Label fx:id="viesti">
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
