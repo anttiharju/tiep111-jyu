@@ -228,12 +228,12 @@ public class KirjahyllyGUIController implements Initializable {
         kirjaKohdalla = chooserKirjat.getSelectedObject();
 
         if (kirjaKohdalla == null) {
-            // tyhjenna();
+            tyhjenna();
             return;
         }
         nNimi.setText(kirjaKohdalla.getNimi());
-        nKirjailija.setText(hylly.annaKirjailija(kirjaKohdalla).getNimi());
-        nKustantaja.setText(hylly.annaKustantaja(kirjaKohdalla).getNimi());
+        nKirjailija.setText(hylly.kirjanKirjailija(kirjaKohdalla));
+        nKustantaja.setText(hylly.kirjanKustantaja(kirjaKohdalla));
         nVuosi.setText("" + kirjaKohdalla.getVuosi());
         nKuvaus.setText(kirjaKohdalla.getKuvaus());
         nLuettu.setText(kirjaKohdalla.getLuettu());

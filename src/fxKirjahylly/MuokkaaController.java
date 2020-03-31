@@ -189,7 +189,7 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         var iterator = k.iterator();
 
         // Lisätään valitun kirjan kirjailija ekana jotta se olisi valittuna
-        String kirjailija = hylly.annaKirjailija(kirjaKohdalla).getNimi();
+        String kirjailija = hylly.kirjanKirjailija(kirjaKohdalla);
         sisalto.append(kirjailija).append("\n");
 
         for (int i = 0; i < k.getLkm(); i++) {
@@ -217,7 +217,7 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         var iterator = k.iterator();
 
         // Lisätään valitun kirjan kirjailija ekana jotta se olisi valittuna
-        String kustantaja = hylly.annaKustantaja(kirjaKohdalla).getNimi();
+        String kustantaja = hylly.kirjanKustantaja(kirjaKohdalla);
         sisalto.append(kustantaja).append("\n");
 
         for (int i = 0; i < k.getLkm(); i++) {
