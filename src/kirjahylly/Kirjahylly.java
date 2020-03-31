@@ -204,32 +204,50 @@ public class Kirjahylly {
 
 
     /**
+     * ComboBoxChooseria varten tehty
+     * @param eka kirjailija jonka halutaan olevan ensimmäisenä
+     * @return kaikki kirjailijat, tietty kirjailija ensimmäisenä
+     */
+    public String annaKirjailijat(Kirja eka) {
+        String kirjailija = kirjanKirjailija(eka);
+        StringBuilder sb = new StringBuilder(kirjailija).append("\n");
+
+        var iterator = kirjailijat.iterator();
+        for (int i = 0; i < kirjailijat.getLkm(); i++) {
+            String nyk = iterator.next().getNimi();
+            if (!nyk.equals(kirjailija))
+                sb.append(nyk).append("\n");
+        }
+        return sb.toString();
+    }
+
+
+    /**
+     * ComboBoxChooseria varten tehty
+     * @param eka kustantaja jonka halutaan olevan ensimmäisenä
+     * @return kaikki kustantajat, tietty kustantaja ensimmäisenä
+     */
+    public String annaKustantajat(Kirja eka) {
+        String kustantaja = kirjanKustantaja(eka);
+        StringBuilder sb = new StringBuilder(kustantaja).append("\n");
+
+        var iterator = kustantajat.iterator();
+        for (int i = 0; i < kustantajat.getLkm(); i++) {
+            String nyk = iterator.next().getNimi();
+            if (!nyk.equals(kustantaja))
+                sb.append(nyk).append("\n");
+        }
+        return sb.toString();
+    }
+
+
+    /**
      * Palauttaa annetun kirjan kustantajan nimen
      * @param kirja kirja jonka kustantajan nimi halutaan
      * @return kirjan kustantajan nimi
      */
     public String kirjanKustantaja(Kirja kirja) {
         return kustantajat.annaKustantaja(kirja.getKustantajaId()).getNimi();
-    }
-
-
-    /**
-     * Comboboxien täyttöä varten
-     * @return kirjailijat
-     * TODO: palauta klooni
-     */
-    public Kirjailijat getKirjailijat() {
-        return kirjailijat;
-    }
-
-
-    /**
-     * Comboboxien täyttöä varten
-     * @return kustantajat
-     * TODO: palauta klooni
-     */
-    public Kustantajat getKustantajat() {
-        return kustantajat;
     }
 
 
