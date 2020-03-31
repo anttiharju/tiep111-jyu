@@ -181,9 +181,11 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
      */
     public void setKirjailijat() {
         mKirjailija.setRivit(hylly.annaKirjailijat(kirjaKohdalla));
+
         if (mKirjailija.getSelectedText().equals("null"))
             mKirjailija.setRivit(
                     mKirjailija.getRivit().replace("null", "Ei valittu"));
+
     }
 
 
