@@ -14,8 +14,8 @@ import static kanta.apu.*;
  * @version 28.3.2020 mallin mukaiseksi
  */
 public class Kustantaja {
-    private int id;
-    private String nimi;
+    private int id = 0;
+    private String nimi = "";
 
     private static int seuraavaId = 1;
 

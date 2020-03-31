@@ -58,21 +58,51 @@ public class Kirjahylly {
 
     /**
      * Lisätään uusi kirjailija kirjahyllyyn
-     * @param kir lisättävä kirjailija
+     * @param kirjailija lisättävä kirjailija
      * @throws SailoException jos tulee ongelmia
      */
-    public void lisaa(Kirjailija kir) throws SailoException {
-        kirjailijat.lisaa(kir);
+    public void lisaa(Kirjailija kirjailija) throws SailoException {
+        kirjailijat.lisaa(kirjailija);
     }
 
 
     /**
      * Lisätään uusi kustantaja kirjahyllyyn
-     * @param kus lisättävä kustantaja
+     * @param kustantaja lisättävä kustantaja
      * @throws SailoException jos tulee ongelmia
      */
-    public void lisaa(Kustantaja kus) throws SailoException {
-        kustantajat.lisaa(kus);
+    public void lisaa(Kustantaja kustantaja) throws SailoException {
+        kustantajat.lisaa(kustantaja);
+    }
+
+
+    /**
+     * Lisätään uusi kirjailija kirjahyllyyn
+     * @param nimi lisättävä kirjailija
+     * @return onnistuiko vai eikö
+     */
+    public boolean poistaKirjailija(String nimi) {
+        for (Kirjailija kirjailija : kirjailijat)
+            if (kirjailija.getNimi().equals(nimi)) {
+                kirjailijat.poista(kirjailija);
+                return true;
+            }
+        return false;
+    }
+
+
+    /**
+     * Lisätään uusi kustantaja kirjahyllyyn
+     * @param nimi poistettava kustantaja
+     * @return onnistuiko vai eikö
+     */
+    public boolean poistaKustantaja(String nimi) {
+        for (Kustantaja kustantaja : kustantajat)
+            if (kustantaja.getNimi().equals(nimi)) {
+                kustantajat.poista(kustantaja);
+                return true;
+            }
+        return false;
     }
 
 
@@ -204,6 +234,16 @@ public class Kirjahylly {
 
 
     /**
+     * Palauttaa annetun kirjan kustantajan nimen
+     * @param kirja kirja jonka kustantajan nimi halutaan
+     * @return kirjan kustantajan nimi
+     */
+    public String kirjanKustantaja(Kirja kirja) {
+        return kustantajat.annaKustantaja(kirja.getKustantajaId()).getNimi();
+    }
+
+
+    /**
      * ComboBoxChooseria varten tehty
      * @param eka kirjailija jonka halutaan olevan ensimmäisenä
      * @return kaikki kirjailijat, tietty kirjailija ensimmäisenä
@@ -238,16 +278,6 @@ public class Kirjahylly {
                 sb.append(nyk).append("\n");
         }
         return sb.toString();
-    }
-
-
-    /**
-     * Palauttaa annetun kirjan kustantajan nimen
-     * @param kirja kirja jonka kustantajan nimi halutaan
-     * @return kirjan kustantajan nimi
-     */
-    public String kirjanKustantaja(Kirja kirja) {
-        return kustantajat.annaKustantaja(kirja.getKustantajaId()).getNimi();
     }
 
 

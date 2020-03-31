@@ -326,7 +326,7 @@ public class KirjahyllyGUIController implements Initializable {
         kirjaKohdalla = chooserKirjat.getSelectedObject();
         if (kirjaKohdalla == null)
             return;
-        nippu.set(hylly, kirjaKohdalla);
+        nippu.set(hylly, kirjaKohdalla); // TODO: kloonit
         nippu = ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
                 "Muokkaa", null, nippu);

@@ -44,6 +44,16 @@ public class Kustantajat implements Iterable<Kustantaja> {
 
 
     /**
+     * Poistaa kustantajan tietorakenteesta.
+     * @param kustantaja poistettava kustantaja.
+     */
+    public void poista(Kustantaja kustantaja) {
+        alkiot.remove(kustantaja);
+        muutettu = true;
+    }
+
+
+    /**
      * Lukee kustantajat tiedostosta
      * @param tied tiedoston nimen alkuosa
      * @throws SailoException jos lukeminen epäonnistuu
