@@ -36,6 +36,15 @@ public class Kirjat implements Iterable<Kirja> {
 
 
     /**
+     * Asettaa kokoNimen
+     * @param kokoNimi hyllyn uusi nimi
+     */
+    public Kirjat(String kokoNimi) {
+        this.kokoNimi = kokoNimi;
+    }
+
+
+    /**
      * Lisää uuden kirjan tietorakenteeseen Ottaa kirjan omistukseensa.
      * @param kirja lisätäävän jäsenen viite. Huom tietorakenne muuttuu omistajaksi
      * @throws SailoException jos tietorakenne on jo täynnä
@@ -195,7 +204,7 @@ public class Kirjat implements Iterable<Kirja> {
 
     /**
      * Palauttaa hyllyn koko nimen
-     * @return Hyllyn koko nimi merkkijononna
+     * @return hyllyn koko nimi merkkijonona
      */
     public String getKokoNimi() {
         return kokoNimi;

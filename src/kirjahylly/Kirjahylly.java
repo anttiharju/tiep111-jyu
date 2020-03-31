@@ -182,7 +182,7 @@ public class Kirjahylly {
      */
     public void lueTiedostosta(String nimi) throws SailoException {
         // jos luetaan olemassa olevaan niin helpoin tyhjentää näin
-        kirjat = new Kirjat();
+        kirjat = new Kirjat(nimi);
         kirjailijat = new Kirjailijat();
         kustantajat = new Kustantajat();
 
