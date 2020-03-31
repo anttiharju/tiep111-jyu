@@ -98,29 +98,6 @@ public class Kirjahylly {
         return kirjat.etsi(hakuehto, k);
     }
 
-    // ei metodia annaKirjailijat / annaKustantajat koska yhdellä kirjalla ei
-    // mun ohjelmassa voi olla montaa kirjailijaa / kustantajaa
-
-
-    /**
-     * @param kirja kirja jonka kirjailija halutaan tietää
-     * @return kirjan kirjailijan
-     * TODO: testaa
-     */
-    public Kirjailija annaKirjailija(Kirja kirja) {
-        return kirjailijat.annaKirjailija(kirja.getKirjailijaId());
-    }
-
-
-    /**
-     * @param kirja kirja jonka kustantaja halutaan tietää
-     * @return kirjan kustantajan
-     * TODO: testaa
-     */
-    public Kustantaja annaKustantaja(Kirja kirja) {
-        return kustantajat.annaKustantaja(kirja.getKustantajaId());
-    }
-
 
     /**
      * Etsii tietyn nimisen kirjailijan
@@ -217,6 +194,26 @@ public class Kirjahylly {
 
 
     /**
+     * Palauttaa annetun kirjan kirjailijan nimen
+     * @param kirja kirja jonka kirjailijan nimi halutaan
+     * @return kirjan kirjailijan nimi
+     */
+    public String kirjanKirjailija(Kirja kirja) {
+        return kirjailijat.annaKirjailija(kirja.getKirjailijaId()).getNimi();
+    }
+
+
+    /**
+     * Palauttaa annetun kirjan kustantajan nimen
+     * @param kirja kirja jonka kustantajan nimi halutaan
+     * @return kirjan kustantajan nimi
+     */
+    public String kirjanKustantaja(Kirja kirja) {
+        return kustantajat.annaKustantaja(kirja.getKustantajaId()).getNimi();
+    }
+
+
+    /**
      * Comboboxien täyttöä varten
      * @return kirjailijat
      * TODO: palauta klooni
@@ -278,10 +275,8 @@ public class Kirjahylly {
             for (Kirja k : kirjat) {
                 System.out.println("Kirja paikassa: " + i);
                 k.tulosta(System.out);
-                Kirjailija kir = hylly.annaKirjailija(k);
-                kir.tulosta(System.out);
-                Kustantaja kus = hylly.annaKustantaja(k);
-                kus.tulosta(System.out);
+                System.out.println(hylly.kirjanKirjailija(k));
+                System.out.println(hylly.kirjanKustantaja(k));
                 i++;
             }
 
