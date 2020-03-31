@@ -133,7 +133,7 @@ public class KirjahyllyGUIController implements Initializable {
     private Kirjahylly hylly;
     private Kirja kirjaKohdalla;
     private Nippu nippu = new Nippu(null, null);
-    private String hyllynNimi = "antti";
+    private String hyllynNimi = "";
 
     /**
      * Alustetaan kirjalistan kuuntelija.

@@ -63,6 +63,7 @@ public class Kirjahylly {
      */
     public void lisaa(Kirjailija kirjailija) throws SailoException {
         kirjailijat.lisaa(kirjailija);
+        kirjailijat.toString();
     }
 
 
@@ -250,10 +251,11 @@ public class Kirjahylly {
      */
     public String annaKirjailijat(Kirja eka) {
         String kirjailija = kirjanKirjailija(eka);
+        StringBuilder sb = new StringBuilder(kirjailija);
         // Pakollinen, muokkaus ei toimi jos kirjailijoita 0 ilman tätä
         if (kirjailija.equals(""))
-            return "null"; // nimenomaan "null" eikä null
-        StringBuilder sb = new StringBuilder(kirjailija).append("\n");
+            sb.append("null"); // nimenomaan "null" eikä null
+        sb.append("\n");
 
         var iterator = kirjailijat.iterator();
         for (int i = 0; i < kirjailijat.getLkm(); i++) {
@@ -272,10 +274,11 @@ public class Kirjahylly {
      */
     public String annaKustantajat(Kirja eka) {
         String kustantaja = kirjanKustantaja(eka);
-        // Pakollinen, muokkaus ei toimi jos kustantajia 0 ilman tätä
+        StringBuilder sb = new StringBuilder(kustantaja);
+        // Pakollinen, muokkaus ei toimi jos kirjailijoita 0 ilman tätä
         if (kustantaja.equals(""))
-            return "null"; // nimenomaan "null" eikä null
-        StringBuilder sb = new StringBuilder(kustantaja).append("\n");
+            sb.append("null"); // nimenomaan "null" eikä null
+        sb.append("\n");
 
         var iterator = kustantajat.iterator();
         for (int i = 0; i < kustantajat.getLkm(); i++) {
