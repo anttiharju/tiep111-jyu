@@ -44,6 +44,16 @@ public class Kirjailijat implements Iterable<Kirjailija> {
 
 
     /**
+     * Poistaa kirjailijan tietorakenteesta.
+     * @param kirjailija poistettava kirjailija.
+     */
+    public void poista(Kirjailija kirjailija) {
+        alkiot.remove(kirjailija);
+        muutettu = true;
+    }
+
+
+    /**
      * Lukee kirjailijat tiedostosta
      * @param tied tiedoston nimen alkuosa
      * @throws SailoException jos lukeminen epäonnistuu
