@@ -62,7 +62,6 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         tmp.rekisteroi();
         hylly.lisaa(tmp); // sailoexception
         setKirjailijat();
-
     }
 
 
@@ -80,13 +79,14 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
 
     @FXML
     private void handlePoistaKirjailija() {
-        Dialogs.showMessageDialog("Vielä ei osata poistaa kirjailijoita!");
+        hylly.poistaKirjailija(mKirjailija.getSelectedText());
+        hylly.toString();
     }
 
 
     @FXML
     private void handlePoistaKustantaja() {
-        Dialogs.showMessageDialog("Vielä ei osata poistaa kustantajia!");
+        hylly.poistaKustantaja(mKustantaja.getSelectedText());
     }
 
     // ========================================================
@@ -132,6 +132,8 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         kirjaKohdalla.setLuettu(mLuettu.getText());
         kirjaKohdalla.setArvio(Integer.parseInt(mArvio.getText()));
         kirjaKohdalla.setLisatietoja(mLisatietoja.getText());
+
+        nippu.set(hylly, kirjaKohdalla);
 
         viesti.setTextFill(Color.GREEN);
         viesti.setText("Tallennettu!");

@@ -79,7 +79,7 @@
 								<TextField fx:id="hakuehto" BorderPane.alignment="CENTER" />
 							</bottom>
 							<right>
-								<ComboBoxChooser fx:id="cbKentat" onAction="#handleHakuehto" prefHeight="25.0" prefWidth="110.0" rivit="Aakkoset&#10;Arvosana&#10;Ääkköset" BorderPane.alignment="CENTER" />
+								<ComboBoxChooser fx:id="cbKentat" onAction="#handleHakuehto" prefHeight="25.0" prefWidth="110.0" rivit="Oletus&#10;Aakkoset" BorderPane.alignment="CENTER" />
 							</right>
 						</BorderPane>
 					</top>
