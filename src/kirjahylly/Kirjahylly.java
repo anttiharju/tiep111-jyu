@@ -250,6 +250,9 @@ public class Kirjahylly {
      */
     public String annaKirjailijat(Kirja eka) {
         String kirjailija = kirjanKirjailija(eka);
+        // Pakollinen, muokkaus ei toimi jos kirjailijoita 0 ilman tätä
+        if (kirjailija.equals(""))
+            return "null"; // nimenomaan "null" eikä null
         StringBuilder sb = new StringBuilder(kirjailija).append("\n");
 
         var iterator = kirjailijat.iterator();
@@ -269,6 +272,9 @@ public class Kirjahylly {
      */
     public String annaKustantajat(Kirja eka) {
         String kustantaja = kirjanKustantaja(eka);
+        // Pakollinen, muokkaus ei toimi jos kustantajia 0 ilman tätä
+        if (kustantaja.equals(""))
+            return "null"; // nimenomaan "null" eikä null
         StringBuilder sb = new StringBuilder(kustantaja).append("\n");
 
         var iterator = kustantajat.iterator();
