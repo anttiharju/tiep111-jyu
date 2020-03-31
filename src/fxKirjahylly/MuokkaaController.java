@@ -61,7 +61,7 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         Kirjailija tmp = new Kirjailija(nimi);
         tmp.rekisteroi();
         hylly.lisaa(tmp); // sailoexception
-        paivitaKirjailijatComboBox();
+        setKirjailijat();
 
     }
 
@@ -74,7 +74,7 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         Kustantaja tmp = new Kustantaja(nimi);
         tmp.rekisteroi();
         hylly.lisaa(tmp); // sailoexception
-        paivitaKustantajatComboBox();
+        setKustantajat();
     }
 
 
@@ -162,8 +162,8 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         if (kirja == null)
             return;
         mNimi.setText(kirja.getNimi());
-        paivitaKirjailijatComboBox();
-        paivitaKustantajatComboBox();
+        setKirjailijat();
+        setKustantajat();
         mVuosi.setText("" + kirja.getVuosi());
         mKuvaus.setText(kirja.getKuvaus());
         mLuettu.setText(kirja.getLuettu());
@@ -176,25 +176,9 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
     /**
      * Päivittää comboboxchooserin niin, että kirjan kirjailija
      * on ensimmäisenä (ts. valittuna) ja kaikki muut mahdolliset kirjailijat ovat valittavissa
-     * TODO: yhdistä kustantajaversio ja tämä samaksi
-     * TODO: voi ehkä asettaa vain valitun eikä tarvi tehdä tällästä tyhmää custom järjestystä?
      */
-    public void paivitaKirjailijatComboBox() {
-        StringBuilder sisalto = new StringBuilder("");
-        var k = hylly.getKirjailijat();
-        var iterator = k.iterator();
-
-        // Lisätään valitun kirjan kirjailija ekana jotta se olisi valittuna
-        String kirjailija = hylly.kirjanKirjailija(kirjaKohdalla);
-        sisalto.append(kirjailija).append("\n");
-
-        for (int i = 0; i < k.getLkm(); i++) {
-            var tmp = iterator.next();
-            // ei saa lisätä uudestaan ekana lisättyä (kallista iffitellä?)
-            if (tmp.getNimi() != kirjailija)
-                sisalto.append(tmp.getNimi()).append("\n");
-        }
-        mKirjailija.setRivit(sisalto.toString());
+    public void setKirjailijat() {
+        mKirjailija.setRivit(hylly.annaKirjailijat(kirjaKohdalla));
         if (mKirjailija.getSelectedText().equals("null"))
             mKirjailija.setRivit(
                     mKirjailija.getRivit().replace("null", "Ei valittu"));
@@ -204,26 +188,9 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
     /**
      * Päivittää comboboxchooserin niin, että kirjan kustantaja
      * on ensimmäisenä (ts. valittuna) ja kaikki muut mahdolliset kustantajat ovat valittavissa
-     * TODO: yhdistä kirjailijaversio ja tämä samaksi
-     * TODO: voi ehkä asettaa vain valitun eikä tarvi tehdä tällästä tyhmää custom järjestystä?
      */
-    public void paivitaKustantajatComboBox() {
-        StringBuilder sisalto = new StringBuilder("");
-        var k = hylly.getKustantajat();
-        var iterator = k.iterator();
-
-        // Lisätään valitun kirjan kirjailija ekana jotta se olisi valittuna
-        String kustantaja = hylly.kirjanKustantaja(kirjaKohdalla);
-        sisalto.append(kustantaja).append("\n");
-
-        for (int i = 0; i < k.getLkm(); i++) {
-            var tmp = iterator.next();
-            // ei saa lisätä uudestaan ekana lisättyä (kallista iffitellä?)
-            if (tmp.getNimi() != kustantaja)
-                sisalto.append(tmp.getNimi()).append("\n");
-        }
-
-        mKustantaja.setRivit(sisalto.toString());
+    public void setKustantajat() {
+        mKustantaja.setRivit(hylly.annaKustantajat(kirjaKohdalla));
         if (mKustantaja.getSelectedText().equals("null"))
             mKustantaja.setRivit(
                     mKustantaja.getRivit().replace("null", "Ei valittu"));
