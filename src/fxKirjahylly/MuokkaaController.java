@@ -44,8 +44,6 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
     @FXML
     private void handleTallenna() {
         tallenna();
-        viesti.setTextFill(Color.GREEN);
-        viesti.setText("Tallennettu!");
     }
 
 
@@ -120,11 +118,6 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         mNimi.requestFocus();
     }
 
-    // private String kuvaus;
-    // private String luettu;
-    // private int arvio;
-    // private String lisatietoja;
-
 
     private void tallenna() {
         kirjaKohdalla.setNimi(mNimi.getText());
@@ -139,6 +132,9 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         kirjaKohdalla.setLuettu(mLuettu.getText());
         kirjaKohdalla.setArvio(Integer.parseInt(mArvio.getText()));
         kirjaKohdalla.setLisatietoja(mLisatietoja.getText());
+
+        viesti.setTextFill(Color.GREEN);
+        viesti.setText("Tallennettu!");
     }
 
 
