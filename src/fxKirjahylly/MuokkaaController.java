@@ -49,7 +49,7 @@ public class MuokkaaController
     private Label viesti;
 
     @FXML
-    private void handleTallenna() throws SailoException {
+    private void handleTallenna() {
         tallenna();
     }
 
@@ -88,10 +88,8 @@ public class MuokkaaController
     private Nippu nippu;
     private Kirja kirjaKohdalla;
     private Kirjahylly hylly;
-    private Kirjailijat kirLisaaBuffer = new Kirjailijat();
-    private Kustantajat kusLisaaBuffer = new Kustantajat();
-    private Kirjailijat kirPoistaBuffer = new Kirjailijat();
-    private Kustantajat kusPoistaBuffer = new Kustantajat();
+    private Kirjailijat tmpKirjailijat = new Kirjailijat();
+    private Kustantajat tmpKustantajat = new Kustantajat();
 
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
@@ -104,6 +102,8 @@ public class MuokkaaController
         nippu = oletus;
         kirjaKohdalla = oletus.getKirja();
         hylly = oletus.getHylly();
+        tmpKirjailijat = hylly.annaKirjailijat();
+        tmpKustantajat = hylly.annaKustantajat();
         naytaKirja(kirjaKohdalla);
     }
 
@@ -123,32 +123,20 @@ public class MuokkaaController
     }
 
 
-    private void tallenna() throws SailoException {
+    private void tallenna() {
         kirjaKohdalla.setNimi(mNimi.getText());
         kirjaKohdalla.setKirjailija(
-                hylly.getKirjailijanId(mKirjailija.getSelectedText(),
-                        kirjaKohdalla.getKirjailijaId()));
+                tmpKirjailijat.getWithId(mKirjailija.getSelectedText()));
         kirjaKohdalla.setKustantaja(
-                hylly.getKustantajanId(mKustantaja.getSelectedText(),
-                        kirjaKohdalla.getKustantajaId()));
+                tmpKustantajat.getWithId(mKustantaja.getSelectedText()));
         kirjaKohdalla.setVuosi(Integer.parseInt(mVuosi.getText()));
         kirjaKohdalla.setKuvaus(mKuvaus.getText());
         kirjaKohdalla.setLuettu(mLuettu.getText());
         kirjaKohdalla.setArvio(Integer.parseInt(mArvio.getText()));
         kirjaKohdalla.setLisatietoja(mLisatietoja.getText());
 
-        for (Kirjailija kirjailija : kirPoistaBuffer)
-            hylly.poistaKirjailija(kirjailija.getNimi());
-        for (Kirjailija kirjailija : kirLisaaBuffer) {
-            kirjailija.rekisteroi();
-            hylly.lisaa(kirjailija);
-        }
-        for (Kustantaja kustantaja : kusPoistaBuffer)
-            hylly.poistaKustantaja(kustantaja.getNimi());
-        for (Kustantaja kustantaja : kusLisaaBuffer) {
-            kustantaja.rekisteroi();
-            hylly.lisaa(kustantaja);
-        }
+        hylly.set(tmpKirjailijat);
+        hylly.set(tmpKustantajat);
         // nippu.set(hylly, kirjaKohdalla); // tarpeeton?
 
         viesti.setTextFill(Color.GREEN);
@@ -166,7 +154,8 @@ public class MuokkaaController
         if (nimi == null)
             return;
         Kirjailija tmp = new Kirjailija(nimi);
-        kirLisaaBuffer.lisaa(tmp);
+        tmp.rekisteroi();
+        tmpKirjailijat.lisaa(tmp);
         setKirjailijat();
     }
 
@@ -177,20 +166,18 @@ public class MuokkaaController
             return;
         Kustantaja tmp = new Kustantaja(nimi);
         tmp.rekisteroi();
-        kusLisaaBuffer.lisaa(tmp); // SailoException
+        tmpKustantajat.lisaa(tmp); // SailoException
         setKustantajat();
     }
 
 
     private void poistaKirjailija() {
-        kirPoistaBuffer
-                .lisaa(hylly.annaKirjailija(mKirjailija.getSelectedText()));
+        tmpKirjailijat.poista(mKirjailija.getSelectedText());
     }
 
 
     private void poistaKustantaja() {
-        kusPoistaBuffer
-                .lisaa(hylly.annaKustantaja(mKustantaja.getSelectedText()));
+        tmpKustantajat.poista(mKustantaja.getSelectedText());
     }
 
 
@@ -234,7 +221,7 @@ public class MuokkaaController
      * on ensimmäisenä (ts. valittuna) ja kaikki muut mahdolliset kirjailijat ovat valittavissa
      */
     public void setKirjailijat() {
-        mKirjailija.setRivit(hylly.annaKirjailijat(kirjaKohdalla));
+        mKirjailija.setRivit(annaKirjailijat(kirjaKohdalla));
 
         if (mKirjailija.getSelectedText().equals("null"))
             mKirjailija.setRivit(
@@ -248,10 +235,55 @@ public class MuokkaaController
      * on ensimmäisenä (ts. valittuna) ja kaikki muut mahdolliset kustantajat ovat valittavissa
      */
     public void setKustantajat() {
-        mKustantaja.setRivit(hylly.annaKustantajat(kirjaKohdalla));
+        mKustantaja.setRivit(annaKustantajat(kirjaKohdalla));
         if (mKustantaja.getSelectedText().equals("null"))
             mKustantaja.setRivit(
                     mKustantaja.getRivit().replace("null", "Ei valittu"));
     }
 
+
+    /**
+     * ComboBoxChooseria varten tehty
+     * @param eka kirjailija jonka halutaan olevan ensimmäisenä
+     * @return kaikki kirjailijat, tietty kirjailija ensimmäisenä
+     */
+    public String annaKirjailijat(Kirja eka) {
+        String kirjailija = hylly.kirjanKirjailija(eka);
+        StringBuilder sb = new StringBuilder(kirjailija);
+        // Pakollinen, muokkaus ei toimi jos kirjailijoita ei ole
+        if (kirjailija.equals(""))
+            sb.append("null"); // nimenomaan "null" eikä null
+        sb.append("\n");
+
+        var iterator = tmpKirjailijat.iterator();
+        for (int i = 0; i < tmpKirjailijat.getLkm(); i++) {
+            String nyk = iterator.next().getNimi();
+            if (!nyk.equals(kirjailija))
+                sb.append(nyk).append("\n");
+        }
+        return sb.toString();
+    }
+
+
+    /**
+     * ComboBoxChooseria varten tehty
+     * @param eka kustantaja jonka halutaan olevan ensimmäisenä
+     * @return kaikki kustantajat, tietty kustantaja ensimmäisenä
+     */
+    public String annaKustantajat(Kirja eka) {
+        String kustantaja = hylly.kirjanKustantaja(eka);
+        StringBuilder sb = new StringBuilder(kustantaja);
+        // Pakollinen, muokkaus ei toimi jos kustantajia ei ole
+        if (kustantaja.equals(""))
+            sb.append("null"); // nimenomaan "null" eikä null
+        sb.append("\n");
+
+        var iterator = tmpKustantajat.iterator();
+        for (int i = 0; i < tmpKustantajat.getLkm(); i++) {
+            String nyk = iterator.next().getNimi();
+            if (!nyk.equals(kustantaja))
+                sb.append(nyk).append("\n");
+        }
+        return sb.toString();
+    }
 }
