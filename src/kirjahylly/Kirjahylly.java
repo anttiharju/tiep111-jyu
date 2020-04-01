@@ -15,17 +15,6 @@ public class Kirjahylly {
     private Kustantajat kustantajat = new Kustantajat();
 
     /**
-     * Poistaa hyllystä ne kirjat joilla nro
-     * @param nro viitenumero, jonka mukaan poistetaan
-     * @return montako kirjaa poistettiin
-     * TODO: tee valmiiksi
-     */
-    public int poista(@SuppressWarnings("unused") int nro) {
-        return 0;
-    }
-
-
-    /**
      * Lisää hyllyyn uuden kirjan
      * @param kirja lisättävä kirja
      * @throws SailoException jos lisäystä ei voida tehdä
@@ -80,30 +69,18 @@ public class Kirjahylly {
     /**
      * Lisätään uusi kirjailija kirjahyllyyn
      * @param nimi lisättävä kirjailija
-     * @return onnistuiko vai eikö
      */
-    public boolean poistaKirjailija(String nimi) {
-        for (Kirjailija kirjailija : kirjailijat)
-            if (kirjailija.getNimi().equals(nimi)) {
-                kirjailijat.poista(kirjailija);
-                return true;
-            }
-        return false;
+    public void poistaKirjailija(String nimi) {
+        kirjailijat.poista(nimi);
     }
 
 
     /**
      * Lisätään uusi kustantaja kirjahyllyyn
      * @param nimi poistettava kustantaja
-     * @return onnistuiko vai eikö
      */
-    public boolean poistaKustantaja(String nimi) {
-        for (Kustantaja kustantaja : kustantajat)
-            if (kustantaja.getNimi().equals(nimi)) {
-                kustantajat.poista(kustantaja);
-                return true;
-            }
-        return false;
+    public void poistaKustantaja(String nimi) {
+        kustantajat.poista(nimi);
     }
 
 
@@ -245,6 +222,16 @@ public class Kirjahylly {
 
 
     /**
+     * Palauttaa annetulla nimellä olevan kirjailijan
+     * @param nimi kirjailijan nimi
+     * @return kirjailija olion
+     */
+    public Kirjailija annaKirjailija(String nimi) {
+        return kirjailijat.annaKirjailija(nimi);
+    }
+
+
+    /**
      * ComboBoxChooseria varten tehty
      * @param eka kirjailija jonka halutaan olevan ensimmäisenä
      * @return kaikki kirjailijat, tietty kirjailija ensimmäisenä
@@ -264,6 +251,16 @@ public class Kirjahylly {
                 sb.append(nyk).append("\n");
         }
         return sb.toString();
+    }
+
+
+    /**
+     * Palauttaa annetulla nimellä olevan kirjailijan
+     * @param nimi kirjailijan nimi
+     * @return kirjailija olion
+     */
+    public Kustantaja annaKustantaja(String nimi) {
+        return kustantajat.annaKustantaja(nimi);
     }
 
 
