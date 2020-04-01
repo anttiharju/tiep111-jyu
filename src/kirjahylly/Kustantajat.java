@@ -67,7 +67,7 @@ public class Kustantajat implements Iterable<Kustantaja> {
      *  Kustantaja k22 = new Kustantaja(); k22.tayta(2); 
      *  Kustantaja k12 = new Kustantaja(); k12.tayta(1); 
      *  Kustantaja k23 = new Kustantaja(); k23.tayta(2); 
-     *  String tiedNimi = "tmp_testihylly";
+     *  String tiedNimi = "tmp_testihylly_kustantajat";
      *  File ftied = new File(tiedNimi+".dat");
      *  ftied.delete();
      *  kustantajat.lueTiedostosta(tiedNimi); #THROWS SailoException
