@@ -76,6 +76,15 @@ public class Kirjahylly {
     }
 
 
+    /**
+     * Poistaa annetun kirjan
+     * @param kirja poistettava kirja
+     */
+    public void poista(Kirja kirja) {
+        kirjat.poista(kirja);
+    }
+
+
     /** 
      * Palauttaa "taulukossa" hakuehtoon vastaavien kirjojen viitteet 
      * @param hakuehto hakuehto  
