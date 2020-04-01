@@ -58,11 +58,11 @@ public class KirjatTest {
   @Test
   public void testLueTiedostosta119() throws SailoException {    // Kirjat: 119
     Kirjat kirjat = new Kirjat(); 
-    Kirja k1 = new Kirja(); k1.tayta(); 
-    Kirja k2 = new Kirja(); k2.tayta(); 
-    Kirja k3 = new Kirja(); k3.tayta(); 
-    Kirja k4 = new Kirja(); k4.tayta(); 
-    Kirja k5 = new Kirja(); k5.tayta(); 
+    Kirja k1 = new Kirja(); k1.tayta_test(); 
+    Kirja k2 = new Kirja(); k2.tayta_test(); 
+    Kirja k3 = new Kirja(); k3.tayta_test(); 
+    Kirja k4 = new Kirja(); k4.tayta_test(); 
+    Kirja k5 = new Kirja(); k5.tayta_test(); 
     String tiedNimi = "tmp_testihylly_kirjat"; 
     File ftied = new File(tiedNimi+".dat"); 
     ftied.delete(); 

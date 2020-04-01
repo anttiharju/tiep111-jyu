@@ -478,9 +478,9 @@ public class Kirjat implements Iterable<Kirja> {
         Kirjat kirjat = new Kirjat();
         Kirja m1 = new Kirja(), m2 = new Kirja();
         m1.rekisteroi();
-        m1.tayta();
+        m1.tayta_test();
         m2.rekisteroi();
-        m2.tayta();
+        m2.tayta_test();
 
         kirjat.lisaa(m1);
         kirjat.lisaa(m2);
