@@ -67,24 +67,6 @@ public class Kirjahylly {
 
 
     /**
-     * Lisätään uusi kirjailija kirjahyllyyn
-     * @param nimi lisättävä kirjailija
-     */
-    public void poistaKirjailija(String nimi) {
-        kirjailijat.poista(nimi);
-    }
-
-
-    /**
-     * Lisätään uusi kustantaja kirjahyllyyn
-     * @param nimi poistettava kustantaja
-     */
-    public void poistaKustantaja(String nimi) {
-        kustantajat.poista(nimi);
-    }
-
-
-    /**
      * Korvaa annetulla id:llä löytyvän kirjan annetulla kirjalla
      * @param vid korvattavan kirjan id
      * @param kir uusi kirja
@@ -104,34 +86,6 @@ public class Kirjahylly {
     public Collection<Kirja> etsi(String hakuehto, int k)
             throws SailoException {
         return kirjat.etsi(hakuehto, k);
-    }
-
-
-    /**
-     * Etsii tietyn nimisen kirjailijan
-     * @param nimi etsittävän kirjailijan nimi
-     * @param oletus arvo joka palautetaan, jos ei löydetä kirjailijaa
-     * @return kirjailijan id:n
-     */
-    public int getKirjailijanId(String nimi, int oletus) {
-        for (Kirjailija kirjailija : kirjailijat)
-            if (kirjailija.getNimi().equals(nimi))
-                return kirjailija.getId();
-        return oletus;
-    }
-
-
-    /**
-     * Etsii tietyn nimisen kustantajan
-     * @param nimi etsittävän kirjailijan nimi
-     * @param oletus arvo joka palautetaan, jos ei löydetä kustantajaa
-     * @return kustantajan id:n
-     */
-    public int getKustantajanId(String nimi, int oletus) {
-        for (Kustantaja kustantaja : kustantajat)
-            if (kustantaja.getNimi().equals(nimi))
-                return kustantaja.getId();
-        return oletus;
     }
 
 
@@ -232,25 +186,10 @@ public class Kirjahylly {
 
 
     /**
-     * ComboBoxChooseria varten tehty
-     * @param eka kirjailija jonka halutaan olevan ensimmäisenä
-     * @return kaikki kirjailijat, tietty kirjailija ensimmäisenä
+     * @return kirjailijat kloonin (alkioita ei kloonata)
      */
-    public String annaKirjailijat(Kirja eka) {
-        String kirjailija = kirjanKirjailija(eka);
-        StringBuilder sb = new StringBuilder(kirjailija);
-        // Pakollinen, muokkaus ei toimi jos kirjailijoita 0 ilman tätä
-        if (kirjailija.equals(""))
-            sb.append("null"); // nimenomaan "null" eikä null
-        sb.append("\n");
-
-        var iterator = kirjailijat.iterator();
-        for (int i = 0; i < kirjailijat.getLkm(); i++) {
-            String nyk = iterator.next().getNimi();
-            if (!nyk.equals(kirjailija))
-                sb.append(nyk).append("\n");
-        }
-        return sb.toString();
+    public Kirjailijat annaKirjailijat() {
+        return kirjailijat.clone();
     }
 
 
@@ -265,25 +204,10 @@ public class Kirjahylly {
 
 
     /**
-     * ComboBoxChooseria varten tehty
-     * @param eka kustantaja jonka halutaan olevan ensimmäisenä
-     * @return kaikki kustantajat, tietty kustantaja ensimmäisenä
+     * @return kustantajat kloonin (alkioita ei kloonata)
      */
-    public String annaKustantajat(Kirja eka) {
-        String kustantaja = kirjanKustantaja(eka);
-        StringBuilder sb = new StringBuilder(kustantaja);
-        // Pakollinen, muokkaus ei toimi jos kirjailijoita 0 ilman tätä
-        if (kustantaja.equals(""))
-            sb.append("null"); // nimenomaan "null" eikä null
-        sb.append("\n");
-
-        var iterator = kustantajat.iterator();
-        for (int i = 0; i < kustantajat.getLkm(); i++) {
-            String nyk = iterator.next().getNimi();
-            if (!nyk.equals(kustantaja))
-                sb.append(nyk).append("\n");
-        }
-        return sb.toString();
+    public Kustantajat annaKustantajat() {
+        return kustantajat.clone();
     }
 
 
@@ -337,6 +261,25 @@ public class Kirjahylly {
         } catch (SailoException ex) {
             System.out.println(ex.getMessage());
         }
+
+    }
+
+
+    /**
+     * Asettaa kirjailijat uusiksi (tallennus)
+     * @param tmpKirjailijat uudet kirjailijat
+     */
+    public void set(Kirjailijat tmpKirjailijat) {
+        kirjailijat = tmpKirjailijat;
+    }
+
+
+    /**
+     * Asettaa kustantajat uusiksi (tallennus)
+     * @param tmpKustantajat uudet kustantajat
+     */
+    public void set(Kustantajat tmpKustantajat) {
+        kustantajat = tmpKustantajat;
 
     }
 }
