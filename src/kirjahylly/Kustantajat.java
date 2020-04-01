@@ -54,6 +54,17 @@ public class Kustantajat implements Iterable<Kustantaja> {
 
 
     /**
+     * Poistaa kustantajan tietorakenteesta.
+     * @param nimi poistettavan kustantajan nimi
+     */
+    public void poista(String nimi) {
+        for (Kustantaja kustantaja : alkiot)
+            if (kustantaja.getNimi().equals(nimi))
+                poista(kustantaja);
+    }
+
+
+    /**
      * Lukee kustantajat tiedostosta
      * @param tied tiedoston nimen alkuosa
      * @throws SailoException jos lukeminen epäonnistuu
@@ -291,6 +302,19 @@ public class Kustantajat implements Iterable<Kustantaja> {
         for (Kustantaja kus : alkiot)
             if (kus.getId() == id)
                 return kus;
+        return new Kustantaja();
+    }
+
+
+    /**
+     * Palauttaa annetulla nimellä olevan kirjailijan
+     * @param nimi kirjailijan nimi
+     * @return kirjailija olion
+     */
+    public Kustantaja annaKustantaja(String nimi) {
+        for (Kustantaja kustantaja : alkiot)
+            if (kustantaja.getNimi().equals(nimi))
+                return kustantaja;
         return new Kustantaja();
     }
 
