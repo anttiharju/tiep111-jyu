@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
+import kirjahylly.Kirjat;
 import kirjahylly.Nippu;
 import kirjahylly.SailoException;
 
@@ -95,7 +96,7 @@ public class KirjahyllyGUIController implements Initializable {
 
     @FXML
     void handlePoista() {
-        Dialogs.showMessageDialog("Vielä ei osata poistaa kirjoja");
+        poista();
     }
 
 
@@ -196,6 +197,13 @@ public class KirjahyllyGUIController implements Initializable {
     }
 
 
+    private void poista() {
+        // TODO: voisi valita poistettavan kohdalle tulevan kirjan
+        hylly.poista(kirjaKohdalla);
+        hae(0);
+    }
+
+
     private String tallenna() {
         try {
             hylly.tallenna();
@@ -215,7 +223,7 @@ public class KirjahyllyGUIController implements Initializable {
      * @return true jos saa sulkea sovelluksen, false jos ei
      */
     public boolean voikoSulkea() {
-        // tallenna(); // hyi
+        // tallenna(); // TODO: Joku varmistus, muttei tällästä autom. hyi
         return true;
     }
 
@@ -330,9 +338,6 @@ public class KirjahyllyGUIController implements Initializable {
         nippu = ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
                 "Muokkaa", null, nippu);
-        // hylly = nippu.getHylly();
-        // kirjaKohdalla = nippu.getKirja();
-        // hylly.korvaa(kirjaKohdalla.getId(), kirjaKohdalla);
         naytaKirja();
         hae(0);
     }
