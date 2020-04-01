@@ -19,7 +19,6 @@ import kirjahylly.Kirjailijat;
 import kirjahylly.Kustantaja;
 import kirjahylly.Kustantajat;
 import kirjahylly.Nippu;
-import kirjahylly.SailoException;
 
 /**
  * Muokataan kirjaa erillisessä dialogissa
@@ -88,8 +87,8 @@ public class MuokkaaController
     private Nippu nippu;
     private Kirja kirjaKohdalla;
     private Kirjahylly hylly;
-    private Kirjailijat tmpKirjailijat = new Kirjailijat();
-    private Kustantajat tmpKustantajat = new Kustantajat();
+    private Kirjailijat tmpKirjailijat;
+    private Kustantajat tmpKustantajat;
 
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
@@ -137,7 +136,6 @@ public class MuokkaaController
 
         hylly.set(tmpKirjailijat);
         hylly.set(tmpKustantajat);
-        // nippu.set(hylly, kirjaKohdalla); // tarpeeton?
 
         viesti.setTextFill(Color.GREEN);
         viesti.setText("Tallennettu!");
@@ -156,7 +154,7 @@ public class MuokkaaController
         Kirjailija tmp = new Kirjailija(nimi);
         tmp.rekisteroi();
         tmpKirjailijat.lisaa(tmp);
-        setKirjailijat();
+        setComboBox(mKirjailija, annaKirjailijat(kirjaKohdalla));
     }
 
 
@@ -167,7 +165,7 @@ public class MuokkaaController
         Kustantaja tmp = new Kustantaja(nimi);
         tmp.rekisteroi();
         tmpKustantajat.lisaa(tmp); // SailoException
-        setKustantajat();
+        setComboBox(mKustantaja, annaKustantajat(kirjaKohdalla));
     }
 
 
@@ -205,8 +203,8 @@ public class MuokkaaController
         if (kirja == null)
             return;
         mNimi.setText(kirja.getNimi());
-        setKirjailijat();
-        setKustantajat();
+        setComboBox(mKirjailija, annaKirjailijat(kirjaKohdalla));
+        setComboBox(mKustantaja, annaKustantajat(kirjaKohdalla));
         mVuosi.setText("" + kirja.getVuosi());
         mKuvaus.setText(kirja.getKuvaus());
         mLuettu.setText(kirja.getLuettu());
@@ -217,28 +215,14 @@ public class MuokkaaController
 
 
     /**
-     * Päivittää comboboxchooserin niin, että kirjan kirjailija
-     * on ensimmäisenä (ts. valittuna) ja kaikki muut mahdolliset kirjailijat ovat valittavissa
+     * Päivittää ComboBoxChooserin niin että valittu on ekana
+     * @param lista merkkijono kohteet eroteltu rivinvaihdoin ja valittu ekana
+     * @param kentta päivitettävä comboboxchooser
      */
-    public void setKirjailijat() {
-        mKirjailija.setRivit(annaKirjailijat(kirjaKohdalla));
-
-        if (mKirjailija.getSelectedText().equals("null"))
-            mKirjailija.setRivit(
-                    mKirjailija.getRivit().replace("null", "Ei valittu"));
-
-    }
-
-
-    /**
-     * Päivittää comboboxchooserin niin, että kirjan kustantaja
-     * on ensimmäisenä (ts. valittuna) ja kaikki muut mahdolliset kustantajat ovat valittavissa
-     */
-    public void setKustantajat() {
-        mKustantaja.setRivit(annaKustantajat(kirjaKohdalla));
-        if (mKustantaja.getSelectedText().equals("null"))
-            mKustantaja.setRivit(
-                    mKustantaja.getRivit().replace("null", "Ei valittu"));
+    public void setComboBox(ComboBoxChooser<String> kentta, String lista) {
+        kentta.setRivit(lista);
+        if (kentta.getSelectedText().equals("null"))
+            kentta.setRivit(kentta.getRivit().replace("null", "Ei valittu"));
     }
 
 
