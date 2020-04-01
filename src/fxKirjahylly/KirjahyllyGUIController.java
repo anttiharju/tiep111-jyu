@@ -330,9 +330,9 @@ public class KirjahyllyGUIController implements Initializable {
         nippu = ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
                 "Muokkaa", null, nippu);
-        hylly = nippu.getHylly();
-        kirjaKohdalla = nippu.getKirja();
-        hylly.korvaa(kirjaKohdalla.getId(), kirjaKohdalla);
+        // hylly = nippu.getHylly();
+        // kirjaKohdalla = nippu.getKirja();
+        // hylly.korvaa(kirjaKohdalla.getId(), kirjaKohdalla);
         naytaKirja();
         hae(0);
     }

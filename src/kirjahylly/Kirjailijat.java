@@ -54,6 +54,15 @@ public class Kirjailijat implements Iterable<Kirjailija> {
 
 
     /**
+     * Poistaa kirjailijan tietorakenteesta.
+     * @param nimi poistettavan kirjailija nimi
+     */
+    public void poista(String nimi) {
+        poista(annaKirjailija(nimi));
+    }
+
+
+    /**
      * Lukee kirjailijat tiedostosta
      * @param tied tiedoston nimen alkuosa
      * @throws SailoException jos lukeminen epäonnistuu
@@ -289,6 +298,19 @@ public class Kirjailijat implements Iterable<Kirjailija> {
         for (Kirjailija kir : alkiot)
             if (kir.getId() == id)
                 return kir;
+        return new Kirjailija();
+    }
+
+
+    /**
+     * Palauttaa annetulla nimellä olevan kirjailijan
+     * @param nimi kirjailijan nimi
+     * @return kirjailija olion
+     */
+    public Kirjailija annaKirjailija(String nimi) {
+        for (Kirjailija kirjailija : alkiot)
+            if (kirjailija.getNimi().equals(nimi))
+                return kirjailija;
         return new Kirjailija();
     }
 

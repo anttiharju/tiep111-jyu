@@ -1,17 +1,23 @@
 package fxKirjahylly;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
 import kirjahylly.Kirjailija;
+import kirjahylly.Kirjailijat;
 import kirjahylly.Kustantaja;
+import kirjahylly.Kustantajat;
 import kirjahylly.Nippu;
 import kirjahylly.SailoException;
 
@@ -20,7 +26,8 @@ import kirjahylly.SailoException;
  * @author anvemaha
  * @version 28.3.2020
  */
-public class MuokkaaController implements ModalControllerInterface<Nippu> {
+public class MuokkaaController
+        implements ModalControllerInterface<Nippu>, Initializable {
 
     @FXML
     private TextField mNimi;
@@ -42,51 +49,38 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
     private Label viesti;
 
     @FXML
-    private void handleTallenna() {
+    private void handleTallenna() throws SailoException {
         tallenna();
     }
 
 
     @FXML
     private void handlePeruuta() {
-        ModalController.closeStage(viesti);
+        peruuta();
     }
 
 
     @FXML
-    private void handleLisaaKirjailija() throws SailoException {
-        String nimi = Dialogs.showInputDialog("Anna kirjailijan nimi", "");
-        if (nimi == null)
-            return;
-        Kirjailija tmp = new Kirjailija(nimi);
-        tmp.rekisteroi();
-        hylly.lisaa(tmp); // sailoexception
-        setKirjailijat();
+    private void handleLisaaKirjailija() {
+        lisaaKirjailija();
     }
 
 
     @FXML
-    private void handleLisaaKustantaja() throws SailoException {
-        String nimi = Dialogs.showInputDialog("Anna kustantajan nimi", "");
-        if (nimi == null)
-            return;
-        Kustantaja tmp = new Kustantaja(nimi);
-        tmp.rekisteroi();
-        hylly.lisaa(tmp); // sailoexception
-        setKustantajat();
+    private void handleLisaaKustantaja() {
+        lisaaKustantaja();
     }
 
 
     @FXML
     private void handlePoistaKirjailija() {
-        hylly.poistaKirjailija(mKirjailija.getSelectedText());
-        hylly.toString();
+        poistaKirjailija();
     }
 
 
     @FXML
     private void handlePoistaKustantaja() {
-        hylly.poistaKustantaja(mKustantaja.getSelectedText());
+        poistaKustantaja();
     }
 
     // ========================================================
@@ -94,6 +88,16 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
     private Nippu nippu;
     private Kirja kirjaKohdalla;
     private Kirjahylly hylly;
+    private Kirjailijat kirLisaaBuffer = new Kirjailijat();
+    private Kustantajat kusLisaaBuffer = new Kustantajat();
+    private Kirjailijat kirPoistaBuffer = new Kirjailijat();
+    private Kustantajat kusPoistaBuffer = new Kustantajat();
+
+    @Override
+    public void initialize(URL url, ResourceBundle bundle) {
+        tyhjenna(); // turha? olkoot nyt kuitenkin virheiden varalta
+    }
+
 
     @Override
     public void setDefault(Nippu oletus) {
@@ -119,7 +123,7 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
     }
 
 
-    private void tallenna() {
+    private void tallenna() throws SailoException {
         kirjaKohdalla.setNimi(mNimi.getText());
         kirjaKohdalla.setKirjailija(
                 hylly.getKirjailijanId(mKirjailija.getSelectedText(),
@@ -133,10 +137,60 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         kirjaKohdalla.setArvio(Integer.parseInt(mArvio.getText()));
         kirjaKohdalla.setLisatietoja(mLisatietoja.getText());
 
-        nippu.set(hylly, kirjaKohdalla);
+        for (Kirjailija kirjailija : kirPoistaBuffer)
+            hylly.poistaKirjailija(kirjailija.getNimi());
+        for (Kirjailija kirjailija : kirLisaaBuffer) {
+            kirjailija.rekisteroi();
+            hylly.lisaa(kirjailija);
+        }
+        for (Kustantaja kustantaja : kusPoistaBuffer)
+            hylly.poistaKustantaja(kustantaja.getNimi());
+        for (Kustantaja kustantaja : kusLisaaBuffer) {
+            kustantaja.rekisteroi();
+            hylly.lisaa(kustantaja);
+        }
+        // nippu.set(hylly, kirjaKohdalla); // tarpeeton?
 
         viesti.setTextFill(Color.GREEN);
         viesti.setText("Tallennettu!");
+    }
+
+
+    private void peruuta() {
+        ModalController.closeStage(viesti);
+    }
+
+
+    private void lisaaKirjailija() {
+        String nimi = Dialogs.showInputDialog("Anna kirjailijan nimi", "");
+        if (nimi == null)
+            return;
+        Kirjailija tmp = new Kirjailija(nimi);
+        kirLisaaBuffer.lisaa(tmp);
+        setKirjailijat();
+    }
+
+
+    private void lisaaKustantaja() {
+        String nimi = Dialogs.showInputDialog("Anna kustantajan nimi", "");
+        if (nimi == null)
+            return;
+        Kustantaja tmp = new Kustantaja(nimi);
+        tmp.rekisteroi();
+        kusLisaaBuffer.lisaa(tmp); // SailoException
+        setKustantajat();
+    }
+
+
+    private void poistaKirjailija() {
+        kirPoistaBuffer
+                .lisaa(hylly.annaKirjailija(mKirjailija.getSelectedText()));
+    }
+
+
+    private void poistaKustantaja() {
+        kusPoistaBuffer
+                .lisaa(hylly.annaKustantaja(mKustantaja.getSelectedText()));
     }
 
 
