@@ -67,7 +67,7 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      *  Kirjailija k22 = new Kirjailija(); k22.tayta(2); 
      *  Kirjailija k12 = new Kirjailija(); k12.tayta(1); 
      *  Kirjailija k23 = new Kirjailija(); k23.tayta(2); 
-     *  String tiedNimi = "tmp_testihylly";
+     *  String tiedNimi = "tmp_testihylly_kirjailijat";
      *  File ftied = new File(tiedNimi+".dat");
      *  ftied.delete();
      *  kirjailijat.lueTiedostosta(tiedNimi); #THROWS SailoException

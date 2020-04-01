@@ -115,7 +115,41 @@ public class Kirjat implements Iterable<Kirja> {
      * Lukee kirjan tiedostosta.
      * @param tied tiedoston perusnimi
      * @throws SailoException jos lukeminen epäonnistuu
-     * TODO: tee valmiiksi
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     *  Kirjat kirjat = new Kirjat();
+     *  Kirja k1 = new Kirja(); k1.tayta();
+     *  Kirja k2 = new Kirja(); k2.tayta();
+     *  Kirja k3 = new Kirja(); k3.tayta(); 
+     *  Kirja k4 = new Kirja(); k4.tayta(); 
+     *  Kirja k5 = new Kirja(); k5.tayta(); 
+     *  String tiedNimi = "tmp_testihylly_kirjat";
+     *  File ftied = new File(tiedNimi+".dat");
+     *  ftied.delete();
+     *  kirjat.lueTiedostosta(tiedNimi); #THROWS SailoException
+     *  kirjat.lisaa(k1);
+     *  kirjat.lisaa(k2);
+     *  kirjat.lisaa(k3);
+     *  kirjat.lisaa(k4);
+     *  kirjat.lisaa(k5);
+     *  kirjat.tallenna();
+     *  kirjat = new Kirjat();
+     *  kirjat.lueTiedostosta(tiedNimi);
+     *  Iterator<Kirja> i = kirjat.iterator();
+     *  i.next().toString() === k1.toString();
+     *  i.next().toString() === k2.toString();
+     *  i.next().toString() === k3.toString();
+     *  i.next().toString() === k4.toString();
+     *  i.next().toString() === k5.toString();
+     *  i.hasNext() === false;
+     *  kirjat.lisaa(k5);
+     *  kirjat.tallenna();
+     *  ftied.delete() === true;
+     *  File fbak = new File(tiedNimi+".backup");
+     *  fbak.delete() === true;     
+     * </pre>
      */
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
