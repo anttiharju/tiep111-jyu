@@ -198,9 +198,15 @@ public class KirjahyllyGUIController implements Initializable {
 
 
     private void poista() {
-        // TODO: voisi valita poistettavan kohdalle tulevan kirjan
+        chooserKirjat.getCursor();
         hylly.poista(kirjaKohdalla);
+        if (hylly.getKirjatLkm() == 0) {
+            tyhjenna();
+        }
+        int index = chooserKirjat.getSelectedIndex();
         hae(0);
+        chooserKirjat.setSelectedIndex(index);
+
     }
 
 
@@ -308,7 +314,6 @@ public class KirjahyllyGUIController implements Initializable {
      */
     protected void uusiKirja() {
         Kirja uusi = new Kirja();
-        uusi.rekisteroi();
         uusi.tayta();
         try {
             hylly.lisaa(uusi);
@@ -318,6 +323,11 @@ public class KirjahyllyGUIController implements Initializable {
             return;
         }
         hae(uusi.getId());
+        muokkaa();
+        if (uusi.getNimi().equals(""))
+            poista();
+        else
+            uusi.rekisteroi();
     }
 
 
@@ -339,7 +349,9 @@ public class KirjahyllyGUIController implements Initializable {
                 KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
                 "Muokkaa", null, nippu);
         naytaKirja();
+        int index = chooserKirjat.getSelectedIndex();
         hae(0);
+        chooserKirjat.setSelectedIndex(index);
     }
 
 
