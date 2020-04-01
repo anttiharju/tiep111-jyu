@@ -232,9 +232,9 @@ public class Kirjahylly {
 
             Kirja m1 = new Kirja(), m2 = new Kirja();
             m1.rekisteroi();
-            m1.tayta();
+            m1.tayta_test();
             m2.rekisteroi();
-            m2.tayta();
+            m2.tayta_test();
 
             hylly.lisaa(m1);
             hylly.lisaa(m2);
@@ -290,5 +290,13 @@ public class Kirjahylly {
     public void set(Kustantajat tmpKustantajat) {
         kustantajat = tmpKustantajat;
 
+    }
+
+
+    /**
+     * @return kirjojen lkm
+     */
+    public int getKirjatLkm() {
+        return kirjat.getLkm();
     }
 }
