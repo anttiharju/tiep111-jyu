@@ -20,6 +20,8 @@ import kirjahylly.Kustantaja;
 import kirjahylly.Kustantajat;
 import kirjahylly.Nippu;
 
+import static kanta.apu.*;
+
 /**
  * Muokataan kirjaa erillisessä dialogissa
  * @author anvemaha
@@ -82,6 +84,12 @@ public class MuokkaaController
         poistaKustantaja();
     }
 
+
+    @FXML
+    private void handleTarkistaLuettu() {
+        tarkista();
+    }
+
     // ========================================================
 
     private Nippu nippu;
@@ -127,6 +135,14 @@ public class MuokkaaController
 
 
     private void tallenna() {
+        if (!tarkista())
+            return;
+
+        mNimi.setStyle(null);
+        mVuosi.setStyle(null);
+        mLuettu.setStyle(null);
+        mArvio.setStyle(null);
+
         kirjaKohdalla.setNimi(mNimi.getText());
         kirjaKohdalla.setKirjailija(
                 tmpKirjailijat.getId(mKirjailija.getSelectedText()));
@@ -275,5 +291,81 @@ public class MuokkaaController
                 sb.append(nyk).append("\n");
         }
         return sb.toString();
+    }
+
+
+    /**
+     * Tekee tarkistukset
+     * @return saako tallentaa vai ei
+     */
+    private boolean tarkista() {
+        int totuus = 0;
+        totuus += tarkistaArvio();
+        totuus += tarkistaLuettu();
+        totuus += tarkistaJulkaisuvuosi();
+        totuus += tarkistaNimi();
+        if (totuus == 0)
+            return true;
+        return false;
+    }
+
+
+    /**
+     * Tarkistaa ettei nimi ole tyhjä
+     * @return saako tallentaa vai ei
+     */
+    private int tarkistaNimi() {
+        if (tarkistaEtteiTyhja(mNimi.getText()))
+            return 0;
+        virheKentta("\"Nimi\" ei voi olla tyhjä!", mNimi);
+        return 1;
+    }
+
+
+    /**
+     * Tarkistaa että julkaisuvuosi on muotoa vvvv
+     * @return saako tallentaa vai ei
+     */
+    private int tarkistaJulkaisuvuosi() {
+        if (tarkistaVuosi(mVuosi.getText()))
+            return 0;
+        virheKentta("Anna \"Vuosi\" muodossa vvvv!", mVuosi);
+        return 1;
+    }
+
+
+    /**
+     * Tarkistaa että luettu pvm on muotoa pp.kk.vvvv
+     * @return saako tallentaa vai ei
+     */
+    private int tarkistaLuettu() {
+        if (tarkistaPvm(mLuettu.getText()))
+            return 0;
+        virheKentta("Anna \"Luettu\" muodossa pp.kk.vvvv!", mLuettu);
+        return 1;
+    }
+
+
+    /**
+     * Tarkistaa että arvio on numeerinen
+     * @return saako tallentaa vai ei
+     */
+    private int tarkistaArvio() {
+        if (tarkistaNumeerisuus(mVuosi.getText()))
+            return 0;
+        virheKentta("Anna \"Arvio\" numeerisena!", mArvio);
+        return 1;
+    }
+
+
+    /**
+     * Näyttää virheen
+     * @param virhe virheilmoitus
+     * @param kentta kenttä jossa on virhe
+     */
+    private void virheKentta(String virhe, TextField kentta) {
+        viesti.setTextFill(Color.RED);
+        viesti.setText(virhe);
+        kentta.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
     }
 }

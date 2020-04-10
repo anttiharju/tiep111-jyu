@@ -16,8 +16,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjahylly.KirjahyllyGUIController">
+<BorderPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjahylly.KirjahyllyGUIController">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
@@ -46,11 +47,46 @@
 		</MenuBar>
 	</top>
 	<center>
-		<SplitPane dividerPositions="0.3382899628252788, 0.5" prefHeight="279.0" prefWidth="540.0" BorderPane.alignment="CENTER">
+		<SplitPane dividerPositions="0.3382899628252788, 0.5" BorderPane.alignment="CENTER">
 			<items>
-				<BorderPane maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
-					<bottom>
-						<BorderPane BorderPane.alignment="CENTER">
+            <SplitPane dividerPositions="0.5" minWidth="230.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="220.0">
+              <items>
+                  <VBox maxHeight="-Infinity" prefHeight="65.0">
+                     <children>
+                        <HBox VBox.vgrow="ALWAYS">
+                           <children>
+      								<Label minWidth="40.0" text="Haku" HBox.hgrow="NEVER">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" top="5.0" />
+                                 </padding>
+      								</Label>
+      								<TextField fx:id="hakuehto" onKeyReleased="#handleHakuehto" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox VBox.vgrow="ALWAYS">
+                           <children>
+                              <ComboBoxChooser fx:id="cbLuettu" minWidth="110.0" onAction="#handleHakuehto" rivit="Kaikki&#10;Luettu&#10;Ei luettu" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </ComboBoxChooser>
+      								<ComboBoxChooser fx:id="cbEhto" minWidth="110.0" onAction="#handleHakuehto" rivit="Nimi&#10;Kirjailija&#10;Kustantaja&#10;Vuosi&#10;Arvio" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </ComboBoxChooser>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+						<BorderPane maxHeight="1.7976931348623157E308">
 							<top>
 								<Label text="Kirjat" BorderPane.alignment="CENTER">
 									<padding>
@@ -62,42 +98,9 @@
 								<ListChooser fx:id="chooserKirjat" rivit="Ready Player One&#10;Metro 2033&#10;What if?&#10;Metro 2035&#10;Diaspora&#10;Permutation City" BorderPane.alignment="CENTER" />
 							</center>
 						</BorderPane>
-					</bottom>
-					<top>
-						<BorderPane BorderPane.alignment="CENTER">
-                     <bottom>
-                        <HBox BorderPane.alignment="CENTER">
-                           <children>
-                              <ComboBoxChooser fx:id="cbLuettu" minWidth="90.0" onAction="#handleHakuehto" rivit="Kaikki&#10;Luettu&#10;Ei luettu">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" />
-                                 </HBox.margin>
-                              </ComboBoxChooser>
-      								<ComboBoxChooser fx:id="cbEhto" onAction="#handleHakuehto" rivit="Nimi&#10;Kirjailija&#10;Kustantaja&#10;Vuosi&#10;Arvio">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" right="5.0" />
-                                 </HBox.margin>
-                              </ComboBoxChooser>
-                           </children>
-                        </HBox>
-                     </bottom>
-                     <right>
-								<TextField fx:id="hakuehto" onKeyReleased="#handleHakuehto" BorderPane.alignment="CENTER">
-                           <BorderPane.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </BorderPane.margin></TextField>
-                     </right>
-                     <left>
-								<Label text="Haku" BorderPane.alignment="CENTER">
-									<BorderPane.margin>
-										<Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
-									</BorderPane.margin>
-								</Label>
-                     </left>
-						</BorderPane>
-					</top>
-				</BorderPane>
-				<BorderPane minWidth="100.0">
+              </items>
+            </SplitPane>
+				<BorderPane minWidth="550.0">
 					<top>
 						<Label text="Kirjan tiedot" BorderPane.alignment="CENTER">
 							<padding>
@@ -106,9 +109,9 @@
 						</Label>
 					</top>
                <center>
-                  <ScrollPane fx:id="panelKirja" minHeight="440.0" minWidth="540.0" BorderPane.alignment="CENTER">
+                  <ScrollPane fx:id="panelKirja" minHeight="402.0" minWidth="540.0" BorderPane.alignment="CENTER">
                      <content>
-                        <GridPane prefHeight="396.0" prefWidth="543.0">
+                        <GridPane prefHeight="400.0" prefWidth="540.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="267.0" minWidth="10.0" prefWidth="107.0" />
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.0" minWidth="10.0" prefWidth="436.0" />
@@ -210,7 +213,7 @@
                   </ScrollPane>
                </center>
 				</BorderPane>
-				<BorderPane maxWidth="-Infinity" prefWidth="200.0">
+				<BorderPane minWidth="230.0" prefWidth="200.0">
 					<top>
 						<Label text="Kirjailijan muut kirjat" BorderPane.alignment="CENTER">
 							<padding>
@@ -226,26 +229,26 @@
 		</SplitPane>
 	</center>
 	<bottom>
-		<HBox prefHeight="47.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+		<HBox minWidth="50.0" prefHeight="50.0" prefWidth="1024.0" BorderPane.alignment="TOP_CENTER">
 			<children>
 				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleLisää" text="Lisää kirja" textAlignment="CENTER">
 					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
 					</HBox.margin>
 				</Button>
-				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa kirjaa" textAlignment="CENTER">
+				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa kirjaa..." textAlignment="CENTER">
 					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
 					</HBox.margin>
 				</Button>
 				<Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#handlePoista" text="Poista kirja" textAlignment="CENTER">
 					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
 					</HBox.margin>
 				</Button>
 				<Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" textAlignment="CENTER">
 					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
 					</HBox.margin>
 				</Button>
             <Label fx:id="viesti">
