@@ -45,14 +45,33 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
 
 
     /**
+     * @return onko muutettu
+     */
+    public boolean getMuutettu() {
+        return muutettu;
+    }
+
+
+    /**
+     * Lisää uuden kustantajan tietorakenteeseen. Ottaa kustantajan omistukseensa.
+     * @param kustantaja lisättävä kustantaja. Huom tietorakenne muuttuu omistajaksi
+     * @param kloonaus lisätäänkö kloonatessa vai ei
+     * @return lisätyn kustantajan id:n
+     */
+    public int lisaa(Kustantaja kustantaja, boolean kloonaus) {
+        alkiot.add(kustantaja);
+        muutettu = !kloonaus;
+        return kustantaja.getId();
+    }
+
+
+    /**
      * Lisää uuden kustantajan tietorakenteeseen. Ottaa kustantajan omistukseensa.
      * @param kustantaja lisättävä kustantaja. Huom tietorakenne muuttuu omistajaksi
      * @return lisätyn kustantajan id:n
      */
     public int lisaa(Kustantaja kustantaja) {
-        alkiot.add(kustantaja);
-        muutettu = true;
-        return kustantaja.getId();
+        return lisaa(kustantaja, false);
     }
 
 
@@ -81,7 +100,7 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
     public Kustantajat clone() {
         Kustantajat klooni = new Kustantajat(muutettu, tiedostonPerusNimi);
         for (Kustantaja kustantaja : alkiot)
-            klooni.lisaa(kustantaja); // tän tason kloonaus pitäisi riittää?
+            klooni.lisaa(kustantaja, true);
         return klooni;
     }
 
