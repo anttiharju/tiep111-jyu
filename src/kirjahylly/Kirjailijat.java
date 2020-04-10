@@ -47,10 +47,12 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
     /**
      * Lisää uuden kirjailijan tietorakenteeseen. Ottaa kirjailijan omistukseensa.
      * @param kirjailija lisättävä kirjailija. Huom tietorakenne muuttuu omistajaksi
+     * @return lisätyn kirjailijan id:n
      */
-    public void lisaa(Kirjailija kirjailija) {
+    public int lisaa(Kirjailija kirjailija) {
         alkiot.add(kirjailija);
         muutettu = true;
+        return kirjailija.getId();
     }
 
 
@@ -79,19 +81,6 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
         for (Kirjailija kirjailija : alkiot)
             klooni.lisaa(kirjailija); // tän tason kloonaus pitäisi riittää?
         return klooni;
-    }
-
-
-    /**
-     * Etsii tietyn nimisen kirjailijan
-     * @param nimi etsittävän kirjailijan nimi
-     * @return kirjailijan id:n, 0 jos ei löydy
-     */
-    public int getWithId(String nimi) {
-        for (Kirjailija kirjailija : alkiot)
-            if (kirjailija.getNimi().equals(nimi))
-                return kirjailija.getId();
-        return 0;
     }
 
 
@@ -345,6 +334,19 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
             if (kirjailija.getNimi().equals(nimi))
                 return kirjailija;
         return new Kirjailija();
+    }
+
+
+    /**
+     * Palauttaa tietyn nimisen kirjailijan sen id:llä
+     * @param nimi etsittävän kirjailijan nimi
+     * @return kirjailijan id:n, 0 jos ei löydy
+     */
+    public int getId(String nimi) {
+        for (Kirjailija kirjailija : alkiot)
+            if (kirjailija.getNimi().equals(nimi))
+                return kirjailija.getId();
+        return 0;
     }
 
 

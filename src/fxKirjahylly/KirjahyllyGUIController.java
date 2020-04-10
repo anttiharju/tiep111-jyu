@@ -20,7 +20,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
-import kirjahylly.Kirjat;
 import kirjahylly.Nippu;
 import kirjahylly.SailoException;
 
@@ -279,7 +278,8 @@ public class KirjahyllyGUIController implements Initializable {
                 kid = kohdalla.getId();
         }
 
-        int k = cbEhto.getSelectionModel().getSelectedIndex(); // + apu?
+        int k = cbEhto.getSelectionModel().getSelectedIndex();
+        int l = cbLuettu.getSelectionModel().getSelectedIndex();
         String ehto = hakuehto.getText();
         if (ehto.indexOf('*') < 0)
             ehto = "*" + ehto + "*";
@@ -288,7 +288,7 @@ public class KirjahyllyGUIController implements Initializable {
 
         int index = 0;
         Collection<Kirja> kirjat;
-        kirjat = hylly.etsi(ehto, k);
+        kirjat = hylly.etsi(ehto, k, l);
         int i = 0;
         for (Kirja kirja : kirjat) {
             if (kirja.getId() == kid)
