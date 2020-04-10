@@ -8,7 +8,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
@@ -108,111 +107,110 @@
 							<padding>
 								<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 							</padding>
+                     <BorderPane.margin>
+                        <Insets top="10.0" />
+                     </BorderPane.margin>
 						</Label>
 					</top>
                <center>
-                  <ScrollPane fx:id="panelKirja" minHeight="402.0" minWidth="540.0" BorderPane.alignment="CENTER">
-                     <content>
-                        <GridPane prefHeight="400.0" prefWidth="540.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="267.0" minWidth="10.0" prefWidth="107.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.0" minWidth="10.0" prefWidth="436.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label text="Nimi">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Kirjailija" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Kustantaja" GridPane.rowIndex="2">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Julkaisuvuosi" GridPane.rowIndex="3">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Lyhyt kuvaus" GridPane.rowIndex="4">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Luettu" GridPane.rowIndex="5">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Arvio" GridPane.rowIndex="6">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Lisätietoja" GridPane.rowIndex="7">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <TextField fx:id="nNimi" editable="false" GridPane.columnIndex="1">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nKirjailija" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nKustantaja" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nVuosi" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nKuvaus" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nLuettu" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nArvio" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nLisatietoja" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                           </children>
-                        </GridPane>
-                     </content>
-                  </ScrollPane>
+                  <GridPane maxHeight="500.0" BorderPane.alignment="TOP_CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="NEVER" minWidth="-Infinity" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Nimi" GridPane.halignment="LEFT">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Kirjailija" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Kustantaja" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Julkaisuvuosi" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Lyhyt kuvaus" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Luettu" GridPane.halignment="LEFT" GridPane.rowIndex="5">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Arvio" GridPane.halignment="LEFT" GridPane.rowIndex="6">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Lisätietoja" GridPane.halignment="LEFT" GridPane.rowIndex="7">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="nNimi" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nKirjailija" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nKustantaja" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nVuosi" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nKuvaus" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nLuettu" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nArvio" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nLisatietoja" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                     </children>
+                  </GridPane>
                </center>
 				</BorderPane>
 				<BorderPane minWidth="230.0" prefWidth="200.0">
