@@ -45,7 +45,6 @@ public class Kirjat implements Iterable<Kirja> {
     /**
      * Lisää uuden kirjan tietorakenteeseen Ottaa kirjan omistukseensa.
      * @param kirja lisätäävän jäsenen viite. Huom tietorakenne muuttuu omistajaksi
-     * @throws SailoException jos tietorakenne on jo täynnä
      * @example
      * <pre name="test">
      * #THROWS SailoException
@@ -71,12 +70,76 @@ public class Kirjat implements Iterable<Kirja> {
      * kirjat.lisaa(k1); kirjat.getLkm() === 11;
      * </pre>
      */
-    public void lisaa(Kirja kirja) throws SailoException {
+    public void lisaa(Kirja kirja) {
         if (lkm >= alkiot.length)
             alkiot = Arrays.copyOf(alkiot, alkiot.length * 2);
         alkiot[lkm] = kirja;
         lkm++;
         muutettu = true;
+    }
+
+
+    /** 
+     * Poistaa kirjan jolla on annettu id
+     * @param id poistettavan kirjan id
+     * @return 1 jos poistettiin, 0 jos ei löydy 
+     * @example 
+     * <pre name="test"> 
+     *  #THROWS SailoException  
+     *  Jasenet jasenet = new Jasenet(); 
+     *  Jasen aku1 = new Jasen(), aku2 = new Jasen(), aku3 = new Jasen(); 
+     *  aku1.rekisteroi(); aku2.rekisteroi(); aku3.rekisteroi(); 
+     *  int id1 = aku1.getTunnusNro(); 
+     *  jasenet.lisaa(aku1); jasenet.lisaa(aku2); jasenet.lisaa(aku3); 
+     *  jasenet.poista(id1+1) === 1; 
+     *  jasenet.annaId(id1+1) === null; jasenet.getLkm() === 2; 
+     *  jasenet.poista(id1) === 1; jasenet.getLkm() === 1; 
+     *  jasenet.poista(id1+3) === 0; jasenet.getLkm() === 1; 
+     * </pre> 
+     *  
+     */
+    public int poista(int id) {
+        int ind = etsiId(id);
+        if (ind < 0)
+            return 0;
+        lkm--;
+        for (int i = ind; i < lkm; i++)
+            alkiot[i] = alkiot[i + 1];
+        alkiot[lkm] = null;
+        muutettu = true;
+        return 1;
+    }
+
+
+    /**
+     * Poistaa annetun kirjan
+     * @param kirja poistettava kirja
+     */
+    public void poista(Kirja kirja) {
+        poista(kirja.getId());
+    }
+
+
+    /** 
+     * Etsii kirjan id:n perusteella 
+     * @param id id jolla etsitään
+     * @return löytyneen kirjan indeksi tai -1 jos ei löydy 
+     * <pre name="test"> 
+     *  #THROWS SailoException  
+     *  Jasenet jasenet = new Jasenet(); 
+     *  Jasen aku1 = new Jasen(), aku2 = new Jasen(), aku3 = new Jasen(); 
+     *  aku1.rekisteroi(); aku2.rekisteroi(); aku3.rekisteroi(); 
+     *  int id1 = aku1.getTunnusNro(); 
+     *  jasenet.lisaa(aku1); jasenet.lisaa(aku2); jasenet.lisaa(aku3); 
+     *  jasenet.etsiId(id1+1) === 1; 
+     *  jasenet.etsiId(id1+2) === 2; 
+     * </pre> 
+     */
+    public int etsiId(int id) {
+        for (int i = 0; i < lkm; i++)
+            if (id == alkiot[i].getId())
+                return i;
+        return -1;
     }
 
 
@@ -385,22 +448,18 @@ public class Kirjat implements Iterable<Kirja> {
         Kirjat kirjat = new Kirjat();
         Kirja m1 = new Kirja(), m2 = new Kirja();
         m1.rekisteroi();
-        m1.tayta();
+        m1.tayta_test();
         m2.rekisteroi();
-        m2.tayta();
+        m2.tayta_test();
 
-        try {
-            kirjat.lisaa(m1);
-            kirjat.lisaa(m2);
+        kirjat.lisaa(m1);
+        kirjat.lisaa(m2);
 
-            System.out.println("+ Kirjat testi");
-            for (int i = 0; i < kirjat.getLkm(); i++) {
-                Kirja m = kirjat.anna(i);
-                System.out.println("Kirjan nro: " + i);
-                m.tulosta(System.out);
-            }
-        } catch (SailoException ex) {
-            System.out.println(ex.getMessage());
+        System.out.println("+ Kirjat testi");
+        for (int i = 0; i < kirjat.getLkm(); i++) {
+            Kirja m = kirjat.anna(i);
+            System.out.println("Kirjan nro: " + i);
+            m.tulosta(System.out);
         }
     }
 }
