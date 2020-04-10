@@ -168,7 +168,7 @@ public class Kirjahylly {
     public String anna(int k, Kirja kir) {
         switch (k) {
         case 0:
-            return "" + kir.getId(); //getnimi
+            return "" + kir.getNimi();
         case 1:
             return "" + kirjanKirjailija(kir);
         case 2:

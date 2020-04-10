@@ -49,9 +49,9 @@
 	<center>
 		<SplitPane dividerPositions="0.3382899628252788, 0.5" BorderPane.alignment="CENTER">
 			<items>
-            <SplitPane dividerPositions="0.5" minWidth="230.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="220.0">
-              <items>
-                  <VBox maxHeight="-Infinity" prefHeight="65.0">
+            <BorderPane>
+               <top>
+                  <VBox maxHeight="-Infinity" prefHeight="65.0" BorderPane.alignment="CENTER">
                      <children>
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
@@ -86,20 +86,22 @@
                         </HBox>
                      </children>
                   </VBox>
-						<BorderPane maxHeight="1.7976931348623157E308">
-							<top>
-								<Label text="Kirjat" BorderPane.alignment="CENTER">
-									<padding>
-										<Insets bottom="5.0" left="5.0" right="5.0" />
-									</padding>
-								</Label>
-							</top>
-							<center>
-								<ListChooser fx:id="chooserKirjat" rivit="Ready Player One&#10;Metro 2033&#10;What if?&#10;Metro 2035&#10;Diaspora&#10;Permutation City" BorderPane.alignment="CENTER" />
-							</center>
-						</BorderPane>
-              </items>
-            </SplitPane>
+               </top>
+               <center>
+      						<BorderPane maxHeight="1.7976931348623157E308" BorderPane.alignment="CENTER">
+      							<top>
+      								<Label text="Kirjat" BorderPane.alignment="CENTER">
+      									<padding>
+      										<Insets bottom="5.0" left="5.0" right="5.0" />
+      									</padding>
+      								</Label>
+      							</top>
+      							<center>
+      								<ListChooser fx:id="chooserKirjat" rivit="Ready Player One&#10;Metro 2033&#10;What if?&#10;Metro 2035&#10;Diaspora&#10;Permutation City" BorderPane.alignment="CENTER" />
+      							</center>
+      						</BorderPane>
+               </center>
+            </BorderPane>
 				<BorderPane minWidth="550.0">
 					<top>
 						<Label text="Kirjan tiedot" BorderPane.alignment="CENTER">
