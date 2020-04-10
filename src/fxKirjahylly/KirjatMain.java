@@ -28,8 +28,8 @@ public class KirjatMain extends Application {
                     .add(getClass().getResource("kirjat.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Kirjahylly");
-            primaryStage.setMinWidth(1024);
-            primaryStage.setMinHeight(576);
+            primaryStage.setMinWidth(960);
+            primaryStage.setMinHeight(540);
 
             primaryStage.setOnCloseRequest((event) -> {
                 if (!hyllyCtrl.voikoSulkea())
