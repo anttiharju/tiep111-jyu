@@ -2,6 +2,7 @@ package kirjahylly;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Comparator;
 
 import fi.jyu.mit.ohj2.Mjonot;
 
@@ -25,6 +26,55 @@ public class Kirja {
     private String lisatietoja;
 
     private static int seuraavaId = 1;
+
+    /** 
+     * Kirjan vertailija 
+     */
+    public static class Vertailija implements Comparator<Kirja> {
+        private int k;
+
+        @SuppressWarnings("javadoc")
+        public Vertailija(int k) {
+            this.k = k;
+        }
+
+
+        @Override
+        public int compare(Kirja kirja1, Kirja kirja2) {
+            return kirja1.anna(k).compareToIgnoreCase(kirja2.anna(k));
+        }
+    }
+
+    /** 
+     * Antaa k:n kentän sisällön merkkijonona 
+     * @param k monenenko kentän sisältö palautetaan 
+     * @return kentän sisältö merkkijonona 
+     */
+    public String anna(int k) {
+        switch (k) {
+        case 0:
+            return "" + id;
+        case 1:
+            return "" + nimi;
+        case 2:
+            return "" + kirjailija;
+        case 3:
+            return "" + kustantaja;
+        case 4:
+            return "" + vuosi;
+        case 5:
+            return "" + kuvaus;
+        case 6:
+            return "" + luettu;
+        case 7:
+            return "" + arvio;
+        case 8:
+            return "" + lisatietoja;
+        default:
+            return "tollo!";
+        }
+    }
+
 
     /**
      * @return kirjan nimen
