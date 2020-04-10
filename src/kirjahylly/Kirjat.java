@@ -10,8 +10,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
+
+import fi.jyu.mit.ohj2.WildChars;
 
 /**
  * Hyllyn kirjat joka osaa mm. lisätä uuden kirjan
@@ -397,12 +401,19 @@ public class Kirjat implements Iterable<Kirja> {
      *   // TODO: toistaiseksi palauttaa kaikki kirjat
      * </pre> 
      */
-    @SuppressWarnings("unused")
     public Collection<Kirja> etsi(String hakuehto, int k) {
-        Collection<Kirja> loytyneet = new ArrayList<Kirja>();
-        for (Kirja kir : this) {
-            loytyneet.add(kir);
+        String ehto = "*";
+        if (hakuehto != null && hakuehto.length() > 0)
+            ehto = hakuehto;
+        int hk = k;
+        if (hk < 0)
+            hk = 0; // jotta etsii id:n mukaan
+        List<Kirja> loytyneet = new ArrayList<Kirja>();
+        for (Kirja kirja : this) {
+            if (WildChars.onkoSamat(kirja.anna(hk), ehto))
+                loytyneet.add(kirja);
         }
+        Collections.sort(loytyneet, new Kirja.Vertailija(hk));
         return loytyneet;
     }
 
