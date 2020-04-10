@@ -7,9 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -439,34 +437,6 @@ public class Kirjat implements Iterable<Kirja> {
     @Override
     public Iterator<Kirja> iterator() {
         return new KirjatIterator();
-    }
-
-
-    /** 
-     * Palauttaa "taulukossa" hakuehtoon vastaavien kirjojen viitteet 
-     * @param hakuehto hakuehto 
-     * @param k etsittävän kentän indeksi  
-     * @return tietorakenteen löytyneistä kirjoista 
-     * @example 
-     * <pre name="test"> 
-     * #THROWS SailoException  
-     *   Kirjat kirjat = new Kirjat(); 
-     *   Kirja k1 = new Kirja(); k1.parse("1|Ready Player One|1|1|"); 
-     *   Kirja k2 = new Kirja(); k2.parse("2|Metro 2033|2|2|"); 
-     *   Kirja k3 = new Kirja(); k3.parse("3|What if?|3|3|"); 
-     *   Kirja k4 = new Kirja(); k4.parse("4|Metro 2035|2|4|"); 
-     *   Kirja k5 = new Kirja(); k5.parse("5|Diaspora|4|5|"); 
-     *   kirjat.lisaa(k1); kirjat.lisaa(k2); kirjat.lisaa(k3); kirjat.lisaa(k4); kirjat.lisaa(k5);
-     *   // TODO: toistaiseksi palauttaa kaikki kirjat
-     * </pre> 
-     */
-    @SuppressWarnings("unused")
-    public Collection<Kirja> etsi(String hakuehto, int k) {
-        Collection<Kirja> loytyneet = new ArrayList<Kirja>();
-        for (Kirja kir : this) {
-            loytyneet.add(kir);
-        }
-        return loytyneet;
     }
 
 
