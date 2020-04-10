@@ -110,6 +110,12 @@ public class KirjahyllyGUIController implements Initializable {
 
 
     @FXML
+    void handleRefresh() {
+        lueUudestaan();
+    }
+
+
+    @FXML
     void handleTietoja() {
         ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("TietojaView.fxml"),
@@ -314,12 +320,15 @@ public class KirjahyllyGUIController implements Initializable {
                     "Ongelmia uuden luomisessa " + e.getMessage());
             return;
         }
-        hae(uusi.getId());
+        chooserKirjat.clear();
+        chooserKirjat.add(uusi.getNimi(), uusi);
+        chooserKirjat.setSelectedIndex(0);
         muokkaa();
         if (uusi.getNimi().equals(""))
-            poista();
+            hylly.poista(uusi);
         else
             uusi.rekisteroi();
+        hae(0);
     }
 
 
@@ -336,7 +345,7 @@ public class KirjahyllyGUIController implements Initializable {
         kirjaKohdalla = chooserKirjat.getSelectedObject();
         if (kirjaKohdalla == null)
             return;
-        nippu.set(hylly, kirjaKohdalla); // TODO: kloonit
+        nippu.set(hylly, kirjaKohdalla);
         nippu = ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
                 "Muokkaa", null, nippu);
@@ -344,6 +353,18 @@ public class KirjahyllyGUIController implements Initializable {
         int index = chooserKirjat.getSelectedIndex();
         hae(0);
         chooserKirjat.setSelectedIndex(index);
+    }
+
+
+    /**
+     * Lataa tiedoston uudestaan, eli ts. peruu muutokset
+     */
+    private void lueUudestaan() {
+        boolean varmistus = Dialogs.showQuestionDialog("Varmistus",
+                "Haluatko varmasti lukea tiedoston uudestaan levyltä?\nKaikki muutokset menetetään.", "Kyllä",
+                "Ei");
+        if (varmistus)
+            lueTiedosto(hyllynNimi);
     }
 
 
