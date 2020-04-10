@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjahylly.KirjahyllyGUIController">
+<BorderPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjahylly.KirjahyllyGUIController">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
@@ -72,12 +72,12 @@
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
-                              <ComboBoxChooser fx:id="cbLuettu" minWidth="110.0" onAction="#handleHakuehto" rivit="Kaikki&#10;Luettu&#10;Ei luettu" HBox.hgrow="ALWAYS">
+                              <ComboBoxChooser fx:id="cbLuettu" minWidth="100.0" onAction="#handleHakuehto" rivit="Kaikki&#10;Luettu&#10;Ei luettu" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
                                  </HBox.margin>
                               </ComboBoxChooser>
-      								<ComboBoxChooser fx:id="cbEhto" minWidth="110.0" onAction="#handleHakuehto" rivit="Nimi&#10;Kirjailija&#10;Kustantaja&#10;Vuosi&#10;Arvio" HBox.hgrow="ALWAYS">
+      								<ComboBoxChooser fx:id="cbEhto" minWidth="100.0" onAction="#handleHakuehto" rivit="Nimi&#10;Kirjailija&#10;Kustantaja&#10;Vuosi&#10;Arvio" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets bottom="5.0" right="5.0" />
                                  </HBox.margin>
@@ -102,7 +102,7 @@
       						</BorderPane>
                </center>
             </BorderPane>
-				<BorderPane minWidth="550.0">
+				<BorderPane minWidth="520.0">
 					<top>
 						<Label text="Kirjan tiedot" BorderPane.alignment="CENTER">
 							<padding>
@@ -120,14 +120,14 @@
                       <ColumnConstraints hgrow="ALWAYS" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="50.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label text="Nimi" GridPane.halignment="LEFT">
@@ -214,7 +214,7 @@
                   </GridPane>
                </center>
 				</BorderPane>
-				<BorderPane minWidth="230.0" prefWidth="200.0">
+				<BorderPane prefWidth="200.0">
 					<top>
 						<Label text="Kirjailijan muut kirjat" BorderPane.alignment="CENTER">
 							<padding>
