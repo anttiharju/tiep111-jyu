@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
+import kirjahylly.Kirjat;
 import kirjahylly.Nippu;
 import kirjahylly.SailoException;
 
@@ -99,7 +100,7 @@ public class KirjahyllyGUIController implements Initializable {
 
     @FXML
     void handlePoista() {
-        Dialogs.showMessageDialog("Vielä ei osata poistaa kirjoja");
+        poista();
     }
 
 
@@ -189,6 +190,19 @@ public class KirjahyllyGUIController implements Initializable {
     }
 
 
+    private void poista() {
+        chooserKirjat.getCursor();
+        hylly.poista(kirjaKohdalla);
+        if (hylly.getKirjatLkm() == 0) {
+            tyhjenna();
+        }
+        int index = chooserKirjat.getSelectedIndex();
+        hae(0);
+        chooserKirjat.setSelectedIndex(index);
+
+    }
+
+
     private String tallenna() {
         try {
             hylly.tallenna();
@@ -208,7 +222,7 @@ public class KirjahyllyGUIController implements Initializable {
      * @return true jos saa sulkea sovelluksen, false jos ei
      */
     public boolean voikoSulkea() {
-        // tallenna(); // hyi
+        // tallenna(); // TODO: Joku varmistus, muttei tällästä autom. hyi
         return true;
     }
 
@@ -292,7 +306,6 @@ public class KirjahyllyGUIController implements Initializable {
      */
     protected void uusiKirja() {
         Kirja uusi = new Kirja();
-        uusi.rekisteroi();
         uusi.tayta();
         try {
             hylly.lisaa(uusi);
@@ -302,6 +315,11 @@ public class KirjahyllyGUIController implements Initializable {
             return;
         }
         hae(uusi.getId());
+        muokkaa();
+        if (uusi.getNimi().equals(""))
+            poista();
+        else
+            uusi.rekisteroi();
     }
 
 
@@ -322,11 +340,10 @@ public class KirjahyllyGUIController implements Initializable {
         nippu = ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
                 "Muokkaa", null, nippu);
-        hylly = nippu.getHylly();
-        kirjaKohdalla = nippu.getKirja();
-        hylly.korvaa(kirjaKohdalla.getId(), kirjaKohdalla);
         naytaKirja();
+        int index = chooserKirjat.getSelectedIndex();
         hae(0);
+        chooserKirjat.setSelectedIndex(index);
     }
 
 

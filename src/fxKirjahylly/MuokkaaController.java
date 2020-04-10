@@ -1,26 +1,32 @@
 package fxKirjahylly;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
 import kirjahylly.Kirjailija;
+import kirjahylly.Kirjailijat;
 import kirjahylly.Kustantaja;
+import kirjahylly.Kustantajat;
 import kirjahylly.Nippu;
-import kirjahylly.SailoException;
 
 /**
  * Muokataan kirjaa erillisessä dialogissa
  * @author anvemaha
  * @version 28.3.2020
  */
-public class MuokkaaController implements ModalControllerInterface<Nippu> {
+public class MuokkaaController
+        implements ModalControllerInterface<Nippu>, Initializable {
 
     @FXML
     private TextField mNimi;
@@ -49,44 +55,31 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
 
     @FXML
     private void handlePeruuta() {
-        ModalController.closeStage(viesti);
+        peruuta();
     }
 
 
     @FXML
-    private void handleLisaaKirjailija() throws SailoException {
-        String nimi = Dialogs.showInputDialog("Anna kirjailijan nimi", "");
-        if (nimi == null)
-            return;
-        Kirjailija tmp = new Kirjailija(nimi);
-        tmp.rekisteroi();
-        hylly.lisaa(tmp); // sailoexception
-        setKirjailijat();
+    private void handleLisaaKirjailija() {
+        lisaaKirjailija();
     }
 
 
     @FXML
-    private void handleLisaaKustantaja() throws SailoException {
-        String nimi = Dialogs.showInputDialog("Anna kustantajan nimi", "");
-        if (nimi == null)
-            return;
-        Kustantaja tmp = new Kustantaja(nimi);
-        tmp.rekisteroi();
-        hylly.lisaa(tmp); // sailoexception
-        setKustantajat();
+    private void handleLisaaKustantaja() {
+        lisaaKustantaja();
     }
 
 
     @FXML
     private void handlePoistaKirjailija() {
-        hylly.poistaKirjailija(mKirjailija.getSelectedText());
-        hylly.toString();
+        poistaKirjailija();
     }
 
 
     @FXML
     private void handlePoistaKustantaja() {
-        hylly.poistaKustantaja(mKustantaja.getSelectedText());
+        poistaKustantaja();
     }
 
     // ========================================================
@@ -94,12 +87,22 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
     private Nippu nippu;
     private Kirja kirjaKohdalla;
     private Kirjahylly hylly;
+    private Kirjailijat tmpKirjailijat;
+    private Kustantajat tmpKustantajat;
+
+    @Override
+    public void initialize(URL url, ResourceBundle bundle) {
+        tyhjenna(); // turha? olkoot nyt kuitenkin virheiden varalta
+    }
+
 
     @Override
     public void setDefault(Nippu oletus) {
         nippu = oletus;
         kirjaKohdalla = oletus.getKirja();
         hylly = oletus.getHylly();
+        tmpKirjailijat = hylly.annaKirjailijat();
+        tmpKustantajat = hylly.annaKustantajat();
         naytaKirja(kirjaKohdalla);
     }
 
@@ -122,21 +125,57 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
     private void tallenna() {
         kirjaKohdalla.setNimi(mNimi.getText());
         kirjaKohdalla.setKirjailija(
-                hylly.getKirjailijanId(mKirjailija.getSelectedText(),
-                        kirjaKohdalla.getKirjailijaId()));
+                tmpKirjailijat.getWithId(mKirjailija.getSelectedText()));
         kirjaKohdalla.setKustantaja(
-                hylly.getKustantajanId(mKustantaja.getSelectedText(),
-                        kirjaKohdalla.getKustantajaId()));
+                tmpKustantajat.getWithId(mKustantaja.getSelectedText()));
         kirjaKohdalla.setVuosi(Integer.parseInt(mVuosi.getText()));
         kirjaKohdalla.setKuvaus(mKuvaus.getText());
         kirjaKohdalla.setLuettu(mLuettu.getText());
         kirjaKohdalla.setArvio(Integer.parseInt(mArvio.getText()));
         kirjaKohdalla.setLisatietoja(mLisatietoja.getText());
 
-        nippu.set(hylly, kirjaKohdalla);
+        hylly.set(tmpKirjailijat);
+        hylly.set(tmpKustantajat);
 
         viesti.setTextFill(Color.GREEN);
         viesti.setText("Tallennettu!");
+    }
+
+
+    private void peruuta() {
+        ModalController.closeStage(viesti);
+    }
+
+
+    private void lisaaKirjailija() {
+        String nimi = Dialogs.showInputDialog("Anna kirjailijan nimi", "");
+        if (nimi == null)
+            return;
+        Kirjailija tmp = new Kirjailija(nimi);
+        tmp.rekisteroi();
+        tmpKirjailijat.lisaa(tmp);
+        setComboBox(mKirjailija, annaKirjailijat(kirjaKohdalla));
+    }
+
+
+    private void lisaaKustantaja() {
+        String nimi = Dialogs.showInputDialog("Anna kustantajan nimi", "");
+        if (nimi == null)
+            return;
+        Kustantaja tmp = new Kustantaja(nimi);
+        tmp.rekisteroi();
+        tmpKustantajat.lisaa(tmp); // SailoException
+        setComboBox(mKustantaja, annaKustantajat(kirjaKohdalla));
+    }
+
+
+    private void poistaKirjailija() {
+        tmpKirjailijat.poista(mKirjailija.getSelectedText());
+    }
+
+
+    private void poistaKustantaja() {
+        tmpKustantajat.poista(mKustantaja.getSelectedText());
     }
 
 
@@ -164,8 +203,8 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
         if (kirja == null)
             return;
         mNimi.setText(kirja.getNimi());
-        setKirjailijat();
-        setKustantajat();
+        setComboBox(mKirjailija, annaKirjailijat(kirjaKohdalla));
+        setComboBox(mKustantaja, annaKustantajat(kirjaKohdalla));
         mVuosi.setText("" + kirja.getVuosi());
         mKuvaus.setText(kirja.getKuvaus());
         mLuettu.setText(kirja.getLuettu());
@@ -176,28 +215,59 @@ public class MuokkaaController implements ModalControllerInterface<Nippu> {
 
 
     /**
-     * Päivittää comboboxchooserin niin, että kirjan kirjailija
-     * on ensimmäisenä (ts. valittuna) ja kaikki muut mahdolliset kirjailijat ovat valittavissa
+     * Päivittää ComboBoxChooserin niin että valittu on ekana
+     * @param lista merkkijono kohteet eroteltu rivinvaihdoin ja valittu ekana
+     * @param kentta päivitettävä comboboxchooser
      */
-    public void setKirjailijat() {
-        mKirjailija.setRivit(hylly.annaKirjailijat(kirjaKohdalla));
-
-        if (mKirjailija.getSelectedText().equals("null"))
-            mKirjailija.setRivit(
-                    mKirjailija.getRivit().replace("null", "Ei valittu"));
-
+    public void setComboBox(ComboBoxChooser<String> kentta, String lista) {
+        kentta.setRivit(lista);
+        if (kentta.getSelectedText().equals("null"))
+            kentta.setRivit(kentta.getRivit().replace("null", "Ei valittu"));
     }
 
 
     /**
-     * Päivittää comboboxchooserin niin, että kirjan kustantaja
-     * on ensimmäisenä (ts. valittuna) ja kaikki muut mahdolliset kustantajat ovat valittavissa
+     * ComboBoxChooseria varten tehty
+     * @param eka kirjailija jonka halutaan olevan ensimmäisenä
+     * @return kaikki kirjailijat, tietty kirjailija ensimmäisenä
      */
-    public void setKustantajat() {
-        mKustantaja.setRivit(hylly.annaKustantajat(kirjaKohdalla));
-        if (mKustantaja.getSelectedText().equals("null"))
-            mKustantaja.setRivit(
-                    mKustantaja.getRivit().replace("null", "Ei valittu"));
+    public String annaKirjailijat(Kirja eka) {
+        String kirjailija = hylly.kirjanKirjailija(eka);
+        StringBuilder sb = new StringBuilder(kirjailija);
+        // Pakollinen, muokkaus ei toimi jos kirjailijoita ei ole
+        if (kirjailija.equals(""))
+            sb.append("null"); // nimenomaan "null" eikä null
+        sb.append("\n");
+
+        var iterator = tmpKirjailijat.iterator();
+        for (int i = 0; i < tmpKirjailijat.getLkm(); i++) {
+            String nyk = iterator.next().getNimi();
+            if (!nyk.equals(kirjailija))
+                sb.append(nyk).append("\n");
+        }
+        return sb.toString();
     }
 
+
+    /**
+     * ComboBoxChooseria varten tehty
+     * @param eka kustantaja jonka halutaan olevan ensimmäisenä
+     * @return kaikki kustantajat, tietty kustantaja ensimmäisenä
+     */
+    public String annaKustantajat(Kirja eka) {
+        String kustantaja = hylly.kirjanKustantaja(eka);
+        StringBuilder sb = new StringBuilder(kustantaja);
+        // Pakollinen, muokkaus ei toimi jos kustantajia ei ole
+        if (kustantaja.equals(""))
+            sb.append("null"); // nimenomaan "null" eikä null
+        sb.append("\n");
+
+        var iterator = tmpKustantajat.iterator();
+        for (int i = 0; i < tmpKustantajat.getLkm(); i++) {
+            String nyk = iterator.next().getNimi();
+            if (!nyk.equals(kustantaja))
+                sb.append(nyk).append("\n");
+        }
+        return sb.toString();
+    }
 }

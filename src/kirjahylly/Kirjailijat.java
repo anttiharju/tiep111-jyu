@@ -17,7 +17,7 @@ import java.util.Iterator;
  * @version 20.2.2020 pohjaa
  * @version 27.3.2020 mallin mukaiseksi koska sooloilu kostautui
  */
-public class Kirjailijat implements Iterable<Kirjailija> {
+public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
 
     private boolean muutettu = false;
     private String tiedostonPerusNimi = "";
@@ -30,6 +30,17 @@ public class Kirjailijat implements Iterable<Kirjailija> {
      */
     public Kirjailijat() {
         // ei tarvita mitään (:
+    }
+
+
+    /**
+     * Kirjailijoiden alustaminen (kloonaus)
+     * @param muutettu onko muutettu vai ei
+     * @param tiedostonPerusNimi tiedoston perusnimi
+     */
+    public Kirjailijat(boolean muutettu, String tiedostonPerusNimi) {
+        this.muutettu = muutettu;
+        this.tiedostonPerusNimi = tiedostonPerusNimi;
     }
 
 
@@ -50,6 +61,37 @@ public class Kirjailijat implements Iterable<Kirjailija> {
     public void poista(Kirjailija kirjailija) {
         alkiot.remove(kirjailija);
         muutettu = true;
+    }
+
+
+    /**
+     * Poistaa kirjailijan tietorakenteesta.
+     * @param nimi poistettavan kirjailija nimi
+     */
+    public void poista(String nimi) {
+        poista(annaKirjailija(nimi));
+    }
+
+
+    @Override
+    public Kirjailijat clone() {
+        Kirjailijat klooni = new Kirjailijat(muutettu, tiedostonPerusNimi);
+        for (Kirjailija kirjailija : alkiot)
+            klooni.lisaa(kirjailija); // tän tason kloonaus pitäisi riittää?
+        return klooni;
+    }
+
+
+    /**
+     * Etsii tietyn nimisen kirjailijan
+     * @param nimi etsittävän kirjailijan nimi
+     * @return kirjailijan id:n, 0 jos ei löydy
+     */
+    public int getWithId(String nimi) {
+        for (Kirjailija kirjailija : alkiot)
+            if (kirjailija.getNimi().equals(nimi))
+                return kirjailija.getId();
+        return 0;
     }
 
 
@@ -289,6 +331,19 @@ public class Kirjailijat implements Iterable<Kirjailija> {
         for (Kirjailija kir : alkiot)
             if (kir.getId() == id)
                 return kir;
+        return new Kirjailija();
+    }
+
+
+    /**
+     * Palauttaa annetulla nimellä olevan kirjailijan
+     * @param nimi kirjailijan nimi
+     * @return kirjailija olion
+     */
+    public Kirjailija annaKirjailija(String nimi) {
+        for (Kirjailija kirjailija : alkiot)
+            if (kirjailija.getNimi().equals(nimi))
+                return kirjailija;
         return new Kirjailija();
     }
 

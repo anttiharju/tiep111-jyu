@@ -17,7 +17,7 @@ import java.util.Iterator;
  * @version 9.3.2020 pohjaa
  * @version 27.3.2020 mallin mukaiseksi koska sooloilu kostautui
  */
-public class Kustantajat implements Iterable<Kustantaja> {
+public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
 
     private boolean muutettu = false;
     private String tiedostonPerusNimi = "";
@@ -30,6 +30,17 @@ public class Kustantajat implements Iterable<Kustantaja> {
      */
     public Kustantajat() {
         // ei tarvita mitään (:
+    }
+
+
+    /**
+     * Kustantajien alustaminen (kloonaus)
+     * @param muutettu onko muutettu vai ei
+     * @param tiedostonPerusNimi tiedoston perusnimi
+     */
+    public Kustantajat(boolean muutettu, String tiedostonPerusNimi) {
+        this.muutettu = muutettu;
+        this.tiedostonPerusNimi = tiedostonPerusNimi;
     }
 
 
@@ -50,6 +61,39 @@ public class Kustantajat implements Iterable<Kustantaja> {
     public void poista(Kustantaja kustantaja) {
         alkiot.remove(kustantaja);
         muutettu = true;
+    }
+
+
+    /**
+     * Poistaa kustantajan tietorakenteesta.
+     * @param nimi poistettavan kustantajan nimi
+     */
+    public void poista(String nimi) {
+        for (Kustantaja kustantaja : alkiot)
+            if (kustantaja.getNimi().equals(nimi))
+                poista(kustantaja);
+    }
+
+
+    @Override
+    public Kustantajat clone() {
+        Kustantajat klooni = new Kustantajat(muutettu, tiedostonPerusNimi);
+        for (Kustantaja kustantaja : alkiot)
+            klooni.lisaa(kustantaja); // tän tason kloonaus pitäisi riittää?
+        return klooni;
+    }
+
+
+    /**
+     * Etsii tietyn nimisen kustantajan
+     * @param nimi etsittävän kirjailijan nimi
+     * @return kustantajan id:n, 0 jos ei löydy
+     */
+    public int getWithId(String nimi) {
+        for (Kustantaja kustantaja : alkiot)
+            if (kustantaja.getNimi().equals(nimi))
+                return kustantaja.getId();
+        return 0;
     }
 
 
@@ -291,6 +335,19 @@ public class Kustantajat implements Iterable<Kustantaja> {
         for (Kustantaja kus : alkiot)
             if (kus.getId() == id)
                 return kus;
+        return new Kustantaja();
+    }
+
+
+    /**
+     * Palauttaa annetulla nimellä olevan kirjailijan
+     * @param nimi kirjailijan nimi
+     * @return kirjailija olion
+     */
+    public Kustantaja annaKustantaja(String nimi) {
+        for (Kustantaja kustantaja : alkiot)
+            if (kustantaja.getNimi().equals(nimi))
+                return kustantaja;
         return new Kustantaja();
     }
 
