@@ -177,7 +177,7 @@ public class KirjahyllyGUIController implements Initializable {
 
 
     /**
-     * Kysytään tiedoston nimi ja luetaan se
+     * Kysytään tiedoston nimi ja luetaan se 
      * @return true jos onnistui, false jos ei
      */
     public boolean avaa() {
