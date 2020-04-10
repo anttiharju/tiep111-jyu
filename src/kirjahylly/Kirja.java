@@ -41,9 +41,24 @@ public class Kirja {
 
 
     /**
-     * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
+     * Apumetodi kirjojen lisäykseen
      */
     public void tayta() {
+        nimi = "";
+        kirjailija = 0;
+        kustantaja = 0;
+        vuosi = 0;
+        kuvaus = "";
+        luettu = "";
+        arvio = 0;
+        lisatietoja = "";
+    }
+
+
+    /**
+     * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
+     */
+    public void tayta_test() {
         nimi = "Kirja " + rand(1, 9999);
         kirjailija = 0;
         kustantaja = 0;
@@ -192,13 +207,13 @@ public class Kirja {
         metro2033.rekisteroi();
         metro2035.rekisteroi();
         metro2033.tulosta(System.out);
-        metro2033.tayta();
+        metro2033.tayta_test();
         metro2033.tulosta(System.out);
 
-        metro2035.tayta();
+        metro2035.tayta_test();
         metro2035.tulosta(System.out);
 
-        metro2035.tayta();
+        metro2035.tayta_test();
         metro2035.tulosta(System.out);
     }
 

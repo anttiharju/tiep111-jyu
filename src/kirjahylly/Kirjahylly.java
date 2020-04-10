@@ -21,17 +21,6 @@ public class Kirjahylly {
     private Kustantajat kustantajat = new Kustantajat();
 
     /**
-     * Poistaa hyllystä ne kirjat joilla nro
-     * @param nro viitenumero, jonka mukaan poistetaan
-     * @return montako kirjaa poistettiin
-     * TODO: tee valmiiksi
-     */
-    public int poista(@SuppressWarnings("unused") int nro) {
-        return 0;
-    }
-
-
-    /**
      * Lisää hyllyyn uuden kirjan
      * @param kirja lisättävä kirja
      * @throws SailoException jos lisäystä ei voida tehdä
@@ -84,42 +73,21 @@ public class Kirjahylly {
 
 
     /**
-     * Lisätään uusi kirjailija kirjahyllyyn
-     * @param nimi lisättävä kirjailija
-     * @return onnistuiko vai eikö
-     */
-    public boolean poistaKirjailija(String nimi) {
-        for (Kirjailija kirjailija : kirjailijat)
-            if (kirjailija.getNimi().equals(nimi)) {
-                kirjailijat.poista(kirjailija);
-                return true;
-            }
-        return false;
-    }
-
-
-    /**
-     * Lisätään uusi kustantaja kirjahyllyyn
-     * @param nimi poistettava kustantaja
-     * @return onnistuiko vai eikö
-     */
-    public boolean poistaKustantaja(String nimi) {
-        for (Kustantaja kustantaja : kustantajat)
-            if (kustantaja.getNimi().equals(nimi)) {
-                kustantajat.poista(kustantaja);
-                return true;
-            }
-        return false;
-    }
-
-
-    /**
      * Korvaa annetulla id:llä löytyvän kirjan annetulla kirjalla
      * @param vid korvattavan kirjan id
      * @param kir uusi kirja
      */
     public void korvaa(int vid, Kirja kir) {
         kirjat.korvaa(vid, kir);
+    }
+
+
+    /**
+     * Poistaa annetun kirjan
+     * @param kirja poistettava kirja
+     */
+    public void poista(Kirja kirja) {
+        kirjat.poista(kirja);
     }
 
 
@@ -200,34 +168,6 @@ public class Kirjahylly {
         default:
             return "tollo!";
         }
-    }
-
-
-    /**
-     * Etsii tietyn nimisen kirjailijan
-     * @param nimi etsittävän kirjailijan nimi
-     * @param oletus arvo joka palautetaan, jos ei löydetä kirjailijaa
-     * @return kirjailijan id:n
-     */
-    public int getKirjailijanId(String nimi, int oletus) {
-        for (Kirjailija kirjailija : kirjailijat)
-            if (kirjailija.getNimi().equals(nimi))
-                return kirjailija.getId();
-        return oletus;
-    }
-
-
-    /**
-     * Etsii tietyn nimisen kustantajan
-     * @param nimi etsittävän kirjailijan nimi
-     * @param oletus arvo joka palautetaan, jos ei löydetä kustantajaa
-     * @return kustantajan id:n
-     */
-    public int getKustantajanId(String nimi, int oletus) {
-        for (Kustantaja kustantaja : kustantajat)
-            if (kustantaja.getNimi().equals(nimi))
-                return kustantaja.getId();
-        return oletus;
     }
 
 
@@ -318,48 +258,38 @@ public class Kirjahylly {
 
 
     /**
-     * ComboBoxChooseria varten tehty
-     * @param eka kirjailija jonka halutaan olevan ensimmäisenä
-     * @return kaikki kirjailijat, tietty kirjailija ensimmäisenä
+     * Palauttaa annetulla nimellä olevan kirjailijan
+     * @param nimi kirjailijan nimi
+     * @return kirjailija olion
      */
-    public String annaKirjailijat(Kirja eka) {
-        String kirjailija = kirjanKirjailija(eka);
-        StringBuilder sb = new StringBuilder(kirjailija);
-        // Pakollinen, muokkaus ei toimi jos kirjailijoita 0 ilman tätä
-        if (kirjailija.equals(""))
-            sb.append("null"); // nimenomaan "null" eikä null
-        sb.append("\n");
-
-        var iterator = kirjailijat.iterator();
-        for (int i = 0; i < kirjailijat.getLkm(); i++) {
-            String nyk = iterator.next().getNimi();
-            if (!nyk.equals(kirjailija))
-                sb.append(nyk).append("\n");
-        }
-        return sb.toString();
+    public Kirjailija annaKirjailija(String nimi) {
+        return kirjailijat.annaKirjailija(nimi);
     }
 
 
     /**
-     * ComboBoxChooseria varten tehty
-     * @param eka kustantaja jonka halutaan olevan ensimmäisenä
-     * @return kaikki kustantajat, tietty kustantaja ensimmäisenä
+     * @return kirjailijat kloonin (alkioita ei kloonata)
      */
-    public String annaKustantajat(Kirja eka) {
-        String kustantaja = kirjanKustantaja(eka);
-        StringBuilder sb = new StringBuilder(kustantaja);
-        // Pakollinen, muokkaus ei toimi jos kirjailijoita 0 ilman tätä
-        if (kustantaja.equals(""))
-            sb.append("null"); // nimenomaan "null" eikä null
-        sb.append("\n");
+    public Kirjailijat annaKirjailijat() {
+        return kirjailijat.clone();
+    }
 
-        var iterator = kustantajat.iterator();
-        for (int i = 0; i < kustantajat.getLkm(); i++) {
-            String nyk = iterator.next().getNimi();
-            if (!nyk.equals(kustantaja))
-                sb.append(nyk).append("\n");
-        }
-        return sb.toString();
+
+    /**
+     * Palauttaa annetulla nimellä olevan kirjailijan
+     * @param nimi kirjailijan nimi
+     * @return kirjailija olion
+     */
+    public Kustantaja annaKustantaja(String nimi) {
+        return kustantajat.annaKustantaja(nimi);
+    }
+
+
+    /**
+     * @return kustantajat kloonin (alkioita ei kloonata)
+     */
+    public Kustantajat annaKustantajat() {
+        return kustantajat.clone();
     }
 
 
@@ -375,9 +305,9 @@ public class Kirjahylly {
 
             Kirja m1 = new Kirja(), m2 = new Kirja();
             m1.rekisteroi();
-            m1.tayta();
+            m1.tayta_test();
             m2.rekisteroi();
-            m2.tayta();
+            m2.tayta_test();
 
             hylly.lisaa(m1);
             hylly.lisaa(m2);
@@ -414,5 +344,32 @@ public class Kirjahylly {
             System.out.println(ex.getMessage());
         }
 
+    }
+
+
+    /**
+     * Asettaa kirjailijat uusiksi (tallennus)
+     * @param tmpKirjailijat uudet kirjailijat
+     */
+    public void set(Kirjailijat tmpKirjailijat) {
+        kirjailijat = tmpKirjailijat;
+    }
+
+
+    /**
+     * Asettaa kustantajat uusiksi (tallennus)
+     * @param tmpKustantajat uudet kustantajat
+     */
+    public void set(Kustantajat tmpKustantajat) {
+        kustantajat = tmpKustantajat;
+
+    }
+
+
+    /**
+     * @return kirjojen lkm
+     */
+    public int getKirjatLkm() {
+        return kirjat.getLkm();
     }
 }
