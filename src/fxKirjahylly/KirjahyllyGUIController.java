@@ -26,7 +26,8 @@ import kirjahylly.SailoException;
 /**
  * Luokka hyllyn käyttöliittymän tapahtumien hoitamiseksi.
  * @author anvemaha
- * @version 27.3.2020
+ * @version 27.3.2020 pohjaa
+ * @version 10.4.2020 gitin pitäisi hoitaa nämä eikä minun näitä ei ole muistettu pitää ajantasalla
  */
 public class KirjahyllyGUIController implements Initializable {
 
@@ -143,7 +144,7 @@ public class KirjahyllyGUIController implements Initializable {
     private Kirjahylly hylly;
     private Kirja kirjaKohdalla;
     private Nippu nippu = new Nippu(null, null);
-    private String hyllynNimi = "antti"; // tässä oleva nimi avataan oletuksena
+    private String hyllynNimi = "antti"; // tämä nimi näytetään oletuksena
 
     /**
      * Alustetaan kirjalistan kuuntelija.
@@ -151,6 +152,7 @@ public class KirjahyllyGUIController implements Initializable {
     protected void alusta() {
         chooserKirjat.clear();
         chooserKirjat.addSelectionListener(e -> naytaKirja());
+        chooserMuut.addSelectionListener(e -> naytaKirja(false));
     }
 
 
@@ -227,17 +229,29 @@ public class KirjahyllyGUIController implements Initializable {
      * @return true jos saa sulkea sovelluksen, false jos ei
      */
     public boolean voikoSulkea() {
-        // tallenna(); // TODO: Joku varmistus, muttei tällästä autom. hyi
+        if (hylly.onkoMuutoksia()) {
+            if (Dialogs.showQuestionDialog("Varoitus",
+                    "Haluatko varmasti poistua?\nSinulla on tallentamattomia muutoksia.",
+                    "Kyllä", "Ei"))
+                return true;
+            return false;
+        }
         return true;
     }
 
 
     /**
-     * Näyttää listasta valitun kirjan tiedot, tilapäisesti yhteen isoon edit-kenttään
-     * TODO: tiedot johonkin muuhun kuin yhteen textareaan
+     * Näyttää valitun kirjan
+     * @param ohita ohitetaanko kirjailijan muiden kirjojen päivitys
      */
-    protected void naytaKirja() {
-        kirjaKohdalla = chooserKirjat.getSelectedObject();
+    protected void naytaKirja(boolean ohita) {
+        if (!ohita) {
+            kirjaKohdalla = chooserMuut.getSelectedObject();
+            chooserKirjat.setSelectedIndex(-1); // valinta pois
+        } else {
+            haeMuut();
+            kirjaKohdalla = chooserKirjat.getSelectedObject();
+        }
 
         if (kirjaKohdalla == null) {
             tyhjenna();
@@ -252,7 +266,14 @@ public class KirjahyllyGUIController implements Initializable {
         nArvio.setText("" + kirjaKohdalla.getArvio());
         nLisatietoja.setText(kirjaKohdalla.getLisatietoja());
         viesti.setText("");
+    }
 
+
+    /**
+     * Näyttää valitun kirjan
+     */
+    private void naytaKirja() {
+        naytaKirja(true);
     }
 
 
@@ -293,8 +314,7 @@ public class KirjahyllyGUIController implements Initializable {
         chooserKirjat.clear();
 
         int index = 0;
-        Collection<Kirja> kirjat;
-        kirjat = hylly.etsi(ehto, k, l);
+        Collection<Kirja> kirjat = hylly.etsi(ehto, k, l);
         int i = 0;
         for (Kirja kirja : kirjat) {
             if (kirja.getId() == kid)
@@ -304,6 +324,18 @@ public class KirjahyllyGUIController implements Initializable {
         }
 
         chooserKirjat.setSelectedIndex(index);
+    }
+
+
+    private void haeMuut() {
+        kirjaKohdalla = chooserKirjat.getSelectedObject();
+        if (kirjaKohdalla == null)
+            return;
+        chooserMuut.clear();
+        Collection<Kirja> kirjailijanMuutKirjat = hylly.kirjailijanKirjat(
+                kirjaKohdalla.getKirjailijaId(), kirjaKohdalla.getId());
+        for (Kirja kirja : kirjailijanMuutKirjat)
+            chooserMuut.add(kirja.getNimi(), kirja);
     }
 
 
@@ -328,7 +360,7 @@ public class KirjahyllyGUIController implements Initializable {
             hylly.poista(uusi);
         else
             uusi.rekisteroi();
-        hae(0);
+        hae(kirjaKohdalla.getId());
     }
 
 
@@ -342,17 +374,19 @@ public class KirjahyllyGUIController implements Initializable {
 
 
     private void muokkaa() {
-        kirjaKohdalla = chooserKirjat.getSelectedObject();
         if (kirjaKohdalla == null)
             return;
+        Kirja alkupKirja = kirjaKohdalla.clone();
         nippu.set(hylly, kirjaKohdalla);
         nippu = ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
                 "Muokkaa", null, nippu);
-        naytaKirja();
-        int index = chooserKirjat.getSelectedIndex();
-        hae(0);
-        chooserKirjat.setSelectedIndex(index);
+        kirjaKohdalla = nippu.getKirja();
+        hylly = nippu.getHylly();
+
+        if (!kirjaKohdalla.onkoSama(alkupKirja))
+            hylly.korvaa(kirjaKohdalla.getId(), kirjaKohdalla);
+        hae(kirjaKohdalla.getId());
     }
 
 
@@ -361,8 +395,8 @@ public class KirjahyllyGUIController implements Initializable {
      */
     private void lueUudestaan() {
         boolean varmistus = Dialogs.showQuestionDialog("Varmistus",
-                "Haluatko varmasti lukea tiedoston uudestaan levyltä?\nKaikki muutokset menetetään.", "Kyllä",
-                "Ei");
+                "Haluatko varmasti lukea tiedoston uudestaan levyltä?\nKaikki muutokset menetetään.",
+                "Kyllä", "Ei");
         if (varmistus)
             lueTiedosto(hyllynNimi);
     }

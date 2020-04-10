@@ -74,11 +74,11 @@ public class Kirjahylly {
 
     /**
      * Korvaa annetulla id:llä löytyvän kirjan annetulla kirjalla
-     * @param vid korvattavan kirjan id
+     * @param kid korvattavan kirjan id
      * @param kir uusi kirja
      */
-    public void korvaa(int vid, Kirja kir) {
-        kirjat.korvaa(vid, kir);
+    public void korvaa(int kid, Kirja kir) {
+        kirjat.korvaa(kid, kir);
     }
 
 
@@ -91,11 +91,7 @@ public class Kirjahylly {
     }
 
 
-    /** 
-     * Koodi menee spaghetiksi koska en alussa osannut suunnitella näin isoa kokonaisuutta ja
-     * oma ohjelmani eroaa malliht:sta liikaa (malliht:ssa ei voi hakea harrastusten perusteella)
-     * Se toimii, mutten ole kovinkaan ylpeä tästä koska Kirjahylly ottaa liikaa vastuuta asioista
-     * 
+    /**
      * Palauttaa "taulukossa" hakuehtoon vastaavien kirjojen viitteet 
      * @param hakuehto hakuehto  
      * @param k etsittävän kentän indeksi  
@@ -134,8 +130,23 @@ public class Kirjahylly {
             return hylly.anna(k, kirja1)
                     .compareToIgnoreCase(hylly.anna(k, kirja2));
         }
-
     }
+
+    /**
+     * Palauttaa "taulukossa" hakuehtoon vastaavien kirjojen viitteet 
+     * @param kirjailijaId sen kirjailijan id, jonka kirjat halutaan
+     * @param kirjaId valitun kirjan id, ei haluta näyttää samaa kirjaa uudestaan
+     * @return tietorakenteen löytyneistä kirjoista 
+     */
+    public Collection<Kirja> kirjailijanKirjat(int kirjailijaId, int kirjaId) {
+        List<Kirja> loytyneet = new ArrayList<Kirja>();
+        for (Kirja kirja : kirjat)
+            if (kirja.getKirjailijaId() == kirjailijaId
+                    && kirja.getId() != kirjaId)
+                loytyneet.add(kirja);
+        return loytyneet;
+    }
+
 
     /**
      * Tämän avulla saadaan toinen ehto mukaan hakuun
@@ -391,5 +402,19 @@ public class Kirjahylly {
      */
     public int getKirjatLkm() {
         return kirjat.getLkm();
+    }
+
+
+    /**
+     * @return kertoo onko tallentamattomia muutoksia
+     */
+    public boolean onkoMuutoksia() {
+        if (kirjat.getMuutettu())
+            return true;
+        if (kirjailijat.getMuutettu())
+            return true;
+        if (kustantajat.getMuutettu())
+            return true;
+        return false;
     }
 }

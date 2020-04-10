@@ -56,8 +56,8 @@ public class MuokkaaController
 
 
     @FXML
-    private void handlePeruuta() {
-        peruuta();
+    private void handleSulje() {
+        sulje();
     }
 
 
@@ -93,12 +93,11 @@ public class MuokkaaController
     // ========================================================
 
     private Nippu nippu;
-    private Kirja kirjaKohdalla;
+    private Kirja apuKirja;
     private Kirjahylly hylly;
     private Kirjailijat tmpKirjailijat;
     private Kustantajat tmpKustantajat;
-    private int tmpkir, tmpkus; // muilla kirjan tiedoilla textfieldit ajaa
-                                // näiden roolin
+    private int tmpkir, tmpkus;
 
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
@@ -109,13 +108,13 @@ public class MuokkaaController
     @Override
     public void setDefault(Nippu oletus) {
         nippu = oletus;
-        kirjaKohdalla = oletus.getKirja();
+        apuKirja = oletus.getKirja();
         hylly = oletus.getHylly();
         tmpKirjailijat = hylly.annaKirjailijat();
         tmpKustantajat = hylly.annaKustantajat();
         tmpkir = oletus.getKirja().getKirjailijaId();
         tmpkus = oletus.getKirja().getKustantajaId();
-        naytaKirja(kirjaKohdalla);
+        naytaKirja(apuKirja);
     }
 
 
@@ -143,17 +142,18 @@ public class MuokkaaController
         mLuettu.setStyle(null);
         mArvio.setStyle(null);
 
-        kirjaKohdalla.setNimi(mNimi.getText());
-        kirjaKohdalla.setKirjailija(
+        apuKirja.setNimi(mNimi.getText());
+        apuKirja.setKirjailija(
                 tmpKirjailijat.getId(mKirjailija.getSelectedText()));
-        kirjaKohdalla.setKustantaja(
+        apuKirja.setKustantaja(
                 tmpKustantajat.getId(mKustantaja.getSelectedText()));
-        kirjaKohdalla.setVuosi(Integer.parseInt(mVuosi.getText()));
-        kirjaKohdalla.setKuvaus(mKuvaus.getText());
-        kirjaKohdalla.setLuettu(mLuettu.getText());
-        kirjaKohdalla.setArvio(Integer.parseInt(mArvio.getText()));
-        kirjaKohdalla.setLisatietoja(mLisatietoja.getText());
+        apuKirja.setVuosi(Integer.parseInt(mVuosi.getText()));
+        apuKirja.setKuvaus(mKuvaus.getText());
+        apuKirja.setLuettu(mLuettu.getText());
+        apuKirja.setArvio(Integer.parseInt(mArvio.getText()));
+        apuKirja.setLisatietoja(mLisatietoja.getText());
 
+        nippu.set(apuKirja);
         hylly.set(tmpKirjailijat);
         hylly.set(tmpKustantajat);
 
@@ -162,7 +162,7 @@ public class MuokkaaController
     }
 
 
-    private void peruuta() {
+    private void sulje() {
         ModalController.closeStage(viesti);
     }
 

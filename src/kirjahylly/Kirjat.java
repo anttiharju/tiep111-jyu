@@ -43,6 +43,14 @@ public class Kirjat implements Iterable<Kirja> {
 
 
     /**
+     * @return onko muutettu
+     */
+    public boolean getMuutettu() {
+        return muutettu;
+    }
+
+
+    /**
      * Lisää uuden kirjan tietorakenteeseen Ottaa kirjan omistukseensa.
      * @param kirja lisätäävän jäsenen viite. Huom tietorakenne muuttuu omistajaksi
      * @example
@@ -145,15 +153,15 @@ public class Kirjat implements Iterable<Kirja> {
 
     /**
      * Korvaa annetulla id:llä löytyvän kirjan annetulla kirjalla
-     * @param vid korvattavan kirjan id
+     * @param kid korvattavan kirjan id
      * @param kir uusi kirja
-     * TODO: ilmeisesti lkm ei päivity oikein ja siksi tuo null tarkistus
      */
-    public void korvaa(int vid, Kirja kir) {
+    public void korvaa(int kid, Kirja kir) {
         for (Kirja k : alkiot) {
-            if (k != null && k.getId() == vid) {
+            if (k.getId() == kid) {
                 k = kir;
                 muutettu = true;
+                return;
             }
         }
     }

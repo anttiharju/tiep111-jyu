@@ -45,14 +45,33 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
 
 
     /**
+     * @return onko muutettu
+     */
+    public boolean getMuutettu() {
+        return muutettu;
+    }
+
+
+    /**
+     * Lisää uuden kirjailijan tietorakenteeseen. Ottaa kirjailijan omistukseensa.
+     * @param kirjailija lisättävä kirjailija. Huom tietorakenne muuttuu omistajaksi
+     * @param kloonaus lisätäänkö kloonatessa vai ei
+     * @return lisätyn kirjailijan id:n
+     */
+    public int lisaa(Kirjailija kirjailija, boolean kloonaus) {
+        alkiot.add(kirjailija);
+        muutettu = !kloonaus;
+        return kirjailija.getId();
+    }
+
+
+    /**
      * Lisää uuden kirjailijan tietorakenteeseen. Ottaa kirjailijan omistukseensa.
      * @param kirjailija lisättävä kirjailija. Huom tietorakenne muuttuu omistajaksi
      * @return lisätyn kirjailijan id:n
      */
     public int lisaa(Kirjailija kirjailija) {
-        alkiot.add(kirjailija);
-        muutettu = true;
-        return kirjailija.getId();
+        return lisaa(kirjailija, false);
     }
 
 
@@ -79,7 +98,7 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
     public Kirjailijat clone() {
         Kirjailijat klooni = new Kirjailijat(muutettu, tiedostonPerusNimi);
         for (Kirjailija kirjailija : alkiot)
-            klooni.lisaa(kirjailija); // tän tason kloonaus pitäisi riittää?
+            klooni.lisaa(kirjailija, true);
         return klooni;
     }
 
