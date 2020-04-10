@@ -49,13 +49,17 @@ public class KirjahyllyGUIController implements Initializable {
     @FXML
     private TextField nLisatietoja;
     @FXML
-    private ComboBoxChooser<String> cbKentat;
+    private ComboBoxChooser<String> cbLuettu;
+    @FXML
+    private ComboBoxChooser<String> cbEhto;
     @FXML
     private Label viesti;
     @FXML
     private ScrollPane panelKirja;
     @FXML
     private ListChooser<Kirja> chooserKirjat;
+    @FXML
+    private ListChooser<Kirja> chooserMuut;
 
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
@@ -133,7 +137,7 @@ public class KirjahyllyGUIController implements Initializable {
     private Kirjahylly hylly;
     private Kirja kirjaKohdalla;
     private Nippu nippu = new Nippu(null, null);
-    private String hyllynNimi = "";
+    private String hyllynNimi = "antti"; // tässä oleva nimi avataan oletuksena
 
     /**
      * Alustetaan kirjalistan kuuntelija.
@@ -141,17 +145,6 @@ public class KirjahyllyGUIController implements Initializable {
     protected void alusta() {
         chooserKirjat.clear();
         chooserKirjat.addSelectionListener(e -> naytaKirja());
-    }
-
-
-    private void naytaVirhe(String virhe) {
-        if (virhe == null || virhe.isEmpty()) {
-            viesti.setText("");
-            viesti.getStyleClass().removeAll("virhe");
-            return;
-        }
-        viesti.setText(virhe);
-        viesti.getStyleClass().add("virhe");
     }
 
 
@@ -262,16 +255,20 @@ public class KirjahyllyGUIController implements Initializable {
 
     /**
      * Hakee kirjojen tiedot listaan
-     * @param kid kirjan numero joka aktivoidaan haun jälkeen
+     * @param id kirjan numero joka aktivoidaan haun jälkeen
      */
-    protected void hae(int kid) {
-        int k = cbKentat.getSelectionModel().getSelectedIndex();
+    protected void hae(int id) {
+        int kid = id;
+        if (kid <= 0) {
+            Kirja kohdalla = kirjaKohdalla;
+            if (kohdalla != null)
+                kid = kohdalla.getId();
+        }
+
+        int k = cbEhto.getSelectionModel().getSelectedIndex(); // + apu?
         String ehto = hakuehto.getText();
-        if (k > 0 || ehto.length() > 0)
-            naytaVirhe(String.format("Ei osata hakea (kenttä: %d, ehto: %s)", k,
-                    ehto));
-        else
-            naytaVirhe(null);
+        if (ehto.indexOf('*') < 0)
+            ehto = "*" + ehto + "*";
 
         chooserKirjat.clear();
 
@@ -290,7 +287,6 @@ public class KirjahyllyGUIController implements Initializable {
             Dialogs.showMessageDialog(
                     "Kirjan hakemisessa ongelmia! " + ex.getMessage());
         }
-        // tästä tulee muutosviesti joka näyttää kirjan
         chooserKirjat.setSelectedIndex(index);
     }
 
