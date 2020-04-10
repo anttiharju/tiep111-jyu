@@ -274,19 +274,15 @@ public class KirjahyllyGUIController implements Initializable {
 
         int index = 0;
         Collection<Kirja> kirjat;
-        try {
-            kirjat = hylly.etsi(ehto, k);
-            int i = 0;
-            for (Kirja kirja : kirjat) {
-                if (kirja.getId() == kid)
-                    index = i;
-                chooserKirjat.add(kirja.getNimi(), kirja);
-                i++;
-            }
-        } catch (SailoException ex) {
-            Dialogs.showMessageDialog(
-                    "Kirjan hakemisessa ongelmia! " + ex.getMessage());
+        kirjat = hylly.etsi(ehto, k);
+        int i = 0;
+        for (Kirja kirja : kirjat) {
+            if (kirja.getId() == kid)
+                index = i;
+            chooserKirjat.add(kirja.getNimi(), kirja);
+            i++;
         }
+
         chooserKirjat.setSelectedIndex(index);
     }
 
