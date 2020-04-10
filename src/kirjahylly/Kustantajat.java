@@ -47,10 +47,12 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
     /**
      * Lisää uuden kustantajan tietorakenteeseen. Ottaa kustantajan omistukseensa.
      * @param kustantaja lisättävä kustantaja. Huom tietorakenne muuttuu omistajaksi
+     * @return lisätyn kustantajan id:n
      */
-    public void lisaa(Kustantaja kustantaja) {
+    public int lisaa(Kustantaja kustantaja) {
         alkiot.add(kustantaja);
         muutettu = true;
+        return kustantaja.getId();
     }
 
 
@@ -81,19 +83,6 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
         for (Kustantaja kustantaja : alkiot)
             klooni.lisaa(kustantaja); // tän tason kloonaus pitäisi riittää?
         return klooni;
-    }
-
-
-    /**
-     * Etsii tietyn nimisen kustantajan
-     * @param nimi etsittävän kirjailijan nimi
-     * @return kustantajan id:n, 0 jos ei löydy
-     */
-    public int getWithId(String nimi) {
-        for (Kustantaja kustantaja : alkiot)
-            if (kustantaja.getNimi().equals(nimi))
-                return kustantaja.getId();
-        return 0;
     }
 
 
@@ -340,15 +329,42 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
 
 
     /**
-     * Palauttaa annetulla nimellä olevan kirjailijan
-     * @param nimi kirjailijan nimi
-     * @return kirjailija olion
+     * Palauttaa annetulla nimellä olevan kustantajan
+     * @param nimi kustantajan nimi
+     * @return kustantajan id:n
      */
     public Kustantaja annaKustantaja(String nimi) {
+        for (Kustantaja kus : alkiot)
+            if (kus.getNimi().equals(nimi))
+                return kus;
+        return new Kustantaja();
+    }
+
+
+    /**
+     * Palauttaa annetun kustantajan id:n
+     * @param kustantaja kustantajan nimi
+     * @return kustantajan id:n
+     */
+    public int getId(Kustantaja kustantaja) {
+        String nimi = kustantaja.getNimi();
+        for (Kustantaja kus : alkiot)
+            if (kus.getNimi().equals(nimi))
+                return kus.getId();
+        return 0;
+    }
+
+
+    /**
+     * Palauttaa tietyn nimisen kustantajan sen id:llä
+     * @param nimi etsittävän kustantajan nimi
+     * @return kustantajan id:n, 0 jos ei löydy
+     */
+    public int getId(String nimi) {
         for (Kustantaja kustantaja : alkiot)
             if (kustantaja.getNimi().equals(nimi))
-                return kustantaja;
-        return new Kustantaja();
+                return kustantaja.getId();
+        return 0;
     }
 
 

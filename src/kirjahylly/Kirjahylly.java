@@ -99,21 +99,19 @@ public class Kirjahylly {
      * Palauttaa "taulukossa" hakuehtoon vastaavien kirjojen viitteet 
      * @param hakuehto hakuehto  
      * @param k etsittävän kentän indeksi  
+     * @param l lukuhakuehto, 0 kaikki, 1 luetut, 2 ei luetut
      * @return tietorakenteen löytyneistä kirjoista 
      */
-    public Collection<Kirja> etsi(String hakuehto, int k) {
+    public Collection<Kirja> etsi(String hakuehto, int k, int l) {
         String ehto = "*";
         if (hakuehto != null && hakuehto.length() > 0)
-            ehto = hakuehto;
-        int hk = k;
-        if (hk < 0)
-            hk = 0; // jotta etsii id:n mukaan
+            ehto = hakuehto + 1; // ks. lukuehto() +1 selitykseen
         List<Kirja> loytyneet = new ArrayList<Kirja>();
         for (Kirja kirja : kirjat) {
-            if (WildChars.onkoSamat(anna(hk, kirja), ehto))
+            if (WildChars.onkoSamat(lukuehto(k, l, kirja), ehto))
                 loytyneet.add(kirja);
         }
-        Collections.sort(loytyneet, new KirjaVertailija(hk, this));
+        Collections.sort(loytyneet, new KirjaVertailija(k, this));
         return loytyneet;
     }
 
@@ -139,9 +137,31 @@ public class Kirjahylly {
 
     }
 
+    /**
+     * Tämän avulla saadaan toinen ehto mukaan hakuun
+     * @param k monennenko kentän sisältö palautetaan 
+     * @param l lukuhakuehto, 0 kaikki, 1 luetut, 2 ei luetut
+     * @param kir kirja jonka tiedot palautetaan
+     * @return kentän sisältö merkkijonona johon lisätty lukuhakuehto
+     */
+    public String lukuehto(int k, int l, Kirja kir) {
+        if (l == 1) {
+            if (kir.getLuettu().equals(""))
+                return anna(k, kir) + 0;
+            return anna(k, kir) + 1;
+        }
+        if (l == 2) {
+            if (kir.getLuettu().equals(""))
+                return anna(k, kir) + 1;
+            return anna(k, kir) + 0;
+        }
+        return anna(k, kir) + 1;
+    }
+
+
     /** 
     * Antaa k:n kentän sisällön merkkijonona 
-    * @param k monenenko kentän sisältö palautetaan 
+    * @param k monennenko kentän sisältö palautetaan 
     * @param kir kirja jonka tiedot palautetaan
     * @return kentän sisältö merkkijonona 
     */
@@ -330,7 +350,7 @@ public class Kirjahylly {
             hylly.lisaa(k52);
 
             System.out.println("+ Kirjahylly testi");
-            Collection<Kirja> kirjat = hylly.etsi("", -1);
+            Collection<Kirja> kirjat = hylly.etsi("", 0, -1);
             int i = 0;
             for (Kirja k : kirjat) {
                 System.out.println("Kirja paikassa: " + i);

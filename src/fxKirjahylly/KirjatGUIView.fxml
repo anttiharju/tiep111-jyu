@@ -68,12 +68,12 @@
                      <bottom>
                         <HBox BorderPane.alignment="CENTER">
                            <children>
-                              <ComboBoxChooser fx:id="cbLuettu" onAction="#handleHakuehto" rivit="Kaikki&#10;Luettu&#10;Ei luettu">
+                              <ComboBoxChooser fx:id="cbLuettu" minWidth="90.0" onAction="#handleHakuehto" rivit="Kaikki&#10;Luettu&#10;Ei luettu">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
                                  </HBox.margin>
                               </ComboBoxChooser>
-      								<ComboBoxChooser fx:id="cbEhto" onAction="#handleHakuehto" rivit="Nimi&#10;Kirjailija&#10;Kustantaja&#10;Julkaisuvuosi&#10;Arvio">
+      								<ComboBoxChooser fx:id="cbEhto" onAction="#handleHakuehto" rivit="Nimi&#10;Kirjailija&#10;Kustantaja&#10;Vuosi&#10;Arvio">
                                  <HBox.margin>
                                     <Insets bottom="5.0" right="5.0" />
                                  </HBox.margin>

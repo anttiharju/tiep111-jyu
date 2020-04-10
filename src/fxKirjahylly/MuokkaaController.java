@@ -89,6 +89,8 @@ public class MuokkaaController
     private Kirjahylly hylly;
     private Kirjailijat tmpKirjailijat;
     private Kustantajat tmpKustantajat;
+    private int tmpkir, tmpkus; // muilla kirjan tiedoilla textfieldit ajaa
+                                // näiden roolin
 
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
@@ -103,6 +105,8 @@ public class MuokkaaController
         hylly = oletus.getHylly();
         tmpKirjailijat = hylly.annaKirjailijat();
         tmpKustantajat = hylly.annaKustantajat();
+        tmpkir = oletus.getKirja().getKirjailijaId();
+        tmpkus = oletus.getKirja().getKustantajaId();
         naytaKirja(kirjaKohdalla);
     }
 
@@ -125,9 +129,9 @@ public class MuokkaaController
     private void tallenna() {
         kirjaKohdalla.setNimi(mNimi.getText());
         kirjaKohdalla.setKirjailija(
-                tmpKirjailijat.getWithId(mKirjailija.getSelectedText()));
+                tmpKirjailijat.getId(mKirjailija.getSelectedText()));
         kirjaKohdalla.setKustantaja(
-                tmpKustantajat.getWithId(mKustantaja.getSelectedText()));
+                tmpKustantajat.getId(mKustantaja.getSelectedText()));
         kirjaKohdalla.setVuosi(Integer.parseInt(mVuosi.getText()));
         kirjaKohdalla.setKuvaus(mKuvaus.getText());
         kirjaKohdalla.setLuettu(mLuettu.getText());
@@ -153,8 +157,8 @@ public class MuokkaaController
             return;
         Kirjailija tmp = new Kirjailija(nimi);
         tmp.rekisteroi();
-        tmpKirjailijat.lisaa(tmp);
-        setComboBox(mKirjailija, annaKirjailijat(kirjaKohdalla));
+        tmpkir = tmpKirjailijat.lisaa(tmp);
+        setComboBox(mKirjailija, annaKirjailijat());
     }
 
 
@@ -164,18 +168,22 @@ public class MuokkaaController
             return;
         Kustantaja tmp = new Kustantaja(nimi);
         tmp.rekisteroi();
-        tmpKustantajat.lisaa(tmp); // SailoException
-        setComboBox(mKustantaja, annaKustantajat(kirjaKohdalla));
+        tmpkus = tmpKustantajat.lisaa(tmp);
+        setComboBox(mKustantaja, annaKustantajat());
     }
 
 
     private void poistaKirjailija() {
+        tmpkir = 0;
         tmpKirjailijat.poista(mKirjailija.getSelectedText());
+        setComboBox(mKirjailija, annaKirjailijat());
     }
 
 
     private void poistaKustantaja() {
+        tmpkus = 0;
         tmpKustantajat.poista(mKustantaja.getSelectedText());
+        setComboBox(mKustantaja, annaKustantajat());
     }
 
 
@@ -203,8 +211,8 @@ public class MuokkaaController
         if (kirja == null)
             return;
         mNimi.setText(kirja.getNimi());
-        setComboBox(mKirjailija, annaKirjailijat(kirjaKohdalla));
-        setComboBox(mKustantaja, annaKustantajat(kirjaKohdalla));
+        setComboBox(mKirjailija, annaKirjailijat());
+        setComboBox(mKustantaja, annaKustantajat());
         mVuosi.setText("" + kirja.getVuosi());
         mKuvaus.setText(kirja.getKuvaus());
         mLuettu.setText(kirja.getLuettu());
@@ -228,11 +236,10 @@ public class MuokkaaController
 
     /**
      * ComboBoxChooseria varten tehty
-     * @param eka kirjailija jonka halutaan olevan ensimmäisenä
-     * @return kaikki kirjailijat, tietty kirjailija ensimmäisenä
+     * @return kaikki kirjailijat, kirjan kirjailija ensimmäisenä
      */
-    public String annaKirjailijat(Kirja eka) {
-        String kirjailija = hylly.kirjanKirjailija(eka);
+    public String annaKirjailijat() {
+        String kirjailija = tmpKirjailijat.annaKirjailija(tmpkir).getNimi();
         StringBuilder sb = new StringBuilder(kirjailija);
         // Pakollinen, muokkaus ei toimi jos kirjailijoita ei ole
         if (kirjailija.equals(""))
@@ -251,11 +258,10 @@ public class MuokkaaController
 
     /**
      * ComboBoxChooseria varten tehty
-     * @param eka kustantaja jonka halutaan olevan ensimmäisenä
-     * @return kaikki kustantajat, tietty kustantaja ensimmäisenä
+     * @return kaikki kustantajat, kirjan kustantaja ensimmäisenä
      */
-    public String annaKustantajat(Kirja eka) {
-        String kustantaja = hylly.kirjanKustantaja(eka);
+    public String annaKustantajat() {
+        String kustantaja = tmpKustantajat.annaKustantaja(tmpkus).getNimi();
         StringBuilder sb = new StringBuilder(kustantaja);
         // Pakollinen, muokkaus ei toimi jos kustantajia ei ole
         if (kustantaja.equals(""))
