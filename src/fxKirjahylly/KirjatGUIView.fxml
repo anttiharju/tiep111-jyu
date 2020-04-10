@@ -26,6 +26,7 @@
 						<MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
 						<MenuItem mnemonicParsing="false" onAction="#handleAvaa" text="Avaa..." />
 						<MenuItem mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta..." />
+                  <MenuItem mnemonicParsing="false" onAction="#handleRefresh" text="Lue uudelleen..." />
 						<MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta" />
 					</items>
 				</Menu>
