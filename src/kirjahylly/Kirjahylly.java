@@ -1,7 +1,13 @@
 package kirjahylly;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import fi.jyu.mit.ohj2.WildChars;
 
 /**
  * @author anvemaha
@@ -86,15 +92,82 @@ public class Kirjahylly {
 
 
     /** 
+     * Koodi menee spaghetiksi koska en alussa osannut suunnitella näin isoa kokonaisuutta ja
+     * oma ohjelmani eroaa malliht:sta liikaa (malliht:ssa ei voi hakea harrastusten perusteella)
+     * Se toimii, mutten ole kovinkaan ylpeä tästä koska Kirjahylly ottaa liikaa vastuuta asioista
+     * 
      * Palauttaa "taulukossa" hakuehtoon vastaavien kirjojen viitteet 
      * @param hakuehto hakuehto  
      * @param k etsittävän kentän indeksi  
      * @return tietorakenteen löytyneistä kirjoista 
-     * @throws SailoException Jos jotakin menee väärin
      */
-    public Collection<Kirja> etsi(String hakuehto, int k)
-            throws SailoException {
-        return kirjat.etsi(hakuehto, k);
+    public Collection<Kirja> etsi(String hakuehto, int k) {
+        String ehto = "*";
+        if (hakuehto != null && hakuehto.length() > 0)
+            ehto = hakuehto;
+        int hk = k;
+        if (hk < 0)
+            hk = 0; // jotta etsii id:n mukaan
+        List<Kirja> loytyneet = new ArrayList<Kirja>();
+        for (Kirja kirja : kirjat) {
+            if (WildChars.onkoSamat(anna(hk, kirja), ehto))
+                loytyneet.add(kirja);
+        }
+        Collections.sort(loytyneet, new KirjaVertailija(hk, this));
+        return loytyneet;
+    }
+
+    /** 
+     * Kirjan vertailija 
+     */
+    public static class KirjaVertailija implements Comparator<Kirja> {
+        private int k;
+        private Kirjahylly hylly;
+
+        @SuppressWarnings("javadoc")
+        public KirjaVertailija(int k, Kirjahylly hylly) {
+            this.k = k;
+            this.hylly = hylly;
+        }
+
+
+        @Override
+        public int compare(Kirja kirja1, Kirja kirja2) {
+            return hylly.anna(k, kirja1)
+                    .compareToIgnoreCase(hylly.anna(k, kirja2));
+        }
+
+    }
+
+    /** 
+    * Antaa k:n kentän sisällön merkkijonona 
+    * @param k monenenko kentän sisältö palautetaan 
+    * @param kir kirja jonka tiedot palautetaan
+    * @return kentän sisältö merkkijonona 
+    */
+    public String anna(int k, Kirja kir) {
+        switch (k) {
+        case 0:
+            return "" + kir.getNimi();
+        case 1:
+            return "" + kirjanKirjailija(kir);
+        case 2:
+            return "" + kirjanKustantaja(kir);
+        case 3:
+            return "" + kir.getVuosi();
+        case 4:
+            return "" + kir.getArvio();
+        case 5:
+            return "" + kir.getLuettu();
+        case 6:
+            return "" + kir.getKuvaus();
+        case 7:
+            return "" + kir.getLisatietoja();
+        case 8:
+            return "" + kir.getId();
+        default:
+            return "tollo!";
+        }
     }
 
 
