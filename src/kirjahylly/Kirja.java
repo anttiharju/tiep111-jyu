@@ -12,7 +12,7 @@ import static kanta.apu.*;
  * @author anvemaha
  * @version 27.3.2020
  */
-public class Kirja {
+public class Kirja implements Cloneable {
 
     private int id;
     private String nimi;
@@ -25,6 +25,49 @@ public class Kirja {
     private String lisatietoja;
 
     private static int seuraavaId = 1;
+
+    @Override
+    public Kirja clone() {
+        Kirja klooni = new Kirja();
+        klooni.setId(id);
+        klooni.setNimi(nimi);
+        klooni.setKirjailija(kirjailija);
+        klooni.setKustantaja(kustantaja);
+        klooni.setVuosi(vuosi);
+        klooni.setKuvaus(kuvaus);
+        klooni.setLuettu(luettu);
+        klooni.setArvio(arvio);
+        klooni.setLisatietoja(lisatietoja);
+        return klooni;
+    }
+
+
+    /**
+     * @param toinen verrattava kirja
+     * @return onko sama kirja vai ei
+     */
+    public boolean onkoSama(Kirja toinen) {
+        if (id != toinen.getId())
+            return false;
+        if (!nimi.equals(toinen.getNimi()))
+            return false;
+        if (kirjailija != toinen.getKirjailijaId())
+            return false;
+        if (kustantaja != toinen.getKustantajaId())
+            return false;
+        if (vuosi != toinen.getVuosi())
+            return false;
+        if (!kuvaus.equals(toinen.getKuvaus()))
+            return false;
+        if (!luettu.equals(toinen.getLuettu()))
+            return false;
+        if (arvio != toinen.getArvio())
+            return false;
+        if (!lisatietoja.equals(toinen.getLisatietoja()))
+            return false;
+        return true;
+    }
+
 
     /**
      * @return kirjan nimen
