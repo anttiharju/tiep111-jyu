@@ -89,7 +89,7 @@
 						<Insets left="5.0" />
 					</GridPane.margin>
 				</TextField>
-				<TextField fx:id="mArvio" text="4/5" GridPane.columnIndex="1" GridPane.rowIndex="6">
+				<TextField fx:id="mArvio" text="4" GridPane.columnIndex="1" GridPane.rowIndex="6">
 					<GridPane.margin>
 						<Insets left="5.0" />
 					</GridPane.margin>
@@ -101,11 +101,15 @@
 				</TextField>
 				<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
 					<children>
-						<ComboBoxChooser fx:id="mKirjailija" rivit="Ernest Cline&#10;Dmitri Gluhovski&#10;Randall Munroe&#10;Greg Egan">
-							<HBox.margin>
-								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-							</HBox.margin>
-						</ComboBoxChooser>
+                  <HBox prefWidth="250.0">
+                     <children>
+      						<ComboBoxChooser fx:id="mKirjailija" rivit="Ernest Cline&#10;Dmitri Gluhovski&#10;Randall Munroe&#10;Greg Egan">
+      							<HBox.margin>
+      								<Insets bottom="20.0" left="5.0" right="20.0" top="20.0" />
+      							</HBox.margin>
+      						</ComboBoxChooser>
+                     </children>
+                  </HBox>
             						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleLisaaKirjailija" text="Lisää...">
 							<HBox.margin>
 								<Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
@@ -120,11 +124,15 @@
 				</HBox>
 				<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
 					<children>
-						<ComboBoxChooser fx:id="mKustantaja" rivit="Random House&#10;Victor Gollancz&#10;John Murray&#10;AST&#10;Orion Publishing Group">
-							<HBox.margin>
-								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-							</HBox.margin>
-						</ComboBoxChooser>
+                  <HBox prefWidth="250.0">
+                     <children>
+      						<ComboBoxChooser fx:id="mKustantaja" rivit="Random House&#10;Victor Gollancz&#10;John Murray&#10;AST&#10;Orion Publishing Group">
+      							<HBox.margin>
+      								<Insets bottom="20.0" left="5.0" right="20.0" top="20.0" />
+      							</HBox.margin>
+      						</ComboBoxChooser>
+                     </children>
+                  </HBox>
 						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleLisaaKustantaja" text="Lisää....">
 							<HBox.margin>
 								<Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
