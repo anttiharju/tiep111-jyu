@@ -2,18 +2,21 @@ package kirjahylly;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import kanta.SailoException;
+
 /**
  * Kirjahyllyn kirjailijat, joka osaa mm. lisätä uuden kirjailijan
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 20.2.2020 pohjaa
  * @version 27.3.2020 mallin mukaiseksi koska sooloilu kostautui
  */
@@ -22,7 +25,6 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
     private boolean muutettu = false;
     private String tiedostonPerusNimi = "";
 
-    // Taulukko kirjailijoista
     private final Collection<Kirjailija> alkiot = new ArrayList<Kirjailija>();
 
     /**
@@ -57,6 +59,22 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
      * @param kirjailija lisättävä kirjailija. Huom tietorakenne muuttuu omistajaksi
      * @param kloonaus lisätäänkö kloonatessa vai ei
      * @return lisätyn kirjailijan id:n
+     * @example
+     * <pre name="test">
+     *  #THROWS SailoException 
+     *   Kirjailijat kirjailijat = new Kirjailijat();
+     *   Kirjailija kir1 = new Kirjailija(), kir2 = new Kirjailija();
+     *   kirjailijat.getLkm() === 0;
+     *   kirjailijat.lisaa(kir1); kirjailijat.getLkm() === 1;
+     *   kirjailijat.lisaa(kir2); kirjailijat.getLkm() === 2;
+     *   kirjailijat.lisaa(kir1); kirjailijat.getLkm() === 3;
+     *   Iterator<Kirjailija> it = kirjailijat.iterator(); 
+     *   it.next() === kir1;
+     *   it.next() === kir2; 
+     *   it.next() === kir1;  
+     *   kirjailijat.lisaa(kir1); kirjailijat.getLkm() === 4;
+     *   kirjailijat.lisaa(kir1); kirjailijat.getLkm() === 5;
+     * </pre>
      */
     public int lisaa(Kirjailija kirjailija, boolean kloonaus) {
         alkiot.add(kirjailija);
@@ -78,10 +96,32 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
     /**
      * Poistaa kirjailijan tietorakenteesta.
      * @param kirjailija poistettava kirjailija.
+     * @example 
+     * <pre name="test"> 
+     *  #THROWS SailoException  
+     *   Kirjailijat kirjailijat = new Kirjailijat(); 
+     *   Kirjailija kir1 = new Kirjailija(), kir2 = new Kirjailija(), kir3 = new Kirjailija(); 
+     *   kir1.rekisteroi(); kir2.rekisteroi(); kir3.rekisteroi(); 
+     *   int id1 = kir1.getId(); 
+     *   kirjailijat.lisaa(kir1); kirjailijat.lisaa(kir2); kirjailijat.lisaa(kir3); 
+     *   kirjailijat.poista(id1+1); 
+     *   kirjailijat.poista(id1);   kirjailijat.getLkm() === 1; 
+     *   kirjailijat.poista(id1+3); kirjailijat.getLkm() === 1; 
+     *   kirjailijat.poista(id1+2); kirjailijat.getLkm() === 0; 
+     * </pre> 
      */
     public void poista(Kirjailija kirjailija) {
         alkiot.remove(kirjailija);
         muutettu = true;
+    }
+
+
+    /**
+     * Poistaa id:n perusteella
+     * @param id poistettavan kirjailijan id
+     */
+    public void poista(int id) {
+        poista(annaKirjailija(id));
     }
 
 
@@ -94,60 +134,52 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
     }
 
 
-    @Override
-    public Kirjailijat clone() {
-        Kirjailijat klooni = new Kirjailijat(muutettu, tiedostonPerusNimi);
-        for (Kirjailija kirjailija : alkiot)
-            klooni.lisaa(kirjailija, true);
-        return klooni;
-    }
-
-
     /**
      * Lukee kirjailijat tiedostosta
      * @param tied tiedoston nimen alkuosa
      * @throws SailoException jos lukeminen epäonnistuu
      * @example
      * <pre name="test">
-     * #THROWS SailoException 
-     * #import java.io.File;
-     *  Kirjailijat kirjailijat = new Kirjailijat();
-     *  Kirjailija k21 = new Kirjailija(); k21.tayta(2);
-     *  Kirjailija k11 = new Kirjailija(); k11.tayta(1);
-     *  Kirjailija k22 = new Kirjailija(); k22.tayta(2); 
-     *  Kirjailija k12 = new Kirjailija(); k12.tayta(1); 
-     *  Kirjailija k23 = new Kirjailija(); k23.tayta(2); 
-     *  String tiedNimi = "tmp_testihylly_kirjailijat";
-     *  File ftied = new File(tiedNimi+".dat");
-     *  ftied.delete();
-     *  kirjailijat.lueTiedostosta(tiedNimi); #THROWS SailoException
-     *  kirjailijat.lisaa(k21);
-     *  kirjailijat.lisaa(k11);
-     *  kirjailijat.lisaa(k22);
-     *  kirjailijat.lisaa(k12);
-     *  kirjailijat.lisaa(k23);
-     *  kirjailijat.tallenna();
-     *  kirjailijat = new Kirjailijat();
-     *  kirjailijat.lueTiedostosta(tiedNimi);
-     *  Iterator<Kirjailija> i = kirjailijat.iterator();
-     *  i.next().toString() === k21.toString();
-     *  i.next().toString() === k11.toString();
-     *  i.next().toString() === k22.toString();
-     *  i.next().toString() === k12.toString();
-     *  i.next().toString() === k23.toString();
-     *  i.hasNext() === false;
-     *  kirjailijat.lisaa(k23);
-     *  kirjailijat.tallenna();
-     *  ftied.delete() === true;
-     *  File fbak = new File(tiedNimi+".backup");
-     *  fbak.delete() === true;         
+     *  #THROWS SailoException 
+     *  #import java.io.File;
+     *   Kirjailijat kirjailijat = new Kirjailijat();
+     *   Kirjailija k21 = new Kirjailija(); k21.tayta(2);
+     *   Kirjailija k11 = new Kirjailija(); k11.tayta(1);
+     *   Kirjailija k22 = new Kirjailija(); k22.tayta(2); 
+     *   Kirjailija k12 = new Kirjailija(); k12.tayta(1); 
+     *   Kirjailija k23 = new Kirjailija(); k23.tayta(2); 
+     *   String tiedNimi = "tmp_testihylly_kirjailijat";
+     *   File ftied = new File(tiedNimi+".dat");
+     *   ftied.delete();
+     *   kirjailijat.lueTiedostosta(tiedNimi); #THROWS SailoException
+     *   kirjailijat.lisaa(k21);
+     *   kirjailijat.lisaa(k11);
+     *   kirjailijat.lisaa(k22);
+     *   kirjailijat.lisaa(k12);
+     *   kirjailijat.lisaa(k23);
+     *   kirjailijat.tallenna();
+     *   kirjailijat = new Kirjailijat();
+     *   kirjailijat.lueTiedostosta(tiedNimi);
+     *   Iterator<Kirjailija> i = kirjailijat.iterator();
+     *   i.next().toString() === k21.toString();
+     *   i.next().toString() === k11.toString();
+     *   i.next().toString() === k22.toString();
+     *   i.next().toString() === k12.toString();
+     *   i.next().toString() === k23.toString();
+     *   i.hasNext() === false;
+     *   kirjailijat.lisaa(k23);
+     *   kirjailijat.tallenna();
+     *   ftied.delete() === true;
+     *   File fbak = new File(tiedNimi+".backup");
+     *   fbak.delete() === true;         
      * </pre>
      */
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
-        try (BufferedReader fi = new BufferedReader(
-                new FileReader(getTiedostonNimi()))) {
-
+        // try (BufferedReader fi = new BufferedReader(
+        // new FileReader(getTiedostonNimi()))) {
+        try (BufferedReader fi = new BufferedReader(new InputStreamReader(
+                new FileInputStream(getTiedostonNimi()), "UTF8"))) {
             String rivi;
             while ((rivi = fi.readLine()) != null) {
                 rivi = rivi.trim();
@@ -189,7 +221,6 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
      *  2|Dmitri Gluhovski
      *  3|Randall Munroe
      *  4|Greg Egan
-     *  
      * </pre>
      */
     public void tallenna() throws SailoException {
@@ -198,8 +229,8 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
 
         File fbackup = new File(getBackupNimi());
         File ftied = new File(getTiedostonNimi());
-        fbackup.delete(); // if ... System.err.println("Ei voi tuhota");
-        ftied.renameTo(fbackup); // if ... System.err.println("Ei voi nimetä");
+        fbackup.delete();
+        ftied.renameTo(fbackup);
 
         try (PrintWriter fo = new PrintWriter(
                 new FileWriter(ftied.getCanonicalPath()))) {
@@ -269,32 +300,32 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
      * 
      * @example
      * <pre name="test">
-     * #PACKAGEIMPORT
-     * #import java.util.*;
-     * 
-     *  Kirjailijat kirjailijat = new Kirjailijat();
-     *  Kirjailija p12 = new Kirjailija(2); kirjailijat.lisaa(p12);
-     *  Kirjailija p21 = new Kirjailija(1); kirjailijat.lisaa(p21);
-     *  Kirjailija p32 = new Kirjailija(2); kirjailijat.lisaa(p32);
-     *  Kirjailija p41 = new Kirjailija(1); kirjailijat.lisaa(p41);
-     *  Kirjailija p52 = new Kirjailija(2); kirjailijat.lisaa(p52);
+     *  #PACKAGEIMPORT
+     *  #import java.util.*;
      *  
-     *  Iterator<Kirjailija> i2 = kirjailijat.iterator();
-     *  i2.next() === p12;
-     *  i2.next() === p21;
-     *  i2.next() === p32;
-     *  i2.next() === p41;
-     *  i2.next() === p52;
-     *  i2.next() === p21; #THROWS NoSuchElementException
-     *  
-     *  int n = 0;
-     *  int kidt[] = {2,1,2,1,2};
-     *  
-     *  for ( Kirjailija kir : kirjailijat ) {
-     *      kir.getId() === kidt[n]; n++;
-     *  }
-     *  
-     *  n === 5;
+     *   Kirjailijat kirjailijat = new Kirjailijat();
+     *   Kirjailija p12 = new Kirjailija(2); kirjailijat.lisaa(p12);
+     *   Kirjailija p21 = new Kirjailija(1); kirjailijat.lisaa(p21);
+     *   Kirjailija p32 = new Kirjailija(2); kirjailijat.lisaa(p32);
+     *   Kirjailija p41 = new Kirjailija(1); kirjailijat.lisaa(p41);
+     *   Kirjailija p52 = new Kirjailija(2); kirjailijat.lisaa(p52);
+     *   
+     *   Iterator<Kirjailija> i2 = kirjailijat.iterator();
+     *   i2.next() === p12;
+     *   i2.next() === p21;
+     *   i2.next() === p32;
+     *   i2.next() === p41;
+     *   i2.next() === p52;
+     *   i2.next() === p21; #THROWS NoSuchElementException
+     *   
+     *   int n = 0;
+     *   int kidt[] = {2,1,2,1,2};
+     *   
+     *   for ( Kirjailija kir : kirjailijat ) {
+     *       kir.getId() === kidt[n]; n++;
+     *   }
+     *   
+     *   n === 5;
      * </pre>
      */
     @Override
@@ -309,30 +340,30 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
      * @return tietorakenne jossa viite löydettyyn kirjailijaan
      * @example
      * <pre name="test">
-     * #import java.util.*;
-     * 
-     *  Kirjailijat kirjailijat = new Kirjailijat();
-     *  Kirjailija pete = new Kirjailija(0); kirjailijat.lisaa(pete);
-     *  Kirjailija vesa = new Kirjailija(1); kirjailijat.lisaa(vesa);
-     *  Kirjailija tupu = new Kirjailija(2); kirjailijat.lisaa(tupu);
-     *  Kirjailija hupu = new Kirjailija(3); kirjailijat.lisaa(hupu);
-     *  Kirjailija lupu = new Kirjailija(4); kirjailijat.lisaa(lupu);
-     *  Kirjailija rupu = new Kirjailija(5); kirjailijat.lisaa(rupu);
+     *  #import java.util.*;
      *  
-     *  Kirjailija etsitty = new Kirjailija();
-     *  
-     *  etsitty = kirjailijat.annaKirjailija(0);
-     *  etsitty == pete === true;
-     *  etsitty = kirjailijat.annaKirjailija(1);
-     *  etsitty == vesa === true;
-     *  etsitty = kirjailijat.annaKirjailija(2);
-     *  etsitty == tupu === true;
-     *  etsitty = kirjailijat.annaKirjailija(3);
-     *  etsitty == hupu === true;
-     *  etsitty = kirjailijat.annaKirjailija(4);
-     *  etsitty == lupu === true;
-     *  etsitty = kirjailijat.annaKirjailija(5);
-     *  etsitty == rupu === true;
+     *   Kirjailijat kirjailijat = new Kirjailijat();
+     *   Kirjailija pete = new Kirjailija(0); kirjailijat.lisaa(pete);
+     *   Kirjailija vesa = new Kirjailija(1); kirjailijat.lisaa(vesa);
+     *   Kirjailija tupu = new Kirjailija(2); kirjailijat.lisaa(tupu);
+     *   Kirjailija hupu = new Kirjailija(3); kirjailijat.lisaa(hupu);
+     *   Kirjailija lupu = new Kirjailija(4); kirjailijat.lisaa(lupu);
+     *   Kirjailija rupu = new Kirjailija(5); kirjailijat.lisaa(rupu);
+     *   
+     *   Kirjailija etsitty = new Kirjailija();
+     *   
+     *   etsitty = kirjailijat.annaKirjailija(0);
+     *   etsitty == pete === true;
+     *   etsitty = kirjailijat.annaKirjailija(1);
+     *   etsitty == vesa === true;
+     *   etsitty = kirjailijat.annaKirjailija(2);
+     *   etsitty == tupu === true;
+     *   etsitty = kirjailijat.annaKirjailija(3);
+     *   etsitty == hupu === true;
+     *   etsitty = kirjailijat.annaKirjailija(4);
+     *   etsitty == lupu === true;
+     *   etsitty = kirjailijat.annaKirjailija(5);
+     *   etsitty == rupu === true;
      * </pre>
      */
     public Kirjailija annaKirjailija(int id) {
@@ -366,6 +397,19 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
             if (kirjailija.getNimi().equals(nimi))
                 return kirjailija.getId();
         return 0;
+    }
+
+
+    /**
+     * Kloonaa tietorakenteen muttei sen alkioita,
+     * jotta voidaan poistaa ja lisätä uusia muokkausdialogissa.
+     */
+    @Override
+    public Kirjailijat clone() {
+        Kirjailijat klooni = new Kirjailijat(muutettu, tiedostonPerusNimi);
+        for (Kirjailija kirjailija : alkiot)
+            klooni.lisaa(kirjailija, true);
+        return klooni;
     }
 
 

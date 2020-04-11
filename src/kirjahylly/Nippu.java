@@ -2,7 +2,7 @@ package kirjahylly;
 
 /**
  * Apuluokka asioiden kuljettamiseen käyttöliittymän dialogien välillä
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 30.3.2020
  */
 public class Nippu {

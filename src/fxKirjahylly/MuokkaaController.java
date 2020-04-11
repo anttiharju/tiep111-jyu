@@ -24,7 +24,7 @@ import static kanta.apu.*;
 
 /**
  * Muokataan kirjaa erillisessä dialogissa
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 28.3.2020
  */
 public class MuokkaaController

@@ -10,7 +10,7 @@ import fi.jyu.mit.fxgui.ModalControllerInterface;
 
 /**
  * Tulostuscontroller
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 11.4.2020
  */
 public class TulostusController implements ModalControllerInterface<String> {

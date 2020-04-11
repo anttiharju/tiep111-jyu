@@ -1,8 +1,8 @@
-package kirjahylly;
+package kanta;
 
 /**
  * Poikkeusluokka tietorakenteesta aiheutuville poikkeuksille.
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 25.2.2020
  */
 public class SailoException extends Exception {

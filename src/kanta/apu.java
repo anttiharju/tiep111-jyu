@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 /**
  * Luokka satunnaisille apufunktioille
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 20.2.2020 rand
  */
 public class apu {

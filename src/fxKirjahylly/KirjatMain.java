@@ -10,8 +10,8 @@ import javafx.fxml.FXMLLoader;
 
 /**
  * Pääohjelma Kirjahylly-ohjelman käynnistämiseksi
- * @author anvemaha
- * @version 26.1.2020
+ * @author Antti Harju, anvemaha@student.jyu.fi
+ * @version 11.4.2020, 20.02 valmis
  */
 public class KirjatMain extends Application {
     @Override
