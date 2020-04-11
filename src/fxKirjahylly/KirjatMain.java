@@ -30,7 +30,6 @@ public class KirjatMain extends Application {
             primaryStage.setTitle("Kirjahylly");
             primaryStage.setMinWidth(960);
             primaryStage.setMinHeight(540);
-
             primaryStage.setOnCloseRequest((event) -> {
                 if (!hyllyCtrl.voikoSulkea())
                     event.consume();

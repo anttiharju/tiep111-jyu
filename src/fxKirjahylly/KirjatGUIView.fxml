@@ -120,14 +120,14 @@
                       <ColumnConstraints hgrow="ALWAYS" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="45.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label text="Nimi" GridPane.halignment="LEFT">
@@ -214,7 +214,7 @@
                   </GridPane>
                </center>
 				</BorderPane>
-				<BorderPane prefWidth="200.0">
+				<BorderPane minWidth="120.0">
 					<top>
 						<Label text="Kirjailijan muut kirjat" BorderPane.alignment="CENTER">
 							<padding>

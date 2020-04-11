@@ -133,14 +133,18 @@ public class MuokkaaController
     }
 
 
-    private void tallenna() {
-        if (!tarkista())
-            return;
-
+    private void tyhjennaVaroitukset() {
         mNimi.setStyle(null);
         mVuosi.setStyle(null);
         mLuettu.setStyle(null);
         mArvio.setStyle(null);
+        viesti.setText("");
+    }
+
+
+    private void tallenna() {
+        if (!tarkista())
+            return;
 
         apuKirja.setNimi(mNimi.getText());
         apuKirja.setKirjailija(
@@ -299,6 +303,7 @@ public class MuokkaaController
      * @return saako tallentaa vai ei
      */
     private boolean tarkista() {
+        tyhjennaVaroitukset();
         int totuus = 0;
         totuus += tarkistaArvio();
         totuus += tarkistaLuettu();
@@ -317,7 +322,7 @@ public class MuokkaaController
     private int tarkistaNimi() {
         if (tarkistaEtteiTyhja(mNimi.getText()))
             return 0;
-        virheKentta("\"Nimi\" ei voi olla tyhjä!", mNimi);
+        virheKentta("Kirjalla täytyy olla nimi!", mNimi);
         return 1;
     }
 
@@ -329,7 +334,7 @@ public class MuokkaaController
     private int tarkistaJulkaisuvuosi() {
         if (tarkistaVuosi(mVuosi.getText()))
             return 0;
-        virheKentta("Anna \"Vuosi\" muodossa vvvv!", mVuosi);
+        virheKentta("Anna julkaisuvuosi muodossa vvvv", mVuosi);
         return 1;
     }
 
@@ -341,7 +346,7 @@ public class MuokkaaController
     private int tarkistaLuettu() {
         if (tarkistaPvm(mLuettu.getText()))
             return 0;
-        virheKentta("Anna \"Luettu\" muodossa pp.kk.vvvv!", mLuettu);
+        virheKentta("Anna päivänmäärä muodossa pp.kk.vvvv", mLuettu);
         return 1;
     }
 
@@ -351,9 +356,9 @@ public class MuokkaaController
      * @return saako tallentaa vai ei
      */
     private int tarkistaArvio() {
-        if (tarkistaNumeerisuus(mVuosi.getText()))
+        if (tarkistaNumeerisuus(mArvio.getText()))
             return 0;
-        virheKentta("Anna \"Arvio\" numeerisena!", mArvio);
+        virheKentta("Arvion täytyy olla numero", mArvio);
         return 1;
     }
 
