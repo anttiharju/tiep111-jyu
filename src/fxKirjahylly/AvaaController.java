@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 /**
  * Kysytään hyllyn nimi ja luodaan tätä varten dialogi.
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 27.3.2020
  */
 public class AvaaController implements ModalControllerInterface<String> {
@@ -34,7 +34,6 @@ public class AvaaController implements ModalControllerInterface<String> {
 
     /**
      * Nopeuttaa ohjelman käyttöä kun voi painaa Enter kirjoittaessa ja haluttu tiedosto aukeaa
-     * TODO: Voi tehdä jotenkin toisella tapaa? Samaan tyyliin kun menuitemien jutut suoraan scenebuilderista
      * @param keyEvent painettu näppäin
      */
     @FXML

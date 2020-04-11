@@ -9,7 +9,7 @@ import static kanta.apu.*;
 
 /**
  * Kirjailija joka osaa mm. itse huolehtia id:stään
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 20.2.2020 pohjaa
  * @version 28.3.2020 mallin mukaiseksi
  */

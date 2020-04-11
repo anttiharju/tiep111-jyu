@@ -19,15 +19,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import kanta.SailoException;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
 import kirjahylly.Kirjat;
 import kirjahylly.Nippu;
-import kirjahylly.SailoException;
 
 /**
  * Luokka hyllyn käyttöliittymän tapahtumien hoitamiseksi.
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 27.3.2020 pohjaa
  * @version 10.4.2020 gitin pitäisi hoitaa nämä eikä minun näitä ei ole muistettu pitää ajantasalla
  */
@@ -384,7 +384,7 @@ public class KirjahyllyGUIController implements Initializable {
         kirjaKohdalla = nippu.getKirja();
         hylly = nippu.getHylly();
 
-        if (!kirjaKohdalla.onkoSama(alkupKirja))
+        if (!kirjaKohdalla.toString().equals(alkupKirja.toString()))
             hylly.korvaa(kirjaKohdalla.getId(), kirjaKohdalla);
         hae(kirjaKohdalla.getId());
     }
