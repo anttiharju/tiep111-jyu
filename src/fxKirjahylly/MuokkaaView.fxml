@@ -34,7 +34,7 @@
 						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 					</padding>
 				</Label>
-				<Label text="Arvio" GridPane.rowIndex="6">
+				<Label text="Arvio *" GridPane.rowIndex="6">
 					<padding>
 						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 					</padding>
@@ -49,7 +49,7 @@
 						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 					</padding>
 				</Label>
-				<Label text="Julkaisuvuosi" GridPane.rowIndex="3">
+				<Label text="Julkaisuvuosi *" GridPane.rowIndex="3">
 					<padding>
 						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 					</padding>
@@ -64,75 +64,83 @@
 						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 					</padding>
 				</Label>
-				<Label text="Nimi">
+				<Label text="Nimi *">
 					<padding>
 						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 					</padding>
 				</Label>
 				<TextField fx:id="mNimi" text="Diaspora" GridPane.columnIndex="1">
 					<GridPane.margin>
-						<Insets left="5.0" />
+						<Insets left="5.0" right="5.0" />
 					</GridPane.margin>
 				</TextField>
 				<TextField fx:id="mVuosi" text="1997" GridPane.columnIndex="1" GridPane.rowIndex="3">
 					<GridPane.margin>
-						<Insets left="5.0" />
+						<Insets left="5.0" right="5.0" />
 					</GridPane.margin>
 				</TextField>
             <TextField fx:id="mKuvaus" text="Ihmiskunta elää ikuisesti tietoisena ohjelmistona" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
-                  <Insets left="5.0" />
+                  <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </TextField>
-				<TextField fx:id="mLuettu" text="9.1.2020" GridPane.columnIndex="1" GridPane.rowIndex="5">
+				<TextField fx:id="mLuettu" onAction="#handleTarkistaLuettu" text="9.1.2020" GridPane.columnIndex="1" GridPane.rowIndex="5">
 					<GridPane.margin>
-						<Insets left="5.0" />
+						<Insets left="5.0" right="5.0" />
 					</GridPane.margin>
 				</TextField>
-				<TextField fx:id="mArvio" text="4/5" GridPane.columnIndex="1" GridPane.rowIndex="6">
+				<TextField fx:id="mArvio" text="4" GridPane.columnIndex="1" GridPane.rowIndex="6">
 					<GridPane.margin>
-						<Insets left="5.0" />
+						<Insets left="5.0" right="5.0" />
 					</GridPane.margin>
 				</TextField>
 				<TextField fx:id="mLisatietoja" text="Englanninkielinen" GridPane.columnIndex="1" GridPane.rowIndex="7">
 					<GridPane.margin>
-						<Insets left="5.0" />
+						<Insets left="5.0" right="5.0" />
 					</GridPane.margin>
 				</TextField>
 				<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
 					<children>
-						<ComboBoxChooser fx:id="mKirjailija" rivit="Ernest Cline&#10;Dmitri Gluhovski&#10;Randall Munroe&#10;Greg Egan">
+                  <HBox prefWidth="250.0">
+                     <children>
+      						<ComboBoxChooser fx:id="mKirjailija" maxWidth="238.0" rivit="Ernest Cline&#10;Dmitri Gluhovski&#10;Randall Munroe&#10;Greg Egan">
+      							<HBox.margin>
+      								<Insets bottom="20.0" left="5.0" top="20.0" />
+      							</HBox.margin>
+      						</ComboBoxChooser>
+                     </children>
+                  </HBox>
+            						<Button alignment="CENTER_RIGHT" minWidth="55.0" mnemonicParsing="false" onAction="#handleLisaaKirjailija" text="Lisää...">
 							<HBox.margin>
 								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
 							</HBox.margin>
-						</ComboBoxChooser>
-            						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleLisaaKirjailija" text="Lisää...">
-							<HBox.margin>
-								<Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
-							</HBox.margin>
             						</Button>
-						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handlePoistaKirjailija" text="Poista">
+						<Button alignment="CENTER_RIGHT" minWidth="50.0" mnemonicParsing="false" onAction="#handlePoistaKirjailija" text="Poista">
 							<HBox.margin>
-								<Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+								<Insets bottom="20.0" right="5.0" top="20.0" />
 							</HBox.margin>
 						</Button>
 					</children>
 				</HBox>
 				<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
 					<children>
-						<ComboBoxChooser fx:id="mKustantaja" rivit="Random House&#10;Victor Gollancz&#10;John Murray&#10;AST&#10;Orion Publishing Group">
+                  <HBox prefWidth="250.0">
+                     <children>
+      						<ComboBoxChooser fx:id="mKustantaja" maxWidth="238.0" rivit="Random House&#10;Victor Gollancz&#10;John Murray&#10;AST&#10;Orion Publishing Group">
+      							<HBox.margin>
+      								<Insets bottom="20.0" left="5.0" top="20.0" />
+      							</HBox.margin>
+      						</ComboBoxChooser>
+                     </children>
+                  </HBox>
+						<Button alignment="CENTER_RIGHT" minWidth="55.0" mnemonicParsing="false" onAction="#handleLisaaKustantaja" text="Lisää....">
 							<HBox.margin>
 								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
 							</HBox.margin>
-						</ComboBoxChooser>
-						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleLisaaKustantaja" text="Lisää....">
-							<HBox.margin>
-								<Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
-							</HBox.margin>
 						</Button>
-						<Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handlePoistaKustantaja" text="Poista">
+						<Button alignment="CENTER_RIGHT" minWidth="50.0" mnemonicParsing="false" onAction="#handlePoistaKustantaja" text="Poista">
 							<HBox.margin>
-								<Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+								<Insets bottom="20.0" right="5.0" top="20.0" />
 							</HBox.margin>
 						</Button>
 					</children>
@@ -144,26 +152,34 @@
 		</GridPane>
 	</left>
 	<bottom>
-		<HBox prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+		<HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
-				<Button mnemonicParsing="false" onAction="#handlePeruuta" text="Sulje">
-					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-					</HBox.margin>
-				</Button>
-				<Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
-					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-					</HBox.margin>
-				</Button>
-            <Label fx:id="viesti" text="Anna julkaisuvuosi numerona!" textFill="RED">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </padding>
-            </Label>
+            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="viesti" text="Anna julkaisuvuosi numerona!" textFill="RED">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="NEVER">
+               <children>
+      				<Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
+      					<HBox.margin>
+      						<Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+      					</HBox.margin>
+      				</Button>
+      				<Button mnemonicParsing="false" onAction="#handleSulje" text="Sulje">
+      					<HBox.margin>
+      						<Insets bottom="10.0" right="20.0" top="10.0" />
+      					</HBox.margin>
+      				</Button>
+               </children>
+            </HBox>
 			</children>
 		</HBox>
 	</bottom>
