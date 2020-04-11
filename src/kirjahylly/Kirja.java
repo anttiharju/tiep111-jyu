@@ -9,7 +9,7 @@ import static kanta.apu.*;
 
 /**
  * Kirjahyllyn kirja joka osaa huolehtia id:stään.
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 27.3.2020
  */
 public class Kirja implements Cloneable {
@@ -26,6 +26,22 @@ public class Kirja implements Cloneable {
 
     private static int seuraavaId = 1;
 
+    /**
+     * Tehdään identtinen klooni kirjasta
+     * @return kloonattu kirja
+     * @example
+     * <pre name="test">
+     *  #THROWS CloneNotSupportedException 
+     *   Kirja kirja = new Kirja();
+     *   kirja.parse("1|Maailman ympäri|40");
+     *   Kirja kopio = kirja.clone();
+     *   Object olio = kirja.clone();
+     *   kopio.toString() === kirja.toString();
+     *   kirja.parse("2|Maailman ympäri|40");
+     *   kopio.toString().equals(kirja.toString()) === false;
+     *   olio instanceof Kirja === true;
+     * </pre>
+     */
     @Override
     public Kirja clone() {
         Kirja klooni = new Kirja();
@@ -43,39 +59,12 @@ public class Kirja implements Cloneable {
 
 
     /**
-     * @param toinen verrattava kirja
-     * @return onko sama kirja vai ei
-     */
-    public boolean onkoSama(Kirja toinen) {
-        if (id != toinen.getId())
-            return false;
-        if (!nimi.equals(toinen.getNimi()))
-            return false;
-        if (kirjailija != toinen.getKirjailijaId())
-            return false;
-        if (kustantaja != toinen.getKustantajaId())
-            return false;
-        if (vuosi != toinen.getVuosi())
-            return false;
-        if (!kuvaus.equals(toinen.getKuvaus()))
-            return false;
-        if (!luettu.equals(toinen.getLuettu()))
-            return false;
-        if (arvio != toinen.getArvio())
-            return false;
-        if (!lisatietoja.equals(toinen.getLisatietoja()))
-            return false;
-        return true;
-    }
-
-
-    /**
      * @return kirjan nimen
      * @example
      * <pre name="test">
      *  Kirja metro = new Kirja();
      *  metro.tayta();
-     *  metro.getNimi() =R= "Kirja .*";
+     *  metro.getNimi() === "";
      * </pre>
      */
     public String getNimi() {
@@ -84,11 +73,16 @@ public class Kirja implements Cloneable {
 
 
     /**
-     * Apumetodi kirjojen lisäykseen
+     * Apumetodi kirjojen luomiseen
+     * ja testaukseen
+     * @param n haluttu id
+     * @param uusiNimi haluttu nimi
+     * @param kirId haluttu kirjailijan id
      */
-    public void tayta() {
-        nimi = "";
-        kirjailija = 0;
+    public void tayta(int n, String uusiNimi, int kirId) {
+        id = n;
+        nimi = uusiNimi;
+        kirjailija = kirId;
         kustantaja = 0;
         vuosi = 0;
         kuvaus = "";
@@ -99,17 +93,47 @@ public class Kirja implements Cloneable {
 
 
     /**
-     * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
+     * Apumetodi kirjojen luomiseen
+     */
+    public void tayta() {
+        tayta(0, "", 0);
+    }
+
+
+    /**
+     * Apumetodi kirjojen testaamiseen
+     * @param n haluttu id
+     */
+    public void tayta(int n) {
+        tayta(n, "", 0);
+    }
+
+
+    /**
+     * Apumetodi kirjojen testaamiseen
+     * @param n haluttu id
+     * @param kirId haluttu kirjailijan id
+     */
+    public void tayta(int n, int kirId) {
+        tayta(n, "", kirId);
+    }
+
+
+    /**
+     * Apumetodi kirjojen testaamiseen
+     * @param n haluttu id
+     * @param uusiNimi haluttu nimi
+     */
+    public void tayta(int n, String uusiNimi) {
+        tayta(n, uusiNimi, 0);
+    }
+
+
+    /**
+     * Apumetodi nimenomaan testaamiseen
      */
     public void tayta_test() {
-        nimi = "Kirja " + rand(1, 9999);
-        kirjailija = 0;
-        kustantaja = 0;
-        vuosi = 2020;
-        kuvaus = "Asioita tapahtuu";
-        luettu = "28.3.2020";
-        arvio = 5;
-        lisatietoja = "Jänniä juttuja";
+        tayta(0, "Kirja " + rand(1, 9999), 0);
     }
 
 
@@ -248,25 +272,6 @@ public class Kirja implements Cloneable {
 
 
     /**
-     * @param args ei käytössä
-     */
-    public static void main(String args[]) {
-        Kirja metro2033 = new Kirja(), metro2035 = new Kirja();
-        metro2033.rekisteroi();
-        metro2035.rekisteroi();
-        metro2033.tulosta(System.out);
-        metro2033.tayta_test();
-        metro2033.tulosta(System.out);
-
-        metro2035.tayta_test();
-        metro2035.tulosta(System.out);
-
-        metro2035.tayta_test();
-        metro2035.tulosta(System.out);
-    }
-
-
-    /**
      * @return kirjan kirjailijan id:n
      */
     public int getKirjailijaId() {
@@ -385,5 +390,24 @@ public class Kirja implements Cloneable {
      */
     public void setLisatietoja(String lisatietoja) {
         this.lisatietoja = lisatietoja;
+    }
+
+
+    /**
+     * @param args ei käytössä
+     */
+    public static void main(String args[]) {
+        Kirja metro2033 = new Kirja(), metro2035 = new Kirja();
+        metro2033.rekisteroi();
+        metro2035.rekisteroi();
+        metro2033.tulosta(System.out);
+        metro2033.tayta_test();
+        metro2033.tulosta(System.out);
+
+        metro2035.tayta_test();
+        metro2035.tulosta(System.out);
+
+        metro2035.tayta_test();
+        metro2035.tulosta(System.out);
     }
 }
