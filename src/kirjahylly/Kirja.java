@@ -118,9 +118,14 @@ public class Kirja implements Cloneable {
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(nimi + "\n" + kirjailija + "\n" + kustantaja + "\n" + vuosi
-                + "\n" + kuvaus + "\n" + luettu + "\n" + arvio + "\n"
-                + lisatietoja);
+        out.println("Kirja\t\t<t/>" + nimi);
+        out.println("Kirjailija\t<t/>" + "<kirjailija/>");
+        out.println("Kustantaja\t" + "<kustantaja/>");
+        out.println("Julkaisuvuosi\t" + vuosi);
+        out.println("Lyhyt kuvaus\t" + kuvaus);
+        out.println("Luettu\t\t" + luettu);
+        out.println("Arvio\t\t" + arvio);
+        out.println("Lisätietoja\t" + lisatietoja);
     }
 
 

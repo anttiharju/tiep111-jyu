@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
  * @version 20.2.2020 pohjaa
  * @version 27.3.2020 mallin mukaiseksi
  */
-public class Kirjat implements Iterable<Kirja> {
+public class Kirjat implements Iterable<Kirja>, Cloneable {
 
     private boolean muutettu = false;
     private int lkm = 0;
@@ -43,6 +43,17 @@ public class Kirjat implements Iterable<Kirja> {
 
 
     /**
+     * Kloonausta varten
+     * @param kokoNimi koko nimi
+     * @param tiedostonPerusNimi tiedoston perus nimi
+     */
+    public Kirjat(String kokoNimi, String tiedostonPerusNimi) {
+        this.kokoNimi = kokoNimi;
+        this.tiedostonPerusNimi = tiedostonPerusNimi;
+    }
+
+
+    /**
      * @return onko muutettu
      */
     public boolean getMuutettu() {
@@ -53,6 +64,7 @@ public class Kirjat implements Iterable<Kirja> {
     /**
      * Lisää uuden kirjan tietorakenteeseen Ottaa kirjan omistukseensa.
      * @param kirja lisätäävän jäsenen viite. Huom tietorakenne muuttuu omistajaksi
+     * @param kloonaus onko kloonaus käynnissä
      * @example
      * <pre name="test">
      * #THROWS SailoException
@@ -78,12 +90,22 @@ public class Kirjat implements Iterable<Kirja> {
      * kirjat.lisaa(k1); kirjat.getLkm() === 11;
      * </pre>
      */
-    public void lisaa(Kirja kirja) {
+    public void lisaa(Kirja kirja, boolean kloonaus) {
         if (lkm >= alkiot.length)
             alkiot = Arrays.copyOf(alkiot, alkiot.length * 2);
         alkiot[lkm] = kirja;
         lkm++;
-        muutettu = true;
+        muutettu = !kloonaus;
+    }
+
+
+    /**
+     * Lisää uuden kirjan tietorakenteeseen Ottaa kirjan omistukseensa.
+     * @param kirja lisätäävän jäsenen viite. Huom tietorakenne muuttuu omistajaksi
+     * </pre>
+     */
+    public void lisaa(Kirja kirja) {
+        lisaa(kirja, false);
     }
 
 
@@ -125,6 +147,17 @@ public class Kirjat implements Iterable<Kirja> {
      */
     public void poista(Kirja kirja) {
         poista(kirja.getId());
+    }
+
+
+    @Override
+    public Kirjat clone() {
+        Kirjat klooni = new Kirjat(kokoNimi, tiedostonPerusNimi);
+        for (int i = 0; i < lkm; i++) {
+            Kirja kirja = alkiot[i];
+            klooni.lisaa(kirja, true);
+        }
+        return klooni;
     }
 
 

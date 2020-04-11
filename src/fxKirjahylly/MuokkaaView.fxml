@@ -103,9 +103,9 @@
 					<children>
                   <HBox prefWidth="250.0">
                      <children>
-      						<ComboBoxChooser fx:id="mKirjailija" rivit="Ernest Cline&#10;Dmitri Gluhovski&#10;Randall Munroe&#10;Greg Egan">
+      						<ComboBoxChooser fx:id="mKirjailija" maxWidth="238.0" rivit="Ernest Cline&#10;Dmitri Gluhovski&#10;Randall Munroe&#10;Greg Egan">
       							<HBox.margin>
-      								<Insets bottom="20.0" left="5.0" right="20.0" top="20.0" />
+      								<Insets bottom="20.0" left="5.0" top="20.0" />
       							</HBox.margin>
       						</ComboBoxChooser>
                      </children>
@@ -126,9 +126,9 @@
 					<children>
                   <HBox prefWidth="250.0">
                      <children>
-      						<ComboBoxChooser fx:id="mKustantaja" rivit="Random House&#10;Victor Gollancz&#10;John Murray&#10;AST&#10;Orion Publishing Group">
+      						<ComboBoxChooser fx:id="mKustantaja" maxWidth="238.0" rivit="Random House&#10;Victor Gollancz&#10;John Murray&#10;AST&#10;Orion Publishing Group">
       							<HBox.margin>
-      								<Insets bottom="20.0" left="5.0" right="20.0" top="20.0" />
+      								<Insets bottom="20.0" left="5.0" top="20.0" />
       							</HBox.margin>
       						</ComboBoxChooser>
                      </children>
@@ -152,26 +152,34 @@
 		</GridPane>
 	</left>
 	<bottom>
-		<HBox prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+		<HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
-				<Button mnemonicParsing="false" onAction="#handleSulje" text="Sulje">
-					<HBox.margin>
-						<Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
-					</HBox.margin>
-				</Button>
-				<Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
-					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-					</HBox.margin>
-				</Button>
-            <Label fx:id="viesti" text="Anna julkaisuvuosi numerona!" textFill="RED">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </padding>
-            </Label>
+            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="viesti" text="Anna julkaisuvuosi numerona!" textFill="RED">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="NEVER">
+               <children>
+      				<Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
+      					<HBox.margin>
+      						<Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+      					</HBox.margin>
+      				</Button>
+      				<Button mnemonicParsing="false" onAction="#handleSulje" text="Sulje">
+      					<HBox.margin>
+      						<Insets bottom="10.0" right="20.0" top="10.0" />
+      					</HBox.margin>
+      				</Button>
+               </children>
+            </HBox>
 			</children>
 		</HBox>
 	</bottom>
