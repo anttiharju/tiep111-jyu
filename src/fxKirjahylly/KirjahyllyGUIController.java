@@ -1,6 +1,7 @@
 package fxKirjahylly;
 
 import java.awt.Desktop;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
+import kirjahylly.Kirjat;
 import kirjahylly.Nippu;
 import kirjahylly.SailoException;
 
@@ -126,9 +128,7 @@ public class KirjahyllyGUIController implements Initializable {
 
     @FXML
     void handleTulosta() {
-        ModalController.showModal(
-                KirjahyllyGUIController.class.getResource("TulostaView.fxml"),
-                "Tulosta", null, "");
+        tulosta();
     }
 
 
@@ -416,5 +416,29 @@ public class KirjahyllyGUIController implements Initializable {
         } catch (IOException e) {
             return;
         }
+    }
+
+
+    /**
+     * Tulostaa hyllyn kaikki kirjat
+     * TODO: page breakit ettei yksittäisen kirjan tiedot hajoa kahdelle eri sivulle
+     */
+    private void tulosta() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Kirjahylly (" + hyllynNimi + ")\n\n");
+
+        Kirjat kirjat = hylly.annaKirjat();
+        for (Kirja kirja : kirjat) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            kirja.tulosta(stream);
+            String tulostus = stream.toString()
+                    .replaceAll("<kirjailija/>", hylly.kirjanKirjailija(kirja))
+                    .replaceAll("<kustantaja/>", hylly.kirjanKustantaja(kirja));
+            sb.append(tulostus).append("\n\n");
+        }
+
+        ModalController.showModal(
+                KirjahyllyGUIController.class.getResource("TulostaView.fxml"),
+                "Tulosta kirja", null, sb.toString());
     }
 }

@@ -299,7 +299,7 @@ public class Kirjahylly {
 
 
     /**
-     * @return kirjailijat kloonin (alkioita ei kloonata)
+     * @return kirjailijat kloonin (alkiot on alkuperäisiä)
      */
     public Kirjailijat annaKirjailijat() {
         return kirjailijat.clone();
@@ -317,10 +317,18 @@ public class Kirjahylly {
 
 
     /**
-     * @return kustantajat kloonin (alkioita ei kloonata)
+     * @return kustantajat kloonin (alkiot on alkuperäisiä)
      */
     public Kustantajat annaKustantajat() {
         return kustantajat.clone();
+    }
+
+
+    /**
+     * @return kirjat kloonin (alkiot on alkuperäisiä)
+     */
+    public Kirjat annaKirjat() {
+        return kirjat.clone();
     }
 
 
