@@ -8,7 +8,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
@@ -16,6 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjahylly.KirjahyllyGUIController">
 	<top>
@@ -26,6 +26,7 @@
 						<MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
 						<MenuItem mnemonicParsing="false" onAction="#handleAvaa" text="Avaa..." />
 						<MenuItem mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta..." />
+                  <MenuItem mnemonicParsing="false" onAction="#handleRefresh" text="Lue uudelleen..." />
 						<MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta" />
 					</items>
 				</Menu>
@@ -46,171 +47,174 @@
 		</MenuBar>
 	</top>
 	<center>
-		<SplitPane dividerPositions="0.3382899628252788, 0.5" prefHeight="279.0" prefWidth="540.0" BorderPane.alignment="CENTER">
+		<SplitPane dividerPositions="0.3382899628252788, 0.5" BorderPane.alignment="CENTER">
 			<items>
-				<BorderPane maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
-					<bottom>
-						<BorderPane BorderPane.alignment="CENTER">
-							<top>
-								<Label text="Kirjat" BorderPane.alignment="CENTER">
-									<padding>
-										<Insets bottom="5.0" left="5.0" right="5.0" />
-									</padding>
-								</Label>
-							</top>
-							<center>
-								<ListChooser fx:id="chooserKirjat" rivit="Ready Player One&#10;Metro 2033&#10;What if?&#10;Metro 2035&#10;Diaspora&#10;Permutation City" BorderPane.alignment="CENTER" />
-							</center>
-						</BorderPane>
-					</bottom>
-					<top>
-						<BorderPane BorderPane.alignment="CENTER">
-                     <bottom>
-                        <HBox BorderPane.alignment="CENTER">
+            <BorderPane>
+               <top>
+                  <VBox maxHeight="-Infinity" prefHeight="65.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <HBox VBox.vgrow="ALWAYS">
                            <children>
-                              <ComboBoxChooser fx:id="cbLuettu" onAction="#handleHakuehto" rivit="Kaikki&#10;Luettu&#10;Ei luettu">
+      								<Label minWidth="40.0" text="Haku" HBox.hgrow="NEVER">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" top="5.0" />
+                                 </padding>
+      								</Label>
+      								<TextField fx:id="hakuehto" onKeyReleased="#handleHakuehto" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox VBox.vgrow="ALWAYS">
+                           <children>
+                              <ComboBoxChooser fx:id="cbLuettu" minWidth="100.0" onAction="#handleHakuehto" rivit="Kaikki&#10;Luettu&#10;Ei luettu" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
                                  </HBox.margin>
                               </ComboBoxChooser>
-      								<ComboBoxChooser fx:id="cbEhto" onAction="#handleHakuehto" rivit="Nimi&#10;Kirjailija&#10;Kustantaja&#10;Julkaisuvuosi&#10;Arvio">
+      								<ComboBoxChooser fx:id="cbEhto" minWidth="100.0" onAction="#handleHakuehto" rivit="Nimi&#10;Kirjailija&#10;Kustantaja&#10;Vuosi&#10;Arvio" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets bottom="5.0" right="5.0" />
                                  </HBox.margin>
                               </ComboBoxChooser>
                            </children>
                         </HBox>
-                     </bottom>
-                     <right>
-								<TextField fx:id="hakuehto" onKeyReleased="#handleHakuehto" BorderPane.alignment="CENTER">
-                           <BorderPane.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </BorderPane.margin></TextField>
-                     </right>
-                     <left>
-								<Label text="Haku" BorderPane.alignment="CENTER">
-									<BorderPane.margin>
-										<Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
-									</BorderPane.margin>
-								</Label>
-                     </left>
-						</BorderPane>
-					</top>
-				</BorderPane>
-				<BorderPane minWidth="100.0">
+                     </children>
+                  </VBox>
+               </top>
+               <center>
+      						<BorderPane maxHeight="1.7976931348623157E308" BorderPane.alignment="CENTER">
+      							<top>
+      								<Label text="Kirjat" BorderPane.alignment="CENTER">
+      									<padding>
+      										<Insets bottom="5.0" left="5.0" right="5.0" />
+      									</padding>
+      								</Label>
+      							</top>
+      							<center>
+      								<ListChooser fx:id="chooserKirjat" rivit="Ready Player One&#10;Metro 2033&#10;What if?&#10;Metro 2035&#10;Diaspora&#10;Permutation City" BorderPane.alignment="CENTER" />
+      							</center>
+      						</BorderPane>
+               </center>
+            </BorderPane>
+				<BorderPane minWidth="520.0">
 					<top>
 						<Label text="Kirjan tiedot" BorderPane.alignment="CENTER">
 							<padding>
 								<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 							</padding>
+                     <BorderPane.margin>
+                        <Insets top="10.0" />
+                     </BorderPane.margin>
 						</Label>
 					</top>
                <center>
-                  <ScrollPane fx:id="panelKirja" minHeight="440.0" minWidth="540.0" BorderPane.alignment="CENTER">
-                     <content>
-                        <GridPane prefHeight="396.0" prefWidth="543.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="267.0" minWidth="10.0" prefWidth="107.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.0" minWidth="10.0" prefWidth="436.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label text="Nimi">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Kirjailija" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Kustantaja" GridPane.rowIndex="2">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Julkaisuvuosi" GridPane.rowIndex="3">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Lyhyt kuvaus" GridPane.rowIndex="4">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Luettu" GridPane.rowIndex="5">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Arvio" GridPane.rowIndex="6">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Lisätietoja" GridPane.rowIndex="7">
-                                 <GridPane.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <TextField fx:id="nNimi" editable="false" GridPane.columnIndex="1">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nKirjailija" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nKustantaja" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nVuosi" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nKuvaus" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nLuettu" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nArvio" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="nLisatietoja" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" right="50.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                           </children>
-                        </GridPane>
-                     </content>
-                  </ScrollPane>
+                  <GridPane maxHeight="500.0" BorderPane.alignment="TOP_CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="NEVER" minWidth="-Infinity" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Nimi" GridPane.halignment="LEFT">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Kirjailija" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Kustantaja" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Julkaisuvuosi" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Lyhyt kuvaus" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Luettu" GridPane.halignment="LEFT" GridPane.rowIndex="5">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Arvio" GridPane.halignment="LEFT" GridPane.rowIndex="6">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Lisätietoja" GridPane.halignment="LEFT" GridPane.rowIndex="7">
+                           <GridPane.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="nNimi" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nKirjailija" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nKustantaja" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nVuosi" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nKuvaus" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nLuettu" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nArvio" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="nLisatietoja" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7">
+                           <GridPane.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                     </children>
+                  </GridPane>
                </center>
 				</BorderPane>
-				<BorderPane maxWidth="-Infinity" prefWidth="200.0">
+				<BorderPane minWidth="120.0">
 					<top>
 						<Label text="Kirjailijan muut kirjat" BorderPane.alignment="CENTER">
 							<padding>
@@ -226,26 +230,26 @@
 		</SplitPane>
 	</center>
 	<bottom>
-		<HBox prefHeight="47.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+		<HBox minWidth="50.0" prefHeight="50.0" prefWidth="1024.0" BorderPane.alignment="TOP_CENTER">
 			<children>
 				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleLisää" text="Lisää kirja" textAlignment="CENTER">
 					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
 					</HBox.margin>
 				</Button>
-				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa kirjaa" textAlignment="CENTER">
+				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa kirjaa..." textAlignment="CENTER">
 					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
 					</HBox.margin>
 				</Button>
 				<Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#handlePoista" text="Poista kirja" textAlignment="CENTER">
 					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
 					</HBox.margin>
 				</Button>
 				<Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" textAlignment="CENTER">
 					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
 					</HBox.margin>
 				</Button>
             <Label fx:id="viesti">

@@ -2,18 +2,21 @@ package kirjahylly;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import kanta.SailoException;
+
 /**
  * Kirjahyllyn kustantajat, joka osaa mm. lisätä uuden kustantajan
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 9.3.2020 pohjaa
  * @version 27.3.2020 mallin mukaiseksi koska sooloilu kostautui
  */
@@ -45,18 +48,68 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
 
 
     /**
+     * @return onko muutettu
+     */
+    public boolean getMuutettu() {
+        return muutettu;
+    }
+
+
+    /**
      * Lisää uuden kustantajan tietorakenteeseen. Ottaa kustantajan omistukseensa.
      * @param kustantaja lisättävä kustantaja. Huom tietorakenne muuttuu omistajaksi
+     * @param kloonaus lisätäänkö kloonatessa vai ei
+     * @return lisätyn kustantajan id:n
+     * @example
+     * <pre name="test">
+     *  #THROWS SailoException 
+     *   Kustantajat kustantajat = new Kustantajat();
+     *   Kustantaja kus1 = new Kustantaja(), kus2 = new Kustantaja();
+     *   kustantajat.getLkm() === 0;
+     *   kustantajat.lisaa(kus1); kustantajat.getLkm() === 1;
+     *   kustantajat.lisaa(kus2); kustantajat.getLkm() === 2;
+     *   kustantajat.lisaa(kus1); kustantajat.getLkm() === 3;
+     *   Iterator<Kustantaja> it = kustantajat.iterator(); 
+     *   it.next() === kus1;
+     *   it.next() === kus2; 
+     *   it.next() === kus1;  
+     *   kustantajat.lisaa(kus1); kustantajat.getLkm() === 4;
+     *   kustantajat.lisaa(kus1); kustantajat.getLkm() === 5;
+     * </pre>
      */
-    public void lisaa(Kustantaja kustantaja) {
+    public int lisaa(Kustantaja kustantaja, boolean kloonaus) {
         alkiot.add(kustantaja);
-        muutettu = true;
+        muutettu = !kloonaus;
+        return kustantaja.getId();
+    }
+
+
+    /**
+     * Lisää uuden kustantajan tietorakenteeseen. Ottaa kustantajan omistukseensa.
+     * @param kustantaja lisättävä kustantaja. Huom tietorakenne muuttuu omistajaksi
+     * @return lisätyn kustantajan id:n
+     */
+    public int lisaa(Kustantaja kustantaja) {
+        return lisaa(kustantaja, false);
     }
 
 
     /**
      * Poistaa kustantajan tietorakenteesta.
      * @param kustantaja poistettava kustantaja.
+     * @example 
+     * <pre name="test"> 
+     *  #THROWS SailoException  
+     *   Kustantajat kustantajat = new Kustantajat(); 
+     *   Kustantaja kus1 = new Kustantaja(), kus2 = new Kustantaja(), kus3 = new Kustantaja(); 
+     *   kus1.rekisteroi(); kus2.rekisteroi(); kus3.rekisteroi(); 
+     *   int id1 = kus1.getId(); 
+     *   kustantajat.lisaa(kus1); kustantajat.lisaa(kus2); kustantajat.lisaa(kus3); 
+     *   kustantajat.poista(id1+1); 
+     *   kustantajat.poista(id1);   kustantajat.getLkm() === 1; 
+     *   kustantajat.poista(id1+3); kustantajat.getLkm() === 1; 
+     *   kustantajat.poista(id1+2); kustantajat.getLkm() === 0; 
+     * </pre> 
      */
     public void poista(Kustantaja kustantaja) {
         alkiot.remove(kustantaja);
@@ -65,35 +118,20 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
 
 
     /**
-     * Poistaa kustantajan tietorakenteesta.
-     * @param nimi poistettavan kustantajan nimi
+     * Poistaa id:n perusteella
+     * @param id poistettavan kustantajan id
      */
-    public void poista(String nimi) {
-        for (Kustantaja kustantaja : alkiot)
-            if (kustantaja.getNimi().equals(nimi))
-                poista(kustantaja);
-    }
-
-
-    @Override
-    public Kustantajat clone() {
-        Kustantajat klooni = new Kustantajat(muutettu, tiedostonPerusNimi);
-        for (Kustantaja kustantaja : alkiot)
-            klooni.lisaa(kustantaja); // tän tason kloonaus pitäisi riittää?
-        return klooni;
+    public void poista(int id) {
+        poista(annaKustantaja(id));
     }
 
 
     /**
-     * Etsii tietyn nimisen kustantajan
-     * @param nimi etsittävän kirjailijan nimi
-     * @return kustantajan id:n, 0 jos ei löydy
+     * Poistaa kustantajan tietorakenteesta.
+     * @param nimi poistettavan kustantajan nimi
      */
-    public int getWithId(String nimi) {
-        for (Kustantaja kustantaja : alkiot)
-            if (kustantaja.getNimi().equals(nimi))
-                return kustantaja.getId();
-        return 0;
+    public void poista(String nimi) {
+        poista(annaKustantaja(nimi));
     }
 
 
@@ -103,45 +141,46 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
      * @throws SailoException jos lukeminen epäonnistuu
      * @example
      * <pre name="test">
-     * #THROWS SailoException 
-     * #import java.io.File;
-     *  Kustantajat kustantajat = new Kustantajat();
-     *  Kustantaja k21 = new Kustantaja(); k21.tayta(2);
-     *  Kustantaja k11 = new Kustantaja(); k11.tayta(1);
-     *  Kustantaja k22 = new Kustantaja(); k22.tayta(2); 
-     *  Kustantaja k12 = new Kustantaja(); k12.tayta(1); 
-     *  Kustantaja k23 = new Kustantaja(); k23.tayta(2); 
-     *  String tiedNimi = "tmp_testihylly_kustantajat";
-     *  File ftied = new File(tiedNimi+".dat");
-     *  ftied.delete();
-     *  kustantajat.lueTiedostosta(tiedNimi); #THROWS SailoException
-     *  kustantajat.lisaa(k21);
-     *  kustantajat.lisaa(k11);
-     *  kustantajat.lisaa(k22);
-     *  kustantajat.lisaa(k12);
-     *  kustantajat.lisaa(k23);
-     *  kustantajat.tallenna();
-     *  kustantajat = new Kustantajat();
-     *  kustantajat.lueTiedostosta(tiedNimi);
-     *  Iterator<Kustantaja> i = kustantajat.iterator();
-     *  i.next().toString() === k21.toString();
-     *  i.next().toString() === k11.toString();
-     *  i.next().toString() === k22.toString();
-     *  i.next().toString() === k12.toString();
-     *  i.next().toString() === k23.toString();
-     *  i.hasNext() === false;
-     *  kustantajat.lisaa(k23);
-     *  kustantajat.tallenna();
-     *  ftied.delete() === true;
-     *  File fbak = new File(tiedNimi+".backup");
-     *  fbak.delete() === true;     
-     * </pre>
+     *  #THROWS SailoException 
+     *  #import java.io.File;
+     *   Kustantajat kustantajat = new Kustantajat();
+     *   Kustantaja k21 = new Kustantaja(); k21.tayta(2);
+     *   Kustantaja k11 = new Kustantaja(); k11.tayta(1);
+     *   Kustantaja k22 = new Kustantaja(); k22.tayta(2); 
+     *   Kustantaja k12 = new Kustantaja(); k12.tayta(1); 
+     *   Kustantaja k23 = new Kustantaja(); k23.tayta(2); 
+     *   String tiedNimi = "tmp_testihylly_kustantajat";
+     *   File ftied = new File(tiedNimi+".dat");
+     *   ftied.delete();
+     *   kustantajat.lueTiedostosta(tiedNimi); #THROWS SailoException
+     *   kustantajat.lisaa(k21);
+     *   kustantajat.lisaa(k11);
+     *   kustantajat.lisaa(k22);
+     *   kustantajat.lisaa(k12);
+     *   kustantajat.lisaa(k23);
+     *   kustantajat.tallenna();
+     *   kustantajat = new Kustantajat();
+     *   kustantajat.lueTiedostosta(tiedNimi);
+     *   Iterator<Kustantaja> i = kustantajat.iterator();
+     *   i.next().toString() === k21.toString();
+     *   i.next().toString() === k11.toString();
+     *   i.next().toString() === k22.toString();
+     *   i.next().toString() === k12.toString();
+     *   i.next().toString() === k23.toString();
+     *   i.hasNext() === false;
+     *   kustantajat.lisaa(k23);
+     *   kustantajat.tallenna();
+     *   ftied.delete() === true;
+     *   File fbak = new File(tiedNimi+".backup");
+     *   fbak.delete() === true;     
+     *  </pre>
      */
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
-        try (BufferedReader fi = new BufferedReader(
-                new FileReader(getTiedostonNimi()))) {
-
+        // try (BufferedReader fi = new BufferedReader(
+        // new FileReader(getTiedostonNimi()))) {
+        try (BufferedReader fi = new BufferedReader(new InputStreamReader(
+                new FileInputStream(getTiedostonNimi()), "UTF8"))) {
             String rivi;
             while ((rivi = fi.readLine()) != null) {
                 rivi = rivi.trim();
@@ -184,7 +223,6 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
      *  3|John Murray
      *  4|AST
      *  5|Orion Publishing Group
-     *  
      * </pre>
      */
     public void tallenna() throws SailoException {
@@ -193,8 +231,8 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
 
         File fbackup = new File(getBackupNimi());
         File ftied = new File(getTiedostonNimi());
-        fbackup.delete(); // if ... System.err.println("Ei voi tuhota");
-        ftied.renameTo(fbackup); // if ... System.err.println("Ei voi nimetä");
+        fbackup.delete();
+        ftied.renameTo(fbackup);
 
         try (PrintWriter fo = new PrintWriter(
                 new FileWriter(ftied.getCanonicalPath()))) {
@@ -305,30 +343,30 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
      * @return tietorakenne jossa viite löydettyyn kustantajaan
      * @example
      * <pre name="test">
-     * #import java.util.*;
-     * 
-     *  Kustantajat kustantajat = new Kustantajat();
-     *  Kustantaja pete = new Kustantaja(0); kustantajat.lisaa(pete);
-     *  Kustantaja vesa = new Kustantaja(1); kustantajat.lisaa(vesa);
-     *  Kustantaja tupu = new Kustantaja(2); kustantajat.lisaa(tupu);
-     *  Kustantaja hupu = new Kustantaja(3); kustantajat.lisaa(hupu);
-     *  Kustantaja lupu = new Kustantaja(4); kustantajat.lisaa(lupu);
-     *  Kustantaja rupu = new Kustantaja(5); kustantajat.lisaa(rupu);
+     *  #import java.util.*;
      *  
-     *  Kustantaja etsitty = new Kustantaja();
-     *  
-     *  etsitty = kustantajat.annaKustantaja(0);
-     *  etsitty == pete === true;
-     *  etsitty = kustantajat.annaKustantaja(1);
-     *  etsitty == vesa === true;
-     *  etsitty = kustantajat.annaKustantaja(2);
-     *  etsitty == tupu === true;
-     *  etsitty = kustantajat.annaKustantaja(3);
-     *  etsitty == hupu === true;
-     *  etsitty = kustantajat.annaKustantaja(4);
-     *  etsitty == lupu === true;
-     *  etsitty = kustantajat.annaKustantaja(5);
-     *  etsitty == rupu === true;
+     *   Kustantajat kustantajat = new Kustantajat();
+     *   Kustantaja pete = new Kustantaja(0); kustantajat.lisaa(pete);
+     *   Kustantaja vesa = new Kustantaja(1); kustantajat.lisaa(vesa);
+     *   Kustantaja tupu = new Kustantaja(2); kustantajat.lisaa(tupu);
+     *   Kustantaja hupu = new Kustantaja(3); kustantajat.lisaa(hupu);
+     *   Kustantaja lupu = new Kustantaja(4); kustantajat.lisaa(lupu);
+     *   Kustantaja rupu = new Kustantaja(5); kustantajat.lisaa(rupu);
+     *   
+     *   Kustantaja etsitty = new Kustantaja();
+     *   
+     *   etsitty = kustantajat.annaKustantaja(0);
+     *   etsitty == pete === true;
+     *   etsitty = kustantajat.annaKustantaja(1);
+     *   etsitty == vesa === true;
+     *   etsitty = kustantajat.annaKustantaja(2);
+     *   etsitty == tupu === true;
+     *   etsitty = kustantajat.annaKustantaja(3);
+     *   etsitty == hupu === true;
+     *   etsitty = kustantajat.annaKustantaja(4);
+     *   etsitty == lupu === true;
+     *   etsitty = kustantajat.annaKustantaja(5);
+     *   etsitty == rupu === true;
      * </pre>
      */
     public Kustantaja annaKustantaja(int id) {
@@ -340,15 +378,55 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
 
 
     /**
-     * Palauttaa annetulla nimellä olevan kirjailijan
-     * @param nimi kirjailijan nimi
-     * @return kirjailija olion
+     * Palauttaa annetulla nimellä olevan kustantajan
+     * @param nimi kustantajan nimi
+     * @return kustantajan id:n
      */
     public Kustantaja annaKustantaja(String nimi) {
+        for (Kustantaja kus : alkiot)
+            if (kus.getNimi().equals(nimi))
+                return kus;
+        return new Kustantaja();
+    }
+
+
+    /**
+     * Palauttaa annetun kustantajan id:n
+     * @param kustantaja kustantajan nimi
+     * @return kustantajan id:n
+     */
+    public int getId(Kustantaja kustantaja) {
+        String nimi = kustantaja.getNimi();
+        for (Kustantaja kus : alkiot)
+            if (kus.getNimi().equals(nimi))
+                return kus.getId();
+        return 0;
+    }
+
+
+    /**
+     * Palauttaa tietyn nimisen kustantajan sen id:llä
+     * @param nimi etsittävän kustantajan nimi
+     * @return kustantajan id:n, 0 jos ei löydy
+     */
+    public int getId(String nimi) {
         for (Kustantaja kustantaja : alkiot)
             if (kustantaja.getNimi().equals(nimi))
-                return kustantaja;
-        return new Kustantaja();
+                return kustantaja.getId();
+        return 0;
+    }
+
+
+    /**
+     * Kloonaa tietorakenteen muttei sen alkioita,
+     * jotta voidaan poistaa ja lisätä uusia muokkausdialogissa.
+     */
+    @Override
+    public Kustantajat clone() {
+        Kustantajat klooni = new Kustantajat(muutettu, tiedostonPerusNimi);
+        for (Kustantaja kustantaja : alkiot)
+            klooni.lisaa(kustantaja, true);
+        return klooni;
     }
 
 

@@ -9,10 +9,10 @@ import static kanta.apu.*;
 
 /**
  * Kirjahyllyn kirja joka osaa huolehtia id:stään.
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 27.3.2020
  */
-public class Kirja {
+public class Kirja implements Cloneable {
 
     private int id;
     private String nimi;
@@ -27,12 +27,44 @@ public class Kirja {
     private static int seuraavaId = 1;
 
     /**
+     * Tehdään identtinen klooni kirjasta
+     * @return kloonattu kirja
+     * @example
+     * <pre name="test">
+     *  #THROWS CloneNotSupportedException 
+     *   Kirja kirja = new Kirja();
+     *   kirja.parse("1|Maailman ympäri|40");
+     *   Kirja kopio = kirja.clone();
+     *   Object olio = kirja.clone();
+     *   kopio.toString() === kirja.toString();
+     *   kirja.parse("2|Maailman ympäri|40");
+     *   kopio.toString().equals(kirja.toString()) === false;
+     *   olio instanceof Kirja === true;
+     * </pre>
+     */
+    @Override
+    public Kirja clone() {
+        Kirja klooni = new Kirja();
+        klooni.setId(id);
+        klooni.setNimi(nimi);
+        klooni.setKirjailija(kirjailija);
+        klooni.setKustantaja(kustantaja);
+        klooni.setVuosi(vuosi);
+        klooni.setKuvaus(kuvaus);
+        klooni.setLuettu(luettu);
+        klooni.setArvio(arvio);
+        klooni.setLisatietoja(lisatietoja);
+        return klooni;
+    }
+
+
+    /**
      * @return kirjan nimen
      * @example
      * <pre name="test">
      *  Kirja metro = new Kirja();
      *  metro.tayta();
-     *  metro.getNimi() =R= "Kirja .*";
+     *  metro.getNimi() === "";
      * </pre>
      */
     public String getNimi() {
@@ -41,11 +73,16 @@ public class Kirja {
 
 
     /**
-     * Apumetodi kirjojen lisäykseen
+     * Apumetodi kirjojen luomiseen
+     * ja testaukseen
+     * @param n haluttu id
+     * @param uusiNimi haluttu nimi
+     * @param kirId haluttu kirjailijan id
      */
-    public void tayta() {
-        nimi = "";
-        kirjailija = 0;
+    public void tayta(int n, String uusiNimi, int kirId) {
+        id = n;
+        nimi = uusiNimi;
+        kirjailija = kirId;
         kustantaja = 0;
         vuosi = 0;
         kuvaus = "";
@@ -56,17 +93,47 @@ public class Kirja {
 
 
     /**
-     * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
+     * Apumetodi kirjojen luomiseen
+     */
+    public void tayta() {
+        tayta(0, "", 0);
+    }
+
+
+    /**
+     * Apumetodi kirjojen testaamiseen
+     * @param n haluttu id
+     */
+    public void tayta(int n) {
+        tayta(n, "", 0);
+    }
+
+
+    /**
+     * Apumetodi kirjojen testaamiseen
+     * @param n haluttu id
+     * @param kirId haluttu kirjailijan id
+     */
+    public void tayta(int n, int kirId) {
+        tayta(n, "", kirId);
+    }
+
+
+    /**
+     * Apumetodi kirjojen testaamiseen
+     * @param n haluttu id
+     * @param uusiNimi haluttu nimi
+     */
+    public void tayta(int n, String uusiNimi) {
+        tayta(n, uusiNimi, 0);
+    }
+
+
+    /**
+     * Apumetodi nimenomaan testaamiseen
      */
     public void tayta_test() {
-        nimi = "Kirja " + rand(1, 9999);
-        kirjailija = 0;
-        kustantaja = 0;
-        vuosi = 2020;
-        kuvaus = "Asioita tapahtuu";
-        luettu = "28.3.2020";
-        arvio = 5;
-        lisatietoja = "Jänniä juttuja";
+        tayta(0, "Kirja " + rand(1, 9999), 0);
     }
 
 
@@ -75,9 +142,14 @@ public class Kirja {
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(nimi + "\n" + kirjailija + "\n" + kustantaja + "\n" + vuosi
-                + "\n" + kuvaus + "\n" + luettu + "\n" + arvio + "\n"
-                + lisatietoja);
+        out.println("Kirja\t\t<t/>" + nimi);
+        out.println("Kirjailija\t<t/>" + "<kirjailija/>");
+        out.println("Kustantaja\t" + "<kustantaja/>");
+        out.println("Julkaisuvuosi\t" + vuosi);
+        out.println("Lyhyt kuvaus\t" + kuvaus);
+        out.println("Luettu\t\t" + luettu);
+        out.println("Arvio\t\t" + arvio);
+        out.println("Lisätietoja\t" + lisatietoja);
     }
 
 
@@ -200,25 +272,6 @@ public class Kirja {
 
 
     /**
-     * @param args ei käytössä
-     */
-    public static void main(String args[]) {
-        Kirja metro2033 = new Kirja(), metro2035 = new Kirja();
-        metro2033.rekisteroi();
-        metro2035.rekisteroi();
-        metro2033.tulosta(System.out);
-        metro2033.tayta_test();
-        metro2033.tulosta(System.out);
-
-        metro2035.tayta_test();
-        metro2035.tulosta(System.out);
-
-        metro2035.tayta_test();
-        metro2035.tulosta(System.out);
-    }
-
-
-    /**
      * @return kirjan kirjailijan id:n
      */
     public int getKirjailijaId() {
@@ -337,5 +390,24 @@ public class Kirja {
      */
     public void setLisatietoja(String lisatietoja) {
         this.lisatietoja = lisatietoja;
+    }
+
+
+    /**
+     * @param args ei käytössä
+     */
+    public static void main(String args[]) {
+        Kirja metro2033 = new Kirja(), metro2035 = new Kirja();
+        metro2033.rekisteroi();
+        metro2035.rekisteroi();
+        metro2033.tulosta(System.out);
+        metro2033.tayta_test();
+        metro2033.tulosta(System.out);
+
+        metro2035.tayta_test();
+        metro2035.tulosta(System.out);
+
+        metro2035.tayta_test();
+        metro2035.tulosta(System.out);
     }
 }
