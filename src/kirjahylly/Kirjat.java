@@ -3,21 +3,23 @@ package kirjahylly;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import kanta.SailoException;
 
 /**
  * Hyllyn kirjat joka osaa mm. lisätä uuden kirjan
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 20.2.2020 pohjaa
  * @version 27.3.2020 mallin mukaiseksi
  */
-public class Kirjat implements Iterable<Kirja> {
+public class Kirjat implements Iterable<Kirja>, Cloneable {
 
     private boolean muutettu = false;
     private int lkm = 0;
@@ -43,39 +45,69 @@ public class Kirjat implements Iterable<Kirja> {
 
 
     /**
+     * Kloonausta varten
+     * @param kokoNimi koko nimi
+     * @param tiedostonPerusNimi tiedoston perus nimi
+     */
+    public Kirjat(String kokoNimi, String tiedostonPerusNimi) {
+        this.kokoNimi = kokoNimi;
+        this.tiedostonPerusNimi = tiedostonPerusNimi;
+    }
+
+
+    /**
+     * @return onko muutettu
+     */
+    public boolean getMuutettu() {
+        return muutettu;
+    }
+
+
+    /**
      * Lisää uuden kirjan tietorakenteeseen Ottaa kirjan omistukseensa.
      * @param kirja lisätäävän jäsenen viite. Huom tietorakenne muuttuu omistajaksi
+     * @param kloonaus onko kloonaus käynnissä
      * @example
      * <pre name="test">
-     * #THROWS SailoException
-     * Kirjat kirjat = new Kirjat();
-     * Kirja k1 = new Kirja(), k2 = new Kirja();
-     * kirjat.getLkm() === 0;
-     * kirjat.lisaa(k1); kirjat.getLkm() === 1;
-     * kirjat.lisaa(k2); kirjat.getLkm() === 2;
-     * kirjat.lisaa(k1); kirjat.getLkm() === 3;
-     * kirjat.anna(0) === k1;
-     * kirjat.anna(1) === k2;
-     * kirjat.anna(2) === k1;
-     * kirjat.anna(1) == k1 === false;
-     * kirjat.anna(1) == k2 === true;
-     * kirjat.anna(3) === k1; #THROWS IndexOutOfBoundsException
-     * kirjat.lisaa(k1); kirjat.getLkm() === 4;
-     * kirjat.lisaa(k1); kirjat.getLkm() === 5;
-     * kirjat.lisaa(k1); kirjat.getLkm() === 6;
-     * kirjat.lisaa(k1); kirjat.getLkm() === 7;
-     * kirjat.lisaa(k1); kirjat.getLkm() === 8;
-     * kirjat.lisaa(k1); kirjat.getLkm() === 9;
-     * kirjat.lisaa(k1); kirjat.getLkm() === 10;
-     * kirjat.lisaa(k1); kirjat.getLkm() === 11;
+     *  #THROWS SailoException
+     *   Kirjat kirjat = new Kirjat();
+     *   Kirja k1 = new Kirja(), k2 = new Kirja();
+     *   kirjat.getLkm() === 0;
+     *   kirjat.lisaa(k1); kirjat.getLkm() === 1;
+     *   kirjat.lisaa(k2); kirjat.getLkm() === 2;
+     *   kirjat.lisaa(k1); kirjat.getLkm() === 3;
+     *   kirjat.anna(0) === k1;
+     *   kirjat.anna(1) === k2;
+     *   kirjat.anna(2) === k1;
+     *   kirjat.anna(1) == k1 === false;
+     *   kirjat.anna(1) == k2 === true;
+     *   kirjat.anna(3) === k1; #THROWS IndexOutOfBoundsException
+     *   kirjat.lisaa(k1); kirjat.getLkm() === 4;
+     *   kirjat.lisaa(k1); kirjat.getLkm() === 5;
+     *   kirjat.lisaa(k1); kirjat.getLkm() === 6;
+     *   kirjat.lisaa(k1); kirjat.getLkm() === 7;
+     *   kirjat.lisaa(k1); kirjat.getLkm() === 8;
+     *   kirjat.lisaa(k1); kirjat.getLkm() === 9;
+     *   kirjat.lisaa(k1); kirjat.getLkm() === 10;
+     *   kirjat.lisaa(k1); kirjat.getLkm() === 11;
      * </pre>
      */
-    public void lisaa(Kirja kirja) {
+    public void lisaa(Kirja kirja, boolean kloonaus) {
         if (lkm >= alkiot.length)
             alkiot = Arrays.copyOf(alkiot, alkiot.length * 2);
         alkiot[lkm] = kirja;
         lkm++;
-        muutettu = true;
+        muutettu = !kloonaus;
+    }
+
+
+    /**
+     * Lisää uuden kirjan tietorakenteeseen Ottaa kirjan omistukseensa.
+     * @param kirja lisätäävän jäsenen viite. Huom tietorakenne muuttuu omistajaksi
+     * </pre>
+     */
+    public void lisaa(Kirja kirja) {
+        lisaa(kirja, false);
     }
 
 
@@ -86,17 +118,15 @@ public class Kirjat implements Iterable<Kirja> {
      * @example 
      * <pre name="test"> 
      *  #THROWS SailoException  
-     *  Jasenet jasenet = new Jasenet(); 
-     *  Jasen aku1 = new Jasen(), aku2 = new Jasen(), aku3 = new Jasen(); 
-     *  aku1.rekisteroi(); aku2.rekisteroi(); aku3.rekisteroi(); 
-     *  int id1 = aku1.getTunnusNro(); 
-     *  jasenet.lisaa(aku1); jasenet.lisaa(aku2); jasenet.lisaa(aku3); 
-     *  jasenet.poista(id1+1) === 1; 
-     *  jasenet.annaId(id1+1) === null; jasenet.getLkm() === 2; 
-     *  jasenet.poista(id1) === 1; jasenet.getLkm() === 1; 
-     *  jasenet.poista(id1+3) === 0; jasenet.getLkm() === 1; 
+     *   Kirjat kirjat = new Kirjat(); 
+     *   Kirja k1 = new Kirja(), k2 = new Kirja(), k3 = new Kirja(); 
+     *   k1.rekisteroi(); k2.rekisteroi(); k3.rekisteroi(); 
+     *   int id1 = k1.getId(); 
+     *   kirjat.lisaa(k1); kirjat.lisaa(k2); kirjat.lisaa(k3); 
+     *   kirjat.poista(id1+1) === 1; 
+     *   kirjat.poista(id1) === 1; kirjat.getLkm() === 1; 
+     *   kirjat.poista(id1+3) === 0; kirjat.getLkm() === 1; 
      * </pre> 
-     *  
      */
     public int poista(int id) {
         int ind = etsiId(id);
@@ -126,13 +156,13 @@ public class Kirjat implements Iterable<Kirja> {
      * @return löytyneen kirjan indeksi tai -1 jos ei löydy 
      * <pre name="test"> 
      *  #THROWS SailoException  
-     *  Jasenet jasenet = new Jasenet(); 
-     *  Jasen aku1 = new Jasen(), aku2 = new Jasen(), aku3 = new Jasen(); 
-     *  aku1.rekisteroi(); aku2.rekisteroi(); aku3.rekisteroi(); 
-     *  int id1 = aku1.getTunnusNro(); 
-     *  jasenet.lisaa(aku1); jasenet.lisaa(aku2); jasenet.lisaa(aku3); 
-     *  jasenet.etsiId(id1+1) === 1; 
-     *  jasenet.etsiId(id1+2) === 2; 
+     *   Kirjat kirjat = new Kirjat(); 
+     *   Kirja k1 = new Kirja(), k2 = new Kirja(), k3 = new Kirja(); 
+     *   k1.rekisteroi(); k2.rekisteroi(); k3.rekisteroi(); 
+     *   int id1 = k1.getId(); 
+     *   kirjat.lisaa(k1); kirjat.lisaa(k2); kirjat.lisaa(k3); 
+     *   kirjat.etsiId(id1+1) === 1; 
+     *   kirjat.etsiId(id1+2) === 2; 
      * </pre> 
      */
     public int etsiId(int id) {
@@ -145,15 +175,15 @@ public class Kirjat implements Iterable<Kirja> {
 
     /**
      * Korvaa annetulla id:llä löytyvän kirjan annetulla kirjalla
-     * @param vid korvattavan kirjan id
+     * @param kid korvattavan kirjan id
      * @param kir uusi kirja
-     * TODO: ilmeisesti lkm ei päivity oikein ja siksi tuo null tarkistus
      */
-    public void korvaa(int vid, Kirja kir) {
+    public void korvaa(int kid, Kirja kir) {
         for (Kirja k : alkiot) {
-            if (k != null && k.getId() == vid) {
+            if (k.getId() == kid) {
                 k = kir;
                 muutettu = true;
+                return;
             }
         }
     }
@@ -178,58 +208,58 @@ public class Kirjat implements Iterable<Kirja> {
      * @throws SailoException jos lukeminen epäonnistuu
      * @example
      * <pre name="test">
-     * #THROWS SailoException 
-     * #import java.io.File;
-     *  Kirjat kirjat = new Kirjat();
-     *  Kirja k1 = new Kirja(); k1.tayta();
-     *  Kirja k2 = new Kirja(); k2.tayta();
-     *  Kirja k3 = new Kirja(); k3.tayta(); 
-     *  Kirja k4 = new Kirja(); k4.tayta(); 
-     *  Kirja k5 = new Kirja(); k5.tayta(); 
-     *  String tiedNimi = "tmp_testihylly_kirjat";
-     *  File ftied = new File(tiedNimi+".dat");
-     *  ftied.delete();
-     *  kirjat.lueTiedostosta(tiedNimi); #THROWS SailoException
-     *  kirjat.lisaa(k1);
-     *  kirjat.lisaa(k2);
-     *  kirjat.lisaa(k3);
-     *  kirjat.lisaa(k4);
-     *  kirjat.lisaa(k5);
-     *  kirjat.tallenna();
-     *  kirjat = new Kirjat();
-     *  kirjat.lueTiedostosta(tiedNimi);
-     *  Iterator<Kirja> i = kirjat.iterator();
-     *  i.next().toString() === k1.toString();
-     *  i.next().toString() === k2.toString();
-     *  i.next().toString() === k3.toString();
-     *  i.next().toString() === k4.toString();
-     *  i.next().toString() === k5.toString();
-     *  i.hasNext() === false;
-     *  kirjat.lisaa(k5);
-     *  kirjat.tallenna();
-     *  ftied.delete() === true;
-     *  File fbak = new File(tiedNimi+".backup");
-     *  fbak.delete() === true;     
+     *  #THROWS SailoException 
+     *  #import java.io.File;
+     *   Kirjat kirjat = new Kirjat();
+     *   Kirja k1 = new Kirja(); k1.tayta();
+     *   Kirja k2 = new Kirja(); k2.tayta();
+     *   Kirja k3 = new Kirja(); k3.tayta(); 
+     *   Kirja k4 = new Kirja(); k4.tayta(); 
+     *   Kirja k5 = new Kirja(); k5.tayta(); 
+     *   String tiedNimi = "tmp_testihylly_kirjat";
+     *   File ftied = new File(tiedNimi+".dat");
+     *   ftied.delete();
+     *   kirjat.lueTiedostosta(tiedNimi); #THROWS SailoException
+     *   kirjat.lisaa(k1);
+     *   kirjat.lisaa(k2);
+     *   kirjat.lisaa(k3);
+     *   kirjat.lisaa(k4);
+     *   kirjat.lisaa(k5);
+     *   kirjat.tallenna();
+     *   kirjat = new Kirjat();
+     *   kirjat.lueTiedostosta(tiedNimi);
+     *   Iterator<Kirja> i = kirjat.iterator();
+     *   i.next().toString() === k1.toString();
+     *   i.next().toString() === k2.toString();
+     *   i.next().toString() === k3.toString();
+     *   i.next().toString() === k4.toString();
+     *   i.next().toString() === k5.toString();
+     *   i.hasNext() === false;
+     *   kirjat.lisaa(k5);
+     *   kirjat.tallenna();
+     *   ftied.delete() === true;
+     *   File fbak = new File(tiedNimi+".backup");
+     *   fbak.delete() === true;     
      * </pre>
      */
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
-        try (BufferedReader fi = new BufferedReader(
-                new FileReader(getTiedostonNimi()))) {
+        // try (BufferedReader fi = new BufferedReader(
+        // new FileReader(getTiedostonNimi()))) {
+        try (BufferedReader fi = new BufferedReader(new InputStreamReader(
+                new FileInputStream(getTiedostonNimi()), "UTF8"))) {
             kokoNimi = fi.readLine();
             if (kokoNimi == null)
                 throw new SailoException("Kerhon nimi puuttuu");
             String rivi = fi.readLine();
             if (rivi == null)
                 throw new SailoException("Maksimikoko puuttuu");
-            // int maxKoko = Mjonot.erotaInt(rivi,10); // tehdään jotakin
-
             while ((rivi = fi.readLine()) != null) {
                 rivi = rivi.trim();
                 if ("".equals(rivi) || rivi.charAt(0) == '#')
                     continue;
                 Kirja k = new Kirja();
-                k.parse(rivi); // voisi olla virhekäsittely
+                k.parse(rivi);
                 lisaa(k);
             }
             muutettu = false;
@@ -240,7 +270,6 @@ public class Kirjat implements Iterable<Kirja> {
             throw new SailoException(
                     "Ongelmia tiedoston kanssa: " + e.getMessage());
         }
-
     }
 
 
@@ -261,11 +290,10 @@ public class Kirjat implements Iterable<Kirja> {
      *  #id|kirjan nimi     |kirjailija|kustantaja|vuosi|lyhyt kuvaus                      |luettu    |arvio|lisätietoja
      *  1  |Ready Player One|1         |1         |2011 |Wade Wattsin seikkailut           |26.12.2016|4    |Elokuva pilas tän
      *  2  |Metro 2033      |2         |2         |2005 |Artjom seikkailee metrossa        |31.7.2017 |5    |Peli oli huono
-     *  3  |What if?        |3         |3         |2014 |Absurdeja hypoteettisiä kysymyksiä|1.1.2020  |5    |xkcd sarjakuvien tekijältä
+     *  3  |What if?        |3         |3         |2014 |Absurdeja hypoteettisiä kysymyksiä|          |5    |xkcd sarjakuvien tekijältä
      *  4  |Metro 2035      |2         |4         |2015 |Artjom on sekaisin                |14.8.2018 |4    |2034 voi jättää lukematta
-     *  5  |Diaspora        |4         |5         |1997 |Ihmiskunta elää ohjelmistona      |5.3.2019  |3    |Englanninkielinen
-     *  6  |Permutation City|4         |5         |1994 |Simuloitu yhteiskunta             |6.9.2019  |3    |Painaa 306g
-     *  
+     *  5  |Diaspora        |4         |5         |1997 |Ihmiskunta elää ohjelmistona      |          |3    |Englanninkielinen
+     *  6  |Permutation City|4         |5         |1994 |Simuloitu yhteiskunta             |          |3    |Painaa 306g
      * </pre>
      * @throws SailoException jos tallennus epäonnistuu
      */
@@ -275,9 +303,8 @@ public class Kirjat implements Iterable<Kirja> {
 
         File fbak = new File(getBackupNimi());
         File ftied = new File(getTiedostonNimi());
-        fbak.delete(); // if .. System.err.println("Ei voi tuhota");
-        ftied.renameTo(fbak); // if .. System.err.println("Ei voi nimetä");
-
+        fbak.delete();
+        ftied.renameTo(fbak);
         try (PrintWriter fo = new PrintWriter(
                 new FileWriter(ftied.getCanonicalPath()))) {
             fo.println(getKokoNimi());
@@ -292,7 +319,6 @@ public class Kirjat implements Iterable<Kirja> {
             throw new SailoException("Tiedoston " + ftied.getName()
                     + " kirjoittamisessa ongelmia");
         }
-
         muutettu = false;
     }
 
@@ -354,41 +380,40 @@ public class Kirjat implements Iterable<Kirja> {
      * Luokka kirjojen iteroimiseksi.
      * @example
      * <pre name="test">
-     * #THROWS SailoException 
-     * #PACKAGEIMPORT
-     * #import java.util.*;
-     * 
-     * Kirjat kirjat = new Kirjat();
-     * Kirja k1 = new Kirja(), k2 = new Kirja();
-     * k1.rekisteroi(); k2.rekisteroi();
-     *
-     * kirjat.lisaa(k1); 
-     * kirjat.lisaa(k2); 
-     * kirjat.lisaa(k1); 
-     * 
-     * StringBuffer ids = new StringBuffer(30);
-     * for (Kirja k:kirjat)   // Kokeillaan for-silmukan toimintaa
-     *   ids.append(" " + k.getId());           
-     * 
-     * String tulos = " " + k1.getId() + " " + k2.getId() + " " + k1.getId();
-     * 
-     * ids.toString() === tulos; 
-     * 
-     * ids = new StringBuffer(30);
-     * for (Iterator<Kirja>  i=kirjat.iterator(); i.hasNext(); ) { // ja iteraattorin toimintaa
-     *   Kirja k = i.next();
-     *   ids.append(" " + k.getId());           
-     * }
-     * 
-     * ids.toString() === tulos;
-     * 
-     * Iterator<Kirja>  i=kirjat.iterator();
-     * i.next() == k1  === true;
-     * i.next() == k2  === true;
-     * i.next() == k1  === true;
-     * 
-     * i.next();  #THROWS NoSuchElementException
-     *  
+     *  #THROWS SailoException 
+     *  #PACKAGEIMPORT
+     *  #import java.util.*;
+     *   
+     *   Kirjat kirjat = new Kirjat();
+     *   Kirja k1 = new Kirja(), k2 = new Kirja();
+     *   k1.rekisteroi(); k2.rekisteroi();
+     *   
+     *   kirjat.lisaa(k1); 
+     *   kirjat.lisaa(k2); 
+     *   kirjat.lisaa(k1); 
+     *   
+     *   StringBuffer ids = new StringBuffer(30);
+     *   for (Kirja k:kirjat)   // Kokeillaan for-silmukan toimintaa
+     *     ids.append(" " + k.getId());           
+     *   
+     *   String tulos = " " + k1.getId() + " " + k2.getId() + " " + k1.getId();
+     *   
+     *   ids.toString() === tulos; 
+     *   
+     *   ids = new StringBuffer(30);
+     *   for (Iterator<Kirja>  i=kirjat.iterator(); i.hasNext(); ) { // ja iteraattorin toimintaa
+     *     Kirja k = i.next();
+     *     ids.append(" " + k.getId());           
+     *   }
+     *   
+     *   ids.toString() === tulos;
+     *   
+     *   Iterator<Kirja>  i=kirjat.iterator();
+     *   i.next() == k1  === true;
+     *   i.next() == k2  === true;
+     *   i.next() == k1  === true;
+     *   
+     *   i.next();  #THROWS NoSuchElementException  
      * </pre>
      */
     public class KirjatIterator implements Iterator<Kirja> {
@@ -437,6 +462,21 @@ public class Kirjat implements Iterable<Kirja> {
     @Override
     public Iterator<Kirja> iterator() {
         return new KirjatIterator();
+    }
+
+
+    /**
+     * Kloonaa tietorakenteen muttei sen alkioita,
+     * jotta voidaan poistaa ja lisätä uusia muokkausdialogissa.
+     */
+    @Override
+    public Kirjat clone() {
+        Kirjat klooni = new Kirjat(kokoNimi, tiedostonPerusNimi);
+        for (int i = 0; i < lkm; i++) {
+            Kirja kirja = alkiot[i];
+            klooni.lisaa(kirja, true);
+        }
+        return klooni;
     }
 
 

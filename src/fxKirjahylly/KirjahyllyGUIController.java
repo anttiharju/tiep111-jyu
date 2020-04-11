@@ -1,6 +1,7 @@
 package fxKirjahylly;
 
 import java.awt.Desktop;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,16 +19,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import kanta.SailoException;
 import kirjahylly.Kirja;
 import kirjahylly.Kirjahylly;
 import kirjahylly.Kirjat;
 import kirjahylly.Nippu;
-import kirjahylly.SailoException;
 
 /**
  * Luokka hyllyn käyttöliittymän tapahtumien hoitamiseksi.
- * @author anvemaha
- * @version 27.3.2020
+ * @author Antti Harju, anvemaha@student.jyu.fi
+ * @version 27.3.2020 pohjaa
+ * @version 10.4.2020 gitin pitäisi hoitaa nämä eikä minun näitä ei ole muistettu pitää ajantasalla
  */
 public class KirjahyllyGUIController implements Initializable {
 
@@ -111,6 +113,12 @@ public class KirjahyllyGUIController implements Initializable {
 
 
     @FXML
+    void handleRefresh() {
+        lueUudestaan();
+    }
+
+
+    @FXML
     void handleTietoja() {
         ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("TietojaView.fxml"),
@@ -120,9 +128,7 @@ public class KirjahyllyGUIController implements Initializable {
 
     @FXML
     void handleTulosta() {
-        ModalController.showModal(
-                KirjahyllyGUIController.class.getResource("TulostaView.fxml"),
-                "Tulosta", null, "");
+        tulosta();
     }
 
 
@@ -138,7 +144,7 @@ public class KirjahyllyGUIController implements Initializable {
     private Kirjahylly hylly;
     private Kirja kirjaKohdalla;
     private Nippu nippu = new Nippu(null, null);
-    private String hyllynNimi = "antti"; // tässä oleva nimi avataan oletuksena
+    private String hyllynNimi = "antti"; // tämä nimi näytetään oletuksena
 
     /**
      * Alustetaan kirjalistan kuuntelija.
@@ -146,6 +152,7 @@ public class KirjahyllyGUIController implements Initializable {
     protected void alusta() {
         chooserKirjat.clear();
         chooserKirjat.addSelectionListener(e -> naytaKirja());
+        chooserMuut.addSelectionListener(e -> naytaKirja(false));
     }
 
 
@@ -222,17 +229,29 @@ public class KirjahyllyGUIController implements Initializable {
      * @return true jos saa sulkea sovelluksen, false jos ei
      */
     public boolean voikoSulkea() {
-        // tallenna(); // TODO: Joku varmistus, muttei tällästä autom. hyi
+        if (hylly.onkoMuutoksia()) {
+            if (Dialogs.showQuestionDialog("Varoitus",
+                    "Haluatko varmasti poistua?\nSinulla on tallentamattomia muutoksia.",
+                    "Kyllä", "Ei"))
+                return true;
+            return false;
+        }
         return true;
     }
 
 
     /**
-     * Näyttää listasta valitun kirjan tiedot, tilapäisesti yhteen isoon edit-kenttään
-     * TODO: tiedot johonkin muuhun kuin yhteen textareaan
+     * Näyttää valitun kirjan
+     * @param ohita ohitetaanko kirjailijan muiden kirjojen päivitys
      */
-    protected void naytaKirja() {
-        kirjaKohdalla = chooserKirjat.getSelectedObject();
+    protected void naytaKirja(boolean ohita) {
+        if (!ohita) {
+            kirjaKohdalla = chooserMuut.getSelectedObject();
+            chooserKirjat.setSelectedIndex(-1); // valinta pois
+        } else {
+            haeMuut();
+            kirjaKohdalla = chooserKirjat.getSelectedObject();
+        }
 
         if (kirjaKohdalla == null) {
             tyhjenna();
@@ -247,7 +266,14 @@ public class KirjahyllyGUIController implements Initializable {
         nArvio.setText("" + kirjaKohdalla.getArvio());
         nLisatietoja.setText(kirjaKohdalla.getLisatietoja());
         viesti.setText("");
+    }
 
+
+    /**
+     * Näyttää valitun kirjan
+     */
+    private void naytaKirja() {
+        naytaKirja(true);
     }
 
 
@@ -279,7 +305,8 @@ public class KirjahyllyGUIController implements Initializable {
                 kid = kohdalla.getId();
         }
 
-        int k = cbEhto.getSelectionModel().getSelectedIndex(); // + apu?
+        int k = cbEhto.getSelectionModel().getSelectedIndex();
+        int l = cbLuettu.getSelectionModel().getSelectedIndex();
         String ehto = hakuehto.getText();
         if (ehto.indexOf('*') < 0)
             ehto = "*" + ehto + "*";
@@ -287,8 +314,7 @@ public class KirjahyllyGUIController implements Initializable {
         chooserKirjat.clear();
 
         int index = 0;
-        Collection<Kirja> kirjat;
-        kirjat = hylly.etsi(ehto, k);
+        Collection<Kirja> kirjat = hylly.etsi(ehto, k, l);
         int i = 0;
         for (Kirja kirja : kirjat) {
             if (kirja.getId() == kid)
@@ -298,6 +324,18 @@ public class KirjahyllyGUIController implements Initializable {
         }
 
         chooserKirjat.setSelectedIndex(index);
+    }
+
+
+    private void haeMuut() {
+        kirjaKohdalla = chooserKirjat.getSelectedObject();
+        if (kirjaKohdalla == null)
+            return;
+        chooserMuut.clear();
+        Collection<Kirja> kirjailijanMuutKirjat = hylly.kirjailijanKirjat(
+                kirjaKohdalla.getKirjailijaId(), kirjaKohdalla.getId());
+        for (Kirja kirja : kirjailijanMuutKirjat)
+            chooserMuut.add(kirja.getNimi(), kirja);
     }
 
 
@@ -314,12 +352,15 @@ public class KirjahyllyGUIController implements Initializable {
                     "Ongelmia uuden luomisessa " + e.getMessage());
             return;
         }
-        hae(uusi.getId());
+        chooserKirjat.clear();
+        chooserKirjat.add(uusi.getNimi(), uusi);
+        chooserKirjat.setSelectedIndex(0);
         muokkaa();
         if (uusi.getNimi().equals(""))
-            poista();
+            hylly.poista(uusi);
         else
             uusi.rekisteroi();
+        hae(kirjaKohdalla.getId());
     }
 
 
@@ -333,17 +374,31 @@ public class KirjahyllyGUIController implements Initializable {
 
 
     private void muokkaa() {
-        kirjaKohdalla = chooserKirjat.getSelectedObject();
         if (kirjaKohdalla == null)
             return;
-        nippu.set(hylly, kirjaKohdalla); // TODO: kloonit
+        Kirja alkupKirja = kirjaKohdalla.clone();
+        nippu.set(hylly, kirjaKohdalla);
         nippu = ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("MuokkaaView.fxml"),
                 "Muokkaa", null, nippu);
-        naytaKirja();
-        int index = chooserKirjat.getSelectedIndex();
-        hae(0);
-        chooserKirjat.setSelectedIndex(index);
+        kirjaKohdalla = nippu.getKirja();
+        hylly = nippu.getHylly();
+
+        if (!kirjaKohdalla.toString().equals(alkupKirja.toString()))
+            hylly.korvaa(kirjaKohdalla.getId(), kirjaKohdalla);
+        hae(kirjaKohdalla.getId());
+    }
+
+
+    /**
+     * Lataa tiedoston uudestaan, eli ts. peruu muutokset
+     */
+    private void lueUudestaan() {
+        boolean varmistus = Dialogs.showQuestionDialog("Varmistus",
+                "Haluatko varmasti lukea tiedoston uudestaan levyltä?\nKaikki muutokset menetetään.",
+                "Kyllä", "Ei");
+        if (varmistus)
+            lueTiedosto(hyllynNimi);
     }
 
 
@@ -361,5 +416,29 @@ public class KirjahyllyGUIController implements Initializable {
         } catch (IOException e) {
             return;
         }
+    }
+
+
+    /**
+     * Tulostaa hyllyn kaikki kirjat
+     * TODO: page breakit ettei yksittäisen kirjan tiedot hajoa kahdelle eri sivulle
+     */
+    private void tulosta() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Kirjahylly (" + hyllynNimi + ")\n\n");
+
+        Kirjat kirjat = hylly.annaKirjat();
+        for (Kirja kirja : kirjat) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            kirja.tulosta(stream);
+            String tulostus = stream.toString()
+                    .replaceAll("<kirjailija/>", hylly.kirjanKirjailija(kirja))
+                    .replaceAll("<kustantaja/>", hylly.kirjanKustantaja(kirja));
+            sb.append(tulostus).append("\n\n");
+        }
+
+        ModalController.showModal(
+                KirjahyllyGUIController.class.getResource("TulostaView.fxml"),
+                "Tulosta kirja", null, sb.toString());
     }
 }

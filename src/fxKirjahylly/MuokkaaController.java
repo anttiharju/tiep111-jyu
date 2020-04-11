@@ -20,9 +20,11 @@ import kirjahylly.Kustantaja;
 import kirjahylly.Kustantajat;
 import kirjahylly.Nippu;
 
+import static kanta.apu.*;
+
 /**
  * Muokataan kirjaa erillisessä dialogissa
- * @author anvemaha
+ * @author Antti Harju, anvemaha@student.jyu.fi
  * @version 28.3.2020
  */
 public class MuokkaaController
@@ -54,8 +56,8 @@ public class MuokkaaController
 
 
     @FXML
-    private void handlePeruuta() {
-        peruuta();
+    private void handleSulje() {
+        sulje();
     }
 
 
@@ -82,13 +84,20 @@ public class MuokkaaController
         poistaKustantaja();
     }
 
+
+    @FXML
+    private void handleTarkistaLuettu() {
+        tarkista();
+    }
+
     // ========================================================
 
     private Nippu nippu;
-    private Kirja kirjaKohdalla;
+    private Kirja apuKirja;
     private Kirjahylly hylly;
     private Kirjailijat tmpKirjailijat;
     private Kustantajat tmpKustantajat;
+    private int tmpkir, tmpkus;
 
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
@@ -99,11 +108,13 @@ public class MuokkaaController
     @Override
     public void setDefault(Nippu oletus) {
         nippu = oletus;
-        kirjaKohdalla = oletus.getKirja();
+        apuKirja = oletus.getKirja();
         hylly = oletus.getHylly();
         tmpKirjailijat = hylly.annaKirjailijat();
         tmpKustantajat = hylly.annaKustantajat();
-        naytaKirja(kirjaKohdalla);
+        tmpkir = oletus.getKirja().getKirjailijaId();
+        tmpkus = oletus.getKirja().getKustantajaId();
+        naytaKirja(apuKirja);
     }
 
 
@@ -122,18 +133,31 @@ public class MuokkaaController
     }
 
 
-    private void tallenna() {
-        kirjaKohdalla.setNimi(mNimi.getText());
-        kirjaKohdalla.setKirjailija(
-                tmpKirjailijat.getWithId(mKirjailija.getSelectedText()));
-        kirjaKohdalla.setKustantaja(
-                tmpKustantajat.getWithId(mKustantaja.getSelectedText()));
-        kirjaKohdalla.setVuosi(Integer.parseInt(mVuosi.getText()));
-        kirjaKohdalla.setKuvaus(mKuvaus.getText());
-        kirjaKohdalla.setLuettu(mLuettu.getText());
-        kirjaKohdalla.setArvio(Integer.parseInt(mArvio.getText()));
-        kirjaKohdalla.setLisatietoja(mLisatietoja.getText());
+    private void tyhjennaVaroitukset() {
+        mNimi.setStyle(null);
+        mVuosi.setStyle(null);
+        mLuettu.setStyle(null);
+        mArvio.setStyle(null);
+        viesti.setText("");
+    }
 
+
+    private void tallenna() {
+        if (!tarkista())
+            return;
+
+        apuKirja.setNimi(mNimi.getText());
+        apuKirja.setKirjailija(
+                tmpKirjailijat.getId(mKirjailija.getSelectedText()));
+        apuKirja.setKustantaja(
+                tmpKustantajat.getId(mKustantaja.getSelectedText()));
+        apuKirja.setVuosi(Integer.parseInt(mVuosi.getText()));
+        apuKirja.setKuvaus(mKuvaus.getText());
+        apuKirja.setLuettu(mLuettu.getText());
+        apuKirja.setArvio(Integer.parseInt(mArvio.getText()));
+        apuKirja.setLisatietoja(mLisatietoja.getText());
+
+        nippu.set(apuKirja);
         hylly.set(tmpKirjailijat);
         hylly.set(tmpKustantajat);
 
@@ -142,7 +166,7 @@ public class MuokkaaController
     }
 
 
-    private void peruuta() {
+    private void sulje() {
         ModalController.closeStage(viesti);
     }
 
@@ -153,8 +177,8 @@ public class MuokkaaController
             return;
         Kirjailija tmp = new Kirjailija(nimi);
         tmp.rekisteroi();
-        tmpKirjailijat.lisaa(tmp);
-        setComboBox(mKirjailija, annaKirjailijat(kirjaKohdalla));
+        tmpkir = tmpKirjailijat.lisaa(tmp);
+        setComboBox(mKirjailija, annaKirjailijat());
     }
 
 
@@ -164,18 +188,22 @@ public class MuokkaaController
             return;
         Kustantaja tmp = new Kustantaja(nimi);
         tmp.rekisteroi();
-        tmpKustantajat.lisaa(tmp); // SailoException
-        setComboBox(mKustantaja, annaKustantajat(kirjaKohdalla));
+        tmpkus = tmpKustantajat.lisaa(tmp);
+        setComboBox(mKustantaja, annaKustantajat());
     }
 
 
     private void poistaKirjailija() {
+        tmpkir = 0;
         tmpKirjailijat.poista(mKirjailija.getSelectedText());
+        setComboBox(mKirjailija, annaKirjailijat());
     }
 
 
     private void poistaKustantaja() {
+        tmpkus = 0;
         tmpKustantajat.poista(mKustantaja.getSelectedText());
+        setComboBox(mKustantaja, annaKustantajat());
     }
 
 
@@ -203,8 +231,8 @@ public class MuokkaaController
         if (kirja == null)
             return;
         mNimi.setText(kirja.getNimi());
-        setComboBox(mKirjailija, annaKirjailijat(kirjaKohdalla));
-        setComboBox(mKustantaja, annaKustantajat(kirjaKohdalla));
+        setComboBox(mKirjailija, annaKirjailijat());
+        setComboBox(mKustantaja, annaKustantajat());
         mVuosi.setText("" + kirja.getVuosi());
         mKuvaus.setText(kirja.getKuvaus());
         mLuettu.setText(kirja.getLuettu());
@@ -228,11 +256,10 @@ public class MuokkaaController
 
     /**
      * ComboBoxChooseria varten tehty
-     * @param eka kirjailija jonka halutaan olevan ensimmäisenä
-     * @return kaikki kirjailijat, tietty kirjailija ensimmäisenä
+     * @return kaikki kirjailijat, kirjan kirjailija ensimmäisenä
      */
-    public String annaKirjailijat(Kirja eka) {
-        String kirjailija = hylly.kirjanKirjailija(eka);
+    public String annaKirjailijat() {
+        String kirjailija = tmpKirjailijat.annaKirjailija(tmpkir).getNimi();
         StringBuilder sb = new StringBuilder(kirjailija);
         // Pakollinen, muokkaus ei toimi jos kirjailijoita ei ole
         if (kirjailija.equals(""))
@@ -251,11 +278,10 @@ public class MuokkaaController
 
     /**
      * ComboBoxChooseria varten tehty
-     * @param eka kustantaja jonka halutaan olevan ensimmäisenä
-     * @return kaikki kustantajat, tietty kustantaja ensimmäisenä
+     * @return kaikki kustantajat, kirjan kustantaja ensimmäisenä
      */
-    public String annaKustantajat(Kirja eka) {
-        String kustantaja = hylly.kirjanKustantaja(eka);
+    public String annaKustantajat() {
+        String kustantaja = tmpKustantajat.annaKustantaja(tmpkus).getNimi();
         StringBuilder sb = new StringBuilder(kustantaja);
         // Pakollinen, muokkaus ei toimi jos kustantajia ei ole
         if (kustantaja.equals(""))
@@ -269,5 +295,82 @@ public class MuokkaaController
                 sb.append(nyk).append("\n");
         }
         return sb.toString();
+    }
+
+
+    /**
+     * Tekee tarkistukset
+     * @return saako tallentaa vai ei
+     */
+    private boolean tarkista() {
+        tyhjennaVaroitukset();
+        int totuus = 0;
+        totuus += tarkistaArvio();
+        totuus += tarkistaLuettu();
+        totuus += tarkistaJulkaisuvuosi();
+        totuus += tarkistaNimi();
+        if (totuus == 0)
+            return true;
+        return false;
+    }
+
+
+    /**
+     * Tarkistaa ettei nimi ole tyhjä
+     * @return saako tallentaa vai ei
+     */
+    private int tarkistaNimi() {
+        if (tarkistaEtteiTyhja(mNimi.getText()))
+            return 0;
+        virheKentta("Kirjalla täytyy olla nimi!", mNimi);
+        return 1;
+    }
+
+
+    /**
+     * Tarkistaa että julkaisuvuosi on muotoa vvvv
+     * @return saako tallentaa vai ei
+     */
+    private int tarkistaJulkaisuvuosi() {
+        if (tarkistaVuosi(mVuosi.getText()))
+            return 0;
+        virheKentta("Anna julkaisuvuosi muodossa vvvv", mVuosi);
+        return 1;
+    }
+
+
+    /**
+     * Tarkistaa että luettu pvm on muotoa pp.kk.vvvv
+     * @return saako tallentaa vai ei
+     */
+    private int tarkistaLuettu() {
+        if (tarkistaPvm(mLuettu.getText()))
+            return 0;
+        virheKentta("Anna päivänmäärä muodossa pp.kk.vvvv", mLuettu);
+        return 1;
+    }
+
+
+    /**
+     * Tarkistaa että arvio on numeerinen
+     * @return saako tallentaa vai ei
+     */
+    private int tarkistaArvio() {
+        if (tarkistaNumeerisuus(mArvio.getText()))
+            return 0;
+        virheKentta("Arvion täytyy olla numero", mArvio);
+        return 1;
+    }
+
+
+    /**
+     * Näyttää virheen
+     * @param virhe virheilmoitus
+     * @param kentta kenttä jossa on virhe
+     */
+    private void virheKentta(String virhe, TextField kentta) {
+        viesti.setTextFill(Color.RED);
+        viesti.setText(virhe);
+        kentta.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
     }
 }
