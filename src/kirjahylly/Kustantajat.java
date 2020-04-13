@@ -2,12 +2,12 @@ package kirjahylly;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -79,7 +79,8 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
      */
     public int lisaa(Kustantaja kustantaja, boolean kloonaus) {
         alkiot.add(kustantaja);
-        muutettu = !kloonaus;
+        if (!kloonaus)
+            muutettu = true;
         return kustantaja.getId();
     }
 
@@ -177,10 +178,8 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
      */
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
-        // try (BufferedReader fi = new BufferedReader(
-        // new FileReader(getTiedostonNimi()))) {
-        try (BufferedReader fi = new BufferedReader(new InputStreamReader(
-                new FileInputStream(getTiedostonNimi()), "UTF8"))) {
+        try (BufferedReader fi = new BufferedReader(
+                new FileReader(getTiedostonNimi(), StandardCharsets.UTF_8))) {
             String rivi;
             while ((rivi = fi.readLine()) != null) {
                 rivi = rivi.trim();
@@ -234,8 +233,8 @@ public class Kustantajat implements Iterable<Kustantaja>, Cloneable {
         fbackup.delete();
         ftied.renameTo(fbackup);
 
-        try (PrintWriter fo = new PrintWriter(
-                new FileWriter(ftied.getCanonicalPath()))) {
+        try (PrintWriter fo = new PrintWriter(new FileWriter(
+                ftied.getCanonicalPath(), StandardCharsets.UTF_8))) {
             fo.println("#id|kustantaja");
             for (Kustantaja kus : this) {
                 fo.println(kus.toString());

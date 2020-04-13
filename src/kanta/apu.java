@@ -73,14 +73,15 @@ public class apu {
      * @example
      * <pre name="test">
      *  tarkistaVuosi("") === false;
-     *  tarkistaVuosi("6969") === true;
-     *  tarkistaVuosi("420") === false;
-     *  tarkistaVuosi("42666") === false;
-     *  tarkistaVuosi("koira") === false;
+     *  tarkistaVuosi("4242") === true;
+     *  tarkistaVuosi("0666") === false;
+     *  tarkistaVuosi("69") === false;
+     *  tarkistaVuosi("42069") === false;
+     *  tarkistaVuosi("kakstuhattakaks") === false;
      * </pre>
      */
     public static boolean tarkistaVuosi(String vuosi) {
-        return Pattern.matches("^\\d{4}$", vuosi);
+        return Pattern.matches("^[1-9]\\d{3}$", vuosi);
     }
 
 
