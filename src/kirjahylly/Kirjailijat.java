@@ -2,12 +2,12 @@ package kirjahylly;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -78,7 +78,8 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
      */
     public int lisaa(Kirjailija kirjailija, boolean kloonaus) {
         alkiot.add(kirjailija);
-        muutettu = !kloonaus;
+        if (!kloonaus)
+            muutettu = true;
         return kirjailija.getId();
     }
 
@@ -176,10 +177,8 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
      */
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
-        // try (BufferedReader fi = new BufferedReader(
-        // new FileReader(getTiedostonNimi()))) {
-        try (BufferedReader fi = new BufferedReader(new InputStreamReader(
-                new FileInputStream(getTiedostonNimi()), "UTF8"))) {
+        try (BufferedReader fi = new BufferedReader(
+                new FileReader(getTiedostonNimi(), StandardCharsets.UTF_8))) {
             String rivi;
             while ((rivi = fi.readLine()) != null) {
                 rivi = rivi.trim();
@@ -232,8 +231,8 @@ public class Kirjailijat implements Iterable<Kirjailija>, Cloneable {
         fbackup.delete();
         ftied.renameTo(fbackup);
 
-        try (PrintWriter fo = new PrintWriter(
-                new FileWriter(ftied.getCanonicalPath()))) {
+        try (PrintWriter fo = new PrintWriter(new FileWriter(
+                ftied.getCanonicalPath(), StandardCharsets.UTF_8))) {
             fo.println("#id|kirjailija");
             for (Kirjailija kir : this)
                 fo.println(kir.toString());

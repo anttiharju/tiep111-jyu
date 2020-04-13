@@ -578,7 +578,7 @@ public class Kirjahylly {
     /**
      * @return kertoo onko tallentamattomia muutoksia
      */
-    public boolean onkoMuutoksia() {
+    public boolean muutoksia() {
         if (kirjat.getMuutettu())
             return true;
         if (kirjailijat.getMuutettu())

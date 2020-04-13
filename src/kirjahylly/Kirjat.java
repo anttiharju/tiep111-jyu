@@ -3,14 +3,15 @@ package kirjahylly;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+
 import kanta.SailoException;
 
 /**
@@ -97,7 +98,8 @@ public class Kirjat implements Iterable<Kirja>, Cloneable {
             alkiot = Arrays.copyOf(alkiot, alkiot.length * 2);
         alkiot[lkm] = kirja;
         lkm++;
-        muutettu = !kloonaus;
+        if (!kloonaus)
+            muutettu = true;
     }
 
 
@@ -244,10 +246,8 @@ public class Kirjat implements Iterable<Kirja>, Cloneable {
      */
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
-        // try (BufferedReader fi = new BufferedReader(
-        // new FileReader(getTiedostonNimi()))) {
-        try (BufferedReader fi = new BufferedReader(new InputStreamReader(
-                new FileInputStream(getTiedostonNimi()), "UTF8"))) {
+        try (BufferedReader fi = new BufferedReader(
+                new FileReader(getTiedostonNimi(), StandardCharsets.UTF_8))) {
             kokoNimi = fi.readLine();
             if (kokoNimi == null)
                 throw new SailoException("Kerhon nimi puuttuu");
@@ -300,13 +300,12 @@ public class Kirjat implements Iterable<Kirja>, Cloneable {
     public void tallenna() throws SailoException {
         if (!muutettu)
             return;
-
         File fbak = new File(getBackupNimi());
         File ftied = new File(getTiedostonNimi());
         fbak.delete();
         ftied.renameTo(fbak);
-        try (PrintWriter fo = new PrintWriter(
-                new FileWriter(ftied.getCanonicalPath()))) {
+        try (PrintWriter fo = new PrintWriter(new FileWriter(
+                ftied.getCanonicalPath(), StandardCharsets.UTF_8))) {
             fo.println(getKokoNimi());
             fo.println(
                     "#id|kirjan nimi|kirjailija|kustantaja|vuosi|lyhyt kuvaus|luettu|arvio|lisätietoja");

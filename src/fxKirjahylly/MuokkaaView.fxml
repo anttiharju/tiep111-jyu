@@ -168,14 +168,14 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="NEVER">
                <children>
-      				<Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
-      					<HBox.margin>
-      						<Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
-      					</HBox.margin>
-      				</Button>
       				<Button mnemonicParsing="false" onAction="#handleSulje" text="Sulje">
       					<HBox.margin>
       						<Insets bottom="10.0" right="20.0" top="10.0" />
+      					</HBox.margin>
+      				</Button>
+      				<Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
+      					<HBox.margin>
+      						<Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
       					</HBox.margin>
       				</Button>
                </children>
