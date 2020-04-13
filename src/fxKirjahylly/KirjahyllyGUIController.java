@@ -468,7 +468,7 @@ public class KirjahyllyGUIController implements Initializable {
 
         ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("TulostaView.fxml"),
-                "Tulosta kirja", null, sb.toString());
+                "Tulosta", null, sb.toString());
     }
 
 
