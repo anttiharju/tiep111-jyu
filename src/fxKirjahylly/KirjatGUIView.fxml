@@ -32,14 +32,15 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="Muokkaa">
 					<items>
-						<MenuItem mnemonicParsing="false" onAction="#handleLisää" text="Lisää uusi kirja" />
-						<MenuItem mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa kirjaa" />
-						<MenuItem mnemonicParsing="false" onAction="#handlePoista" text="Poista kirja..." />
+						<MenuItem mnemonicParsing="false" onAction="#handleLisää" text="Lisää uusi kirja..." />
+						<MenuItem mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa kirjaa..." />
+						<MenuItem mnemonicParsing="false" onAction="#handlePoista" text="Poista kirja" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Apua">
 					<items>
-						<MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua" />
+						<MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua (selain)" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePika" text="Pikanäppäimet" />
 						<MenuItem mnemonicParsing="false" onAction="#handleTietoja" text="Tietoja..." />
 					</items>
 				</Menu>
@@ -72,6 +73,7 @@
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
+                              <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
                               <ComboBoxChooser fx:id="cbLuettu" minWidth="100.0" onAction="#handleHakuehto" rivit="Kaikki&#10;Luettu&#10;Ei luettu" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
@@ -97,7 +99,7 @@
       								</Label>
       							</top>
       							<center>
-      								<ListChooser fx:id="chooserKirjat" rivit="Ready Player One&#10;Metro 2033&#10;What if?&#10;Metro 2035&#10;Diaspora&#10;Permutation City" BorderPane.alignment="CENTER" />
+      								<ListChooser fx:id="chooserKirjat" rivit="" BorderPane.alignment="CENTER" />
       							</center>
       						</BorderPane>
                </center>
@@ -223,7 +225,7 @@
 						</Label>
 					</top>
 					<center>
-						<ListChooser fx:id="chooserMuut" rivit="Permutation City" BorderPane.alignment="CENTER" />
+						<ListChooser fx:id="chooserMuut" rivit="" BorderPane.alignment="CENTER" />
 					</center>
 				</BorderPane>
 			</items>
@@ -232,7 +234,7 @@
 	<bottom>
 		<HBox minWidth="50.0" prefHeight="50.0" prefWidth="1024.0" BorderPane.alignment="TOP_CENTER">
 			<children>
-				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleLisää" text="Lisää kirja" textAlignment="CENTER">
+				<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleLisää" text="Lisää kirja..." textAlignment="CENTER">
 					<HBox.margin>
 						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
 					</HBox.margin>
@@ -247,16 +249,18 @@
 						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
 					</HBox.margin>
 				</Button>
-				<Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" textAlignment="CENTER">
-					<HBox.margin>
-						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-					</HBox.margin>
-				</Button>
+            <HBox />
             <Label fx:id="viesti">
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
             </Label>
+            <HBox HBox.hgrow="ALWAYS" />
+				<Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" textAlignment="CENTER">
+					<HBox.margin>
+						<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+					</HBox.margin>
+				</Button>
 			</children>
 		</HBox>
 	</bottom>

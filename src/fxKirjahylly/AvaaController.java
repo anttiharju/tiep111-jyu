@@ -74,7 +74,7 @@ public class AvaaController implements ModalControllerInterface<String> {
      */
     public static String kysyNimi(Stage modalityStage, String oletus) {
         return ModalController.showModal(
-                AvaaController.class.getResource("AvaaView.fxml"), "Kerho",
+                AvaaController.class.getResource("AvaaView.fxml"), "Kirjahylly",
                 modalityStage, oletus);
     }
 }

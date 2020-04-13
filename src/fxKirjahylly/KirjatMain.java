@@ -24,6 +24,7 @@ public class KirjatMain extends Application {
                     .getController();
 
             Scene scene = new Scene(root);
+            hyllyCtrl.addHotkeys(scene);
             scene.getStylesheets()
                     .add(getClass().getResource("kirjat.css").toExternalForm());
             primaryStage.setScene(scene);
@@ -44,7 +45,6 @@ public class KirjatMain extends Application {
                 hyllyCtrl.lueTiedosto(params.getRaw().get(0));
             else if (!hyllyCtrl.avaa())
                 Platform.exit();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

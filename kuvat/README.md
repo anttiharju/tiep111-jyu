@@ -1,3 +1,3 @@
-# Suunnitelman kuvat
+# Kirjahylly
 
-- suunnitelmat [TIMissä](https://tim.jyu.fi/view/kurssit/tie/ohj2/2020k/ht/suunnitelmat)
+Suunnitelma [TIMissä](https://tim.jyu.fi/view/kurssit/tie/ohj2/2020k/ht/anvemaha)

@@ -13,11 +13,17 @@ import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import kanta.SailoException;
 import kirjahylly.Kirja;
@@ -114,7 +120,7 @@ public class KirjahyllyGUIController implements Initializable {
 
     @FXML
     void handleRefresh() {
-        lueUudestaan();
+        lueUudelleen();
     }
 
 
@@ -123,6 +129,14 @@ public class KirjahyllyGUIController implements Initializable {
         ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("TietojaView.fxml"),
                 "Tietoja", null, "");
+    }
+
+
+    @FXML
+    void handlePika() {
+        ModalController.showModal(
+                KirjahyllyGUIController.class.getResource("PikaView.fxml"),
+                "Pikanäppäimet", null, "");
     }
 
 
@@ -144,7 +158,7 @@ public class KirjahyllyGUIController implements Initializable {
     private Kirjahylly hylly;
     private Kirja kirjaKohdalla;
     private Nippu nippu = new Nippu(null, null);
-    private String hyllynNimi = "antti"; // tämä nimi näytetään oletuksena
+    private String hyllynNimi = "";
 
     /**
      * Alustetaan kirjalistan kuuntelija.
@@ -168,6 +182,12 @@ public class KirjahyllyGUIController implements Initializable {
      * @return null jos onnistuu, muuten virhe tekstinä
      */
     protected String lueTiedosto(String nimi) {
+        hylly = new Kirjahylly();
+        kirjaKohdalla = new Kirja();
+        nippu = new Nippu(null, null);
+        naytaKirja();
+        tyhjenna();
+        haeKirjailijat();
         hyllynNimi = nimi;
         setTitle(hyllynNimi);
         try {
@@ -229,7 +249,7 @@ public class KirjahyllyGUIController implements Initializable {
      * @return true jos saa sulkea sovelluksen, false jos ei
      */
     public boolean voikoSulkea() {
-        if (hylly.onkoMuutoksia()) {
+        if (hylly.muutoksia()) {
             if (Dialogs.showQuestionDialog("Varoitus",
                     "Haluatko varmasti poistua?\nSinulla on tallentamattomia muutoksia.",
                     "Kyllä", "Ei"))
@@ -249,7 +269,7 @@ public class KirjahyllyGUIController implements Initializable {
             kirjaKohdalla = chooserMuut.getSelectedObject();
             chooserKirjat.setSelectedIndex(-1); // valinta pois
         } else {
-            haeMuut();
+            haeKirjailijat();
             kirjaKohdalla = chooserKirjat.getSelectedObject();
         }
 
@@ -327,7 +347,7 @@ public class KirjahyllyGUIController implements Initializable {
     }
 
 
-    private void haeMuut() {
+    private void haeKirjailijat() {
         kirjaKohdalla = chooserKirjat.getSelectedObject();
         if (kirjaKohdalla == null)
             return;
@@ -393,12 +413,21 @@ public class KirjahyllyGUIController implements Initializable {
     /**
      * Lataa tiedoston uudestaan, eli ts. peruu muutokset
      */
-    private void lueUudestaan() {
-        boolean varmistus = Dialogs.showQuestionDialog("Varmistus",
-                "Haluatko varmasti lukea tiedoston uudestaan levyltä?\nKaikki muutokset menetetään.",
-                "Kyllä", "Ei");
-        if (varmistus)
-            lueTiedosto(hyllynNimi);
+    private void lueUudelleen() {
+        boolean varmistus = true;
+        if (hylly.muutoksia()) {
+            varmistus = Dialogs.showQuestionDialog("Varmistus",
+                    "Haluatko varmasti lukea tiedoston uudestaan levyltä?\nKaikki muutokset menetetään.",
+                    "Kyllä", "Ei");
+            if (varmistus) {
+                lueTiedosto(hyllynNimi);
+                viesti.setTextFill(Color.GREEN);
+                viesti.setText("Tiedosto luettiin uudelleen!");
+            }
+        } else {
+            viesti.setTextFill(Color.ORANGE);
+            viesti.setText("Ei muutoksia, tiedostoa ei luettu uudelleen.");
+        }
     }
 
 
@@ -440,5 +469,98 @@ public class KirjahyllyGUIController implements Initializable {
         ModalController.showModal(
                 KirjahyllyGUIController.class.getResource("TulostaView.fxml"),
                 "Tulosta kirja", null, sb.toString());
+    }
+
+
+    /**
+     * Lisää pikanäppäimet ohjelmaan
+     * @param scene scene jossa ne toimii
+     */
+    public void addHotkeys(Scene scene) {
+        EventHandler<KeyEvent> avaa = new EventHandler<KeyEvent>() {
+            final KeyCombination keyComb = new KeyCodeCombination(KeyCode.O,
+                    KeyCombination.CONTROL_DOWN);
+
+            @Override
+            public void handle(KeyEvent ke) {
+                if (keyComb.match(ke)) {
+                    avaa();
+                    ke.consume();
+                }
+            }
+        };
+        EventHandler<KeyEvent> tulosta = new EventHandler<KeyEvent>() {
+            final KeyCombination keyComb = new KeyCodeCombination(KeyCode.P,
+                    KeyCombination.CONTROL_DOWN);
+
+            @Override
+            public void handle(KeyEvent ke) {
+                if (keyComb.match(ke)) {
+                    tulosta();
+                    ke.consume();
+                }
+            }
+        };
+        EventHandler<KeyEvent> tallenna = new EventHandler<KeyEvent>() {
+            final KeyCombination keyComb = new KeyCodeCombination(KeyCode.S,
+                    KeyCombination.CONTROL_DOWN);
+
+            @Override
+            public void handle(KeyEvent ke) {
+                if (keyComb.match(ke)) {
+                    tallenna();
+                    ke.consume();
+                }
+            }
+        };
+        EventHandler<KeyEvent> uusi = new EventHandler<KeyEvent>() {
+            final KeyCombination keyComb = new KeyCodeCombination(KeyCode.N,
+                    KeyCombination.CONTROL_DOWN);
+
+            @Override
+            public void handle(KeyEvent ke) {
+                if (keyComb.match(ke)) {
+                    uusiKirja();
+                    ke.consume();
+                }
+            }
+        };
+        EventHandler<KeyEvent> muokkaa = new EventHandler<KeyEvent>() {
+            final KeyCombination keyComb = new KeyCodeCombination(KeyCode.E,
+                    KeyCombination.CONTROL_DOWN);
+
+            @Override
+            public void handle(KeyEvent ke) {
+                if (keyComb.match(ke)) {
+                    muokkaa();
+                    ke.consume();
+                }
+            }
+        };
+        EventHandler<KeyEvent> poista = new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode() == KeyCode.DELETE) {
+                    poista();
+                    ke.consume();
+                }
+            }
+        };
+        EventHandler<KeyEvent> peruuta = new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode() == KeyCode.F5) {
+                    lueUudelleen();
+                    ke.consume();
+                }
+            }
+        };
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, avaa);
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, tulosta);
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, tallenna);
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, uusi);
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, muokkaa);
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, poista);
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, peruuta);
     }
 }
